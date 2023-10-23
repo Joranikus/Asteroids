@@ -1,5 +1,6 @@
 
 #include "threepp/threepp.hpp"
+#include "spaceship_class.hpp"
 
 using namespace threepp;
 
@@ -10,29 +11,16 @@ int main() {
     GLRenderer renderer(canvas.size());
     renderer.setClearColor(Color::black);
 
-    //Denne delen er skrevet med inspirasjon fra ChatGPT og eksempelkode fra Threepp
     TextureLoader loader;
 
-    auto spaceship_material = SpriteMaterial::create();
-    spaceship_material->map = loader.load("data/spaceship.png");
-    spaceship_material->map->offset.set(0.5, 0.5);
+    SpaceshipClass spaceship(loader, "data/spaceship.png", 0.1);
 
-    auto image_width = static_cast<float>(spaceship_material->map->image->width);
-    auto image_height = static_cast<float>(spaceship_material->map->image->height);
-
-    auto scale_factor = 0.1;
-    auto spaceship_sprite = Sprite::create(spaceship_material);
-
-    spaceship_sprite->center.set(0.5, 0.5);
-    spaceship_sprite->scale.set(image_width * scale_factor,  image_height * scale_factor, 1);
-
-
-
+    //Delen som skalerer kameraet til vinduet er skrevet med hjelp fra ChatGPT
     auto camera = OrthographicCamera::create(-size.width / 2, size.width / 2, size.height / 2, -size.height / 2, 1, 100);
     camera->position.z = 100;
 
     auto scene = Scene::create();
-    scene->add(spaceship_sprite);
+    scene->add(spaceship);
 
     canvas.onWindowResize([&](WindowSize size) {
         camera->left = -size.width / 2;
@@ -42,7 +30,7 @@ int main() {
         camera->updateProjectionMatrix();
         renderer.setSize(size);
 
-        spaceship_sprite->scale.set(image_width * scale_factor, image_height * scale_factor, 1);
+        spaceship.on_window_resize();
     });
 
     canvas.animate([&] {
