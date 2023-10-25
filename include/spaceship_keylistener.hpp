@@ -1,0 +1,28 @@
+
+#ifndef ASTEROIDS_SPACESHIP_KEYLISTENER_HPP
+#define ASTEROIDS_SPACESHIP_KEYLISTENER_HPP
+
+#include "threepp/threepp.hpp"
+#include <set>
+
+using namespace threepp;
+
+class SpaceshipKeylistener : public KeyListener {
+public:
+
+    void onKeyPressed(KeyEvent evt) override {
+        keys_pressed.insert(evt.key);
+    }
+
+    void onKeyReleased(KeyEvent evt) override {
+        keys_pressed.erase(evt.key);
+    }
+
+    bool isKeyPressed(Key key) const {
+        return keys_pressed.find(key) != keys_pressed.end();
+    }
+
+private:
+    std::set<Key> keys_pressed;
+};
+#endif//ASTEROIDS_SPACESHIP_KEYLISTENER_HPP

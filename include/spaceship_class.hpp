@@ -2,18 +2,20 @@
 #ifndef ASTEROIDS_SPACESHIP_CLASS_HPP
 #define ASTEROIDS_SPACESHIP_CLASS_HPP
 
+#include "spaceship_controller.hpp"
 #include "threepp/threepp.hpp"
 using namespace threepp;
 
 class SpaceshipClass : public Sprite {
 
 public:
+
     SpaceshipClass(TextureLoader& loader, std::string material_path, float scale)
         : Sprite(SpriteMaterial::create()),
           loader_(loader),
           material_path_(material_path),
-          scale_(scale)
-    {
+          scale_(scale) {
+
         //disse tre linjene under er skrevet med hjelp av ChatGPT
         auto material = std::dynamic_pointer_cast<SpriteMaterial>(this->material);
         material->map = loader_.load(material_path_);
@@ -28,8 +30,8 @@ public:
 
     void on_window_resize() {
         this->scale.set(material_width_ * scale_, material_height_ * scale_, 0);
-    }
 
+    }
 
 private:
 
@@ -38,7 +40,6 @@ private:
     float scale_;
     float material_height_;
     float material_width_;
-
 };
 
 #endif//ASTEROIDS_SPACESHIP_CLASS_HPP
