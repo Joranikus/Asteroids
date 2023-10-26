@@ -23,10 +23,10 @@ public:
                 rotate_clockwise(dt);
                 break;
             case SpaceshipController::Action::ThrustForward:
-                thrust_forward(dt);
+                //thrust_forward(dt);
                 break;
             case SpaceshipController::Action::ThrustBackward:
-                thrust_backward(dt);
+                //thrust_backward(dt);
                 break;
             default:
                 break;
@@ -37,6 +37,8 @@ private:
 
     float rotation_speed_;
     SpaceshipClass& spaceship_;
+    Vector2 velocity = Vector2(0, 0);
+    Vector2 direction = Vector2(0, -1);
 
     void rotate_counter_clockwise(float dt) {
         auto material = std::dynamic_pointer_cast<SpriteMaterial>(spaceship_.material);
@@ -52,15 +54,19 @@ private:
         }
     }
 
-    void thrust_forward(float dt) {
-        spaceship_.position.x += 1 * dt;
-        std::cout << spaceship_.position.x << std::endl;
-    }
+    //void thrust_forward(float amount) {
+      //  velocity += direction * amount;
+    //}
 
-    void thrust_backward(float dt) {
-        spaceship_.position.x -= 1 * dt;
-        std::cout << spaceship_.position.x << std::endl;
-    }
+    //void thrust_backward(float amount) {
+      //  velocity -= direction * amount;
+    //}
+
+
+   // void update_position(float dt) {
+     //   spaceship_.position.x += velocity.x * dt;
+     //   spaceship_.position.y += velocity.y * dt;
+    //}
 
 };
 

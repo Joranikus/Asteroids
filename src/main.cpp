@@ -23,13 +23,12 @@ int main() {
     SpaceshipPhysics spaceship_physics(spaceship, 3);
 
 
-    //Delen som skalerer kameraet til vinduet er skrevet med hjelp fra ChatGPT
+    //Delen som skalerer kameraet til vinduet er skrevet med hjelp fra ChatGPT og godeste studass.
     auto camera = OrthographicCamera::create(-size.width / 2, size.width / 2, size.height / 2, -size.height / 2, 1, 100);
     camera->position.z = 100;
 
     auto scene = Scene::create();
     scene->add(spaceship);
-
 
     canvas.addKeyListener(&spaceship_keylistener);
 

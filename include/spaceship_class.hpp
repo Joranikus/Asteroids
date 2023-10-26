@@ -16,7 +16,7 @@ public:
           material_path_(material_path),
           scale_(scale) {
 
-        //disse tre linjene under er skrevet med hjelp av ChatGPT
+        //Jeg brukte chatGPT for å finne ut av "dynamic_pointer_cast" og skrive linjen under
         auto material = std::dynamic_pointer_cast<SpriteMaterial>(this->material);
         material->map = loader_.load(material_path_);
         material->map->offset.set(0.5, 0.5);
@@ -40,6 +40,7 @@ private:
     float scale_;
     float material_height_;
     float material_width_;
+
 };
 
 #endif//ASTEROIDS_SPACESHIP_CLASS_HPP
