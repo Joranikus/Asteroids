@@ -4,8 +4,11 @@
 
 #include "physics_handler.hpp"
 #include "spaceship_class.hpp"
+#include "spaceship_keylistener.hpp"
 #include "threepp/threepp.hpp"
 #include <iostream>
+
+using namespace threepp;
 
 class SpaceshipPhysics : public PhysicsEngine {
 
@@ -13,23 +16,25 @@ public:
     SpaceshipPhysics(SpaceshipClass& spaceship, float rotation_speed, float thrust_power)
         : PhysicsEngine(spaceship, Vector2(0, 1), Vector2(0, 0), rotation_speed, thrust_power) {}
 
-    //controls the actual spaceship
-    void perform_spaceship_movement(SpaceshipController::Action action, float dt) {
-        switch (action) {
-            case SpaceshipController::Action::RotateLeft:
-                rotate_counter_clockwise(dt);
-                break;
-            case SpaceshipController::Action::RotateRight:
-                rotate_clockwise(dt);
-                break;
-            case SpaceshipController::Action::ThrustForward:
-                thrust_forward(dt);
-                break;
-            case SpaceshipController::Action::ThrustBackward:
-                thrust_backward(dt);
-                break;
-            default:
-                break;
+    //Checks each action in an actions set individually so you can press multiple buttons at the same time
+    void perform_spaceship_movement(const std::set<SpaceshipController::Action>& actions, float dt) {
+        for (const auto& action : actions) {
+            switch (action) {
+                case SpaceshipController::Action::RotateLeft:
+                    rotate_counter_clockwise(dt);
+                    break;
+                case SpaceshipController::Action::RotateRight:
+                    rotate_clockwise(dt);
+                    break;
+                case SpaceshipController::Action::ThrustForward:
+                    thrust_forward(dt);
+                    break;
+                case SpaceshipController::Action::ThrustBackward:
+                    thrust_backward(dt);
+                    break;
+                default:
+                    break;
+            }
         }
     }
 

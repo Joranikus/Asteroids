@@ -48,8 +48,8 @@ int main() {
     canvas.animate([&] {
         auto dt = clock.getDelta();
 
-        auto action = spaceship_controller.determine_action(spaceship_keylistener);
-        spaceship_physics.perform_spaceship_movement(action, dt);
+        auto actions = spaceship_controller.determine_action(spaceship_keylistener);
+        spaceship_physics.perform_spaceship_movement(actions, dt);
         spaceship_physics.update(dt);
 
         renderer.render(*scene, *camera);

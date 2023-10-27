@@ -14,15 +14,16 @@ public:
         RotateRight,
         ThrustForward,
         ThrustBackward,
-        None
     };
 
-    Action determine_action(const SpaceshipKeylistener& keylistener) {
-        if (keylistener.isKeyPressed(Key::LEFT)) return Action::RotateLeft;
-        if (keylistener.isKeyPressed(Key::RIGHT)) return Action::RotateRight;
-        if (keylistener.isKeyPressed(Key::UP)) return Action::ThrustForward;
-        if (keylistener.isKeyPressed(Key::DOWN)) return Action::ThrustBackward;
-        return Action::None;
+    //Puts all the active actions in a actions set
+    std::set<Action> determine_action(const SpaceshipKeylistener& keylistener) {
+        std::set<Action> actions;
+        if (keylistener.isKeyPressed(Key::LEFT)) actions.insert(Action::RotateLeft);
+        if (keylistener.isKeyPressed(Key::RIGHT)) actions.insert(Action::RotateRight);
+        if (keylistener.isKeyPressed(Key::UP)) actions.insert(Action::ThrustForward);
+        if (keylistener.isKeyPressed(Key::DOWN)) actions.insert(Action::ThrustBackward);
+        return actions;
     }
 
 };
