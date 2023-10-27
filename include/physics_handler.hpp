@@ -12,14 +12,18 @@ class PhysicsEngine {
 
 public:
 
-    PhysicsEngine(Sprite& sprite, Vector2 direction, Vector2 velocity, float rotation_speed, float thrust_power)
+    PhysicsEngine(Sprite& sprite, Vector2 direction, Vector2 velocity, float rotation_speed, float thrust_power, float friction_coefficient)
             : sprite_(sprite),
               velocity_(velocity),
               direction_(direction),
               rotation_speed_(rotation_speed),
-              thrust_power_(thrust_power) {}
+              thrust_power_(thrust_power),
+              friction_coefficient_(friction_coefficient) {}
 
     virtual void update(float dt) {
+        velocity_.x -= friction_coefficient_ * velocity_.x * dt;
+        velocity_.y -= friction_coefficient_ * velocity_.y * dt;
+
         sprite_.position.x += velocity_.x * dt;
         sprite_.position.y += velocity_.y * dt;
     }
@@ -98,6 +102,7 @@ private:
     Vector2 velocity_;
     float rotation_speed_;
     float thrust_power_;
+    float friction_coefficient_;
 
 };
 

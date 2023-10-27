@@ -13,8 +13,9 @@ using namespace threepp;
 class SpaceshipPhysics : public PhysicsEngine {
 
 public:
-    SpaceshipPhysics(SpaceshipClass& spaceship, float rotation_speed, float thrust_power)
-        : PhysicsEngine(spaceship, Vector2(0, 1), Vector2(0, 0), rotation_speed, thrust_power) {}
+
+    SpaceshipPhysics(SpaceshipClass& spaceship, float rotation_speed, float thrust_power, float friction_coefficient)
+        : PhysicsEngine(spaceship, Vector2(0, 1), Vector2(0, 0), rotation_speed, thrust_power, friction_coefficient) {}
 
     //Checks each action in an actions set individually so you can press multiple buttons at the same time
     void perform_spaceship_movement(const std::set<SpaceshipController::Action>& actions, float dt) {

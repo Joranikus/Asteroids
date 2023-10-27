@@ -17,7 +17,7 @@ int main() {
     SpaceshipClass spaceship(loader, "data/spaceship.png", 0.08);
     SpaceshipKeylistener spaceship_keylistener;
     SpaceshipController spaceship_controller;
-    SpaceshipPhysics spaceship_physics(spaceship, 3, 200);
+    SpaceshipPhysics spaceship_physics(spaceship, 4, 500, 0.75);
 
 
     //Delen som skalerer kameraet til vinduet er skrevet med hjelp fra ChatGPT og godeste studass.
