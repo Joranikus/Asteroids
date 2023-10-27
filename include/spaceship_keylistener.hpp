@@ -23,6 +23,8 @@ public:
     }
 
 private:
+
+    //Fikk inspirasjon av ChatGPT om å lage et set
     std::set<Key> keys_pressed;
 };
 #endif//ASTEROIDS_SPACESHIP_KEYLISTENER_HPP

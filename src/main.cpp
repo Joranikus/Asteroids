@@ -20,7 +20,7 @@ int main() {
     SpaceshipClass spaceship(loader, "data/spaceship.png", 0.08);
     SpaceshipKeylistener spaceship_keylistener;
     SpaceshipController spaceship_controller;
-    SpaceshipPhysics spaceship_physics(spaceship, 3);
+    SpaceshipPhysics spaceship_physics(spaceship, 3, 200);
 
 
     //Delen som skalerer kameraet til vinduet er skrevet med hjelp fra ChatGPT og godeste studass.
@@ -50,6 +50,7 @@ int main() {
 
         auto action = spaceship_controller.determine_action(spaceship_keylistener);
         spaceship_physics.perform_spaceship_movement(action, dt);
+        spaceship_physics.update(dt);
 
         renderer.render(*scene, *camera);
     });

@@ -8,6 +8,7 @@ class SpaceshipController {
 
 public:
 
+    //Fikk inspirasjon fra ChatGPT om enum class
     enum class Action {
         RotateLeft,
         RotateRight,
