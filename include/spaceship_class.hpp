@@ -17,6 +17,8 @@ public:
           scale_(scale) {
 
         //Jeg brukte chatGPT for å finne ut av "dynamic_pointer_cast" og skrive linjen under
+
+        //Offsets the sprite by 0.5 and 0.5 so the sprite is centered
         auto material = std::dynamic_pointer_cast<SpriteMaterial>(this->material);
         material->map = loader_.load(material_path_);
         material->map->offset.set(0.5, 0.5);
@@ -28,6 +30,7 @@ public:
         this->scale.set(material_width_ * scale_, material_height_ * scale_, 0);
     }
 
+    //updates scale when window is resized
     void on_window_resize() {
         this->scale.set(material_width_ * scale_, material_height_ * scale_, 0);
 

@@ -22,6 +22,7 @@ int main() {
 
 
     //Delen som skalerer kameraet til vinduet er skrevet med hjelp fra ChatGPT og godeste studass.
+    //Uses the window size to create the camera
     auto camera = OrthographicCamera::create(-size.width / 2, size.width / 2, size.height / 2, -size.height / 2, 1, 100);
     camera->position.z = 100;
 
@@ -31,6 +32,8 @@ int main() {
     canvas.addKeyListener(&spaceship_keylistener);
 
     canvas.onWindowResize([&](WindowSize size) {
+
+        //Scales the camera according to the window width
         camera->left = -size.width / 2;
         camera->right = size.width / 2;
         camera->top = size.height / 2;

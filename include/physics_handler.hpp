@@ -24,22 +24,24 @@ public:
         sprite_.position.y += velocity_.y * dt;
     }
 
+    //Rotates material
     virtual void rotate_counter_clockwise(float dt) {
         auto material = std::dynamic_pointer_cast<SpriteMaterial>(sprite_.material);
         if (material) {
-            material->rotation += rotation_speed_ * dt;
             update_direction();
+            material->rotation += rotation_speed_ * dt;
         }
     }
 
     virtual void rotate_clockwise(float dt) {
         auto material = std::dynamic_pointer_cast<SpriteMaterial>(sprite_.material);
         if (material) {
-            material->rotation -= rotation_speed_ * dt;
             update_direction();
+            material->rotation -= rotation_speed_ * dt;
         }
     }
 
+    //Thrust is a scalar that is multiplied into the direction vector
     virtual void thrust_forward(float dt) {
         update_direction();
         velocity_.x += direction_.x * thrust_power_ * dt;
@@ -51,6 +53,7 @@ public:
         velocity_.x -= direction_.x * thrust_power_ * dt;
         velocity_.y -= direction_.y * thrust_power_ * dt;
     }
+
 
     virtual Vector2 get_velocity() {
         return velocity_;
