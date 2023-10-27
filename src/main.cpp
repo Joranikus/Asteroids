@@ -2,7 +2,6 @@
 #include "threepp/threepp.hpp"
 #include "spaceship_class.hpp"
 #include "spaceship_physics.hpp"
-#include <chrono>
 using namespace threepp;
 
 int main() {
@@ -33,7 +32,7 @@ int main() {
 
     canvas.onWindowResize([&](WindowSize size) {
 
-        //Scales the camera according to the window width
+        //Scales the camera according to the window width/height
         camera->left = -size.width / 2;
         camera->right = size.width / 2;
         camera->top = size.height / 2;

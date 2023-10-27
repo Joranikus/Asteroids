@@ -13,6 +13,7 @@ public:
     SpaceshipPhysics(SpaceshipClass& spaceship, float rotation_speed, float thrust_power)
         : PhysicsEngine(spaceship, Vector2(0, 1), Vector2(0, 0), rotation_speed, thrust_power) {}
 
+    //controls the actual spaceship
     void perform_spaceship_movement(SpaceshipController::Action action, float dt) {
         switch (action) {
             case SpaceshipController::Action::RotateLeft:
