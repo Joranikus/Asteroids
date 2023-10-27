@@ -4,6 +4,7 @@
 
 #include "threepp/threepp.hpp"
 #include <iostream>
+#include <cmath>
 
 using namespace threepp;
 
@@ -27,6 +28,7 @@ public:
         auto material = std::dynamic_pointer_cast<SpriteMaterial>(sprite_.material);
         if (material) {
             material->rotation += rotation_speed_ * dt;
+            update_direction();
         }
     }
 
@@ -34,19 +36,20 @@ public:
         auto material = std::dynamic_pointer_cast<SpriteMaterial>(sprite_.material);
         if (material) {
             material->rotation -= rotation_speed_ * dt;
+            update_direction();
         }
     }
 
     virtual void thrust_forward(float dt) {
+        update_direction();
         velocity_.x += direction_.x * thrust_power_ * dt;
         velocity_.y += direction_.y * thrust_power_ * dt;
-        std::cout << sprite_.position << std::endl;
     }
 
     virtual void thrust_backward(float dt) {
+        update_direction();
         velocity_.x -= direction_.x * thrust_power_ * dt;
         velocity_.y -= direction_.y * thrust_power_ * dt;
-        std::cout << sprite_.position << std::endl;
     }
 
     virtual Vector2 get_velocity() {
@@ -74,6 +77,18 @@ public:
     }
 
 private:
+
+    virtual void update_direction() {
+        auto material = std::dynamic_pointer_cast<SpriteMaterial>(sprite_.material);
+        if (material) {
+            float theta = material->rotation + (2 * atanf(1)); // (atanf(1) * 4) = pi
+            direction_.x = cosf(theta);
+            direction_.y = sinf(theta);
+
+            std::cout << "Theta: " << theta << std::endl;
+            std::cout << "Direction: (" << direction_.x << ", " << direction_.y << ")" << std::endl;
+        }
+    }
 
     Sprite& sprite_;
     Vector2 direction_;

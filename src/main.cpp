@@ -6,9 +6,6 @@
 using namespace threepp;
 
 int main() {
-    auto last_time = std::chrono::high_resolution_clock::now();
-    //float dt = currentTime - lastTime;
-    //lastTime = currentTime;
 
     Canvas canvas("Asteroids", {{"aa", 4}});
     auto size = canvas.size();
@@ -17,6 +14,7 @@ int main() {
 
     TextureLoader loader;
 
+    //Creates Spaceship
     SpaceshipClass spaceship(loader, "data/spaceship.png", 0.08);
     SpaceshipKeylistener spaceship_keylistener;
     SpaceshipController spaceship_controller;
