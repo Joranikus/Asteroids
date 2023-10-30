@@ -1,7 +1,7 @@
 
-#include "threepp/threepp.hpp"
-#include "spaceship_class.hpp"
 #include "spaceship_physics.hpp"
+#include "threepp/threepp.hpp"
+#include "sprite_generator.hpp"
 using namespace threepp;
 
 int main() {
@@ -14,7 +14,9 @@ int main() {
     TextureLoader loader;
 
     //Creates Spaceship
-    SpaceshipClass spaceship(loader, "data/spaceship.png", 0.08);
+    //SpaceshipClass spaceship(loader, "data/spaceship.png", 0.08);
+    SpriteGenerator spaceship(loader, "data/spaceship.png", 0.08);
+    spaceship.set_offset(0.5, 0.5);
     SpaceshipKeylistener spaceship_keylistener;
     SpaceshipController spaceship_controller;
     SpaceshipPhysics spaceship_physics(spaceship, 4, 500, 0.75);
@@ -47,6 +49,7 @@ int main() {
     Clock clock;
     canvas.animate([&] {
         auto dt = clock.getDelta();
+        auto fps = 1000 / dt;
 
         auto actions = spaceship_controller.determine_action(spaceship_keylistener);
         spaceship_physics.perform_spaceship_movement(actions, dt);

@@ -3,8 +3,9 @@
 #define ASTEROIDS_SPACESHIP_PHYSICS_HPP
 
 #include "physics_handler.hpp"
-#include "spaceship_class.hpp"
+#include "spaceship_controller.hpp"
 #include "spaceship_keylistener.hpp"
+#include "sprite_generator.hpp"
 #include "threepp/threepp.hpp"
 #include <iostream>
 
@@ -14,7 +15,7 @@ class SpaceshipPhysics : public PhysicsEngine {
 
 public:
 
-    SpaceshipPhysics(SpaceshipClass& spaceship, float rotation_speed, float thrust_power, float friction_coefficient)
+    SpaceshipPhysics(Sprite& spaceship, float rotation_speed, float thrust_power, float friction_coefficient)
         : PhysicsEngine(spaceship, Vector2(0, 1), Vector2(0, 0), rotation_speed, thrust_power, friction_coefficient) {}
 
     //Checks each action in an actions set individually so you can press multiple buttons at the same time
