@@ -1,7 +1,7 @@
 
-#include "spaceship_physics.hpp"
-#include "threepp/threepp.hpp"
+#include "spaceship.hpp"
 #include "sprite_generator.hpp"
+#include "threepp/threepp.hpp"
 using namespace threepp;
 
 int main() {
@@ -14,21 +14,17 @@ int main() {
     TextureLoader loader;
 
     //Creates Spaceship
-    //SpaceshipClass spaceship(loader, "data/spaceship.png", 0.08);
     SpriteGenerator spaceship(loader, "data/spaceship.png", 0.08);
-    spaceship.set_offset(0.5, 0.5);
     SpaceshipKeylistener spaceship_keylistener;
     SpaceshipController spaceship_controller;
-    SpaceshipPhysics spaceship_physics(spaceship, 4, 500, 0.75);
+    Spaceship spaceship_physics(spaceship, 4, 500, 0.75,
+                                loader, "data/bullet.png", 1, 100);
 
 
     //Delen som skalerer kameraet til vinduet er skrevet med hjelp fra ChatGPT og godeste studass.
     //Uses the window size to create the camera
     auto camera = OrthographicCamera::create(-size.width / 2, size.width / 2, size.height / 2, -size.height / 2, 1, 100);
     camera->position.z = 100;
-
-    auto scene = Scene::create();
-    scene->add(spaceship);
 
     canvas.addKeyListener(&spaceship_keylistener);
 
@@ -46,14 +42,23 @@ int main() {
         spaceship.on_window_resize();
     });
 
+    auto scene = Scene::create();
+    scene->add(spaceship);
+
     Clock clock;
     canvas.animate([&] {
         auto dt = clock.getDelta();
-        auto fps = 1000 / dt;
 
         auto actions = spaceship_controller.determine_action(spaceship_keylistener);
         spaceship_physics.perform_spaceship_movement(actions, dt);
         spaceship_physics.update(dt);
+
+        //loops through bullets in the bullets shared pointer, and renders all the bullets in the shared vector poiner.
+        for (const auto& bullet : spaceship_physics.get_bullets()) {
+            scene->add(bullet->get_sprite());
+        }
+
+        spaceship_physics.update_bullets(dt);
 
         renderer.render(*scene, *camera);
     });

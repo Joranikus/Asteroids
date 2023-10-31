@@ -7,6 +7,7 @@
 
 using namespace threepp;
 
+//inserts and erases keys from a set so multiple keys can be pressed at the same time
 class SpaceshipKeylistener : public KeyListener {
 public:
 
