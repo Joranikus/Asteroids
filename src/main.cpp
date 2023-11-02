@@ -16,10 +16,11 @@ int main() {
     TextureLoader loader;
 
     //Creates Spaceship
-    SpriteGenerator spaceship(loader, "data/spaceship.png", 0.08);
+    SpriteGenerator spaceship_sprite(loader, "data/spaceship.png", 0.08);
     SpaceshipKeylistener spaceship_keylistener;
-    Spaceship spaceship_physics(spaceship, size, 4, 500, 0.75,
+    Spaceship spaceship(spaceship_sprite, size, 4, 500, 0.75,
                                 loader, "data/bullet.png", 1, 1000, 0.1);
+
 
     //Delen som skalerer kameraet til vinduet er skrevet med hjelp fra ChatGPT og godeste studass.
     //Uses the window size to create the camera
@@ -39,25 +40,25 @@ int main() {
 
         renderer.setSize(size);
 
-        spaceship.on_window_resize();
-        spaceship_physics.on_window_resize(size);
+        spaceship_sprite.on_window_resize();
+        spaceship.on_window_resize(size);
     });
 
     auto scene = Scene::create();
-    scene->add(spaceship);
+    scene->add(spaceship_sprite);
 
     Clock clock;
     canvas.animate([&] {
         auto dt = clock.getDelta();
 
         auto actions = spaceship_keylistener.determine_action();
-        spaceship_physics.perform_spaceship_movement(actions, dt);
+        spaceship.perform_spaceship_movement(actions, dt);
 
-        spaceship_physics.update_bullets(dt, scene);
-        spaceship_physics.update(dt);
+        spaceship.update_bullets(dt, scene);
+        spaceship.update(dt);
 
         //loops through bullets in the bullets shared pointer, and renders all the bullets in the shared vector poiner.
-        for (const auto& bullet : spaceship_physics.get_bullets()) {
+        for (const auto& bullet : spaceship.get_bullets()) {
             scene->add(bullet->get_sprite());
         }
 

@@ -7,19 +7,19 @@
 
 using namespace threepp;
 
-class Bullet : public PhysicsEngine {
+class Bullet : public MovementHandler {
 
 public:
 
     Bullet(Sprite& bulletSprite, Vector2 direction, float initial_velocity)
-        : PhysicsEngine(bulletSprite, direction, initial_velocity, 0, 0, 0) {}
+        : MovementHandler(bulletSprite, direction, initial_velocity, 0, 0, 0) {}
 
     Sprite& get_sprite() {
         return sprite_;
     }
 
     void update(float dt) override {
-        PhysicsEngine::update(dt);
+        MovementHandler::update(dt);
     }
 
 };

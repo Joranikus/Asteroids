@@ -8,11 +8,10 @@
 
 using namespace threepp;
 
-class PhysicsEngine {
+class MovementHandler {
 
 public:
-
-    PhysicsEngine(Sprite& sprite, Vector2 direction, float initial_velocity, float rotation_speed, float thrust_power, float friction_coefficient)
+    MovementHandler(Sprite& sprite, Vector2 direction, float initial_velocity, float rotation_speed, float thrust_power, float friction_coefficient)
             : sprite_(sprite),
               velocity_float_(initial_velocity),
               direction_(direction),

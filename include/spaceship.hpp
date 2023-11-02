@@ -11,12 +11,12 @@
 
 using namespace threepp;
 
-class Spaceship: public PhysicsEngine {
+class Spaceship: public MovementHandler {
 
 public:
     Spaceship(Sprite& spaceship, WindowSize& screen_size, float spaceship_rotation_speed, float spaceship_thrust_power, float friction_coefficient,
               TextureLoader& bullet_loader, const std::string& bullet_material_path, float bullet_scale, float bullet_velocity, float bullet_cooldown)
-        : PhysicsEngine(spaceship, Vector2(0, 1), 0, spaceship_rotation_speed, spaceship_thrust_power, friction_coefficient),
+        : MovementHandler(spaceship, Vector2(0, 1), 0, spaceship_rotation_speed, spaceship_thrust_power, friction_coefficient),
           screen_size_(screen_size), bullet_loader_(bullet_loader), bullet_material_path_(bullet_material_path), bullet_scale_(bullet_scale), bullet_velocity_(bullet_velocity), bullet_cooldown_(bullet_cooldown)  {}
 
     //Checks each action in an actions set individually so you can press multiple buttons at the same time
@@ -48,7 +48,7 @@ public:
     }
 
     void update(float dt) override {
-        PhysicsEngine::update(dt);
+        MovementHandler::update(dt);
         time_since_last_bullet += dt;
     }
 
@@ -122,19 +122,19 @@ public:
 private:
 
     void rotate_counter_clockwise(float dt) override {
-        PhysicsEngine::rotate_counter_clockwise(dt);
+        MovementHandler::rotate_counter_clockwise(dt);
     }
 
     void rotate_clockwise(float dt) override {
-        PhysicsEngine::rotate_clockwise(dt);
+        MovementHandler::rotate_clockwise(dt);
     }
 
     void thrust_forward(float dt) override {
-        PhysicsEngine::thrust_forward(dt);
+        MovementHandler::thrust_forward(dt);
     }
 
     void thrust_backward(float dt) override {
-        PhysicsEngine::thrust_backward(dt);
+        MovementHandler::thrust_backward(dt);
     }
 
     std::vector<std::shared_ptr<Bullet>> bullets;
