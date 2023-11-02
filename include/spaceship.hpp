@@ -3,7 +3,6 @@
 #define ASTEROIDS_SPACESHIP_HPP
 
 #include "physics_handler.hpp"
-#include "spaceship_controller.hpp"
 #include "spaceship_keylistener.hpp"
 #include "sprite_generator.hpp"
 #include "threepp/threepp.hpp"
@@ -21,22 +20,22 @@ public:
           bullet_loader_(bullet_loader), bullet_material_path_(bullet_material_path), bullet_scale_(bullet_scale), bullet_speed_(bullet_speed) {}
 
     //Checks each action in an actions set individually so you can press multiple buttons at the same time
-    void perform_spaceship_movement(const std::set<SpaceshipController::Action>& actions, float dt) {
+    void perform_spaceship_movement(const std::set<SpaceshipKeylistener::Action>& actions, float dt) {
         for (const auto& action : actions) {
             switch (action) {
-                case SpaceshipController::Action::RotateLeft:
+                case SpaceshipKeylistener::Action::RotateLeft:
                     rotate_counter_clockwise(dt);
                     break;
-                case SpaceshipController::Action::RotateRight:
+                case SpaceshipKeylistener::Action::RotateRight:
                     rotate_clockwise(dt);
                     break;
-                case SpaceshipController::Action::ThrustForward:
+                case SpaceshipKeylistener::Action::ThrustForward:
                     thrust_forward(dt);
                     break;
-                case SpaceshipController::Action::ThrustBackward:
+                case SpaceshipKeylistener::Action::ThrustBackward:
                     thrust_backward(dt);
                     break;
-                case SpaceshipController::Action::ShootBullet:
+                case SpaceshipKeylistener::Action::ShootBullet:
                     shoot_bullet(bullet_loader_, bullet_material_path_, bullet_scale_, bullet_speed_);
                     break;
                 default:

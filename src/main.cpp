@@ -1,7 +1,7 @@
 
 #include "spaceship.hpp"
 #include "sprite_generator.hpp"
-#include "threepp/threepp.hpp"
+#include "threepp/thraaeepp.hpp"
 using namespace threepp;
 
 int main() {
@@ -16,7 +16,6 @@ int main() {
     //Creates Spaceship
     SpriteGenerator spaceship(loader, "data/spaceship.png", 0.08);
     SpaceshipKeylistener spaceship_keylistener;
-    SpaceshipController spaceship_controller;
     Spaceship spaceship_physics(spaceship, 4, 500, 0.75,
                                 loader, "data/bullet.png", 1, 100);
 
@@ -49,9 +48,10 @@ int main() {
     canvas.animate([&] {
         auto dt = clock.getDelta();
 
-        auto actions = spaceship_controller.determine_action(spaceship_keylistener);
+        auto actions = spaceship_keylistener.determine_action();
         spaceship_physics.perform_spaceship_movement(actions, dt);
         spaceship_physics.update(dt);
+
 
         //loops through bullets in the bullets shared pointer, and renders all the bullets in the shared vector poiner.
         for (const auto& bullet : spaceship_physics.get_bullets()) {

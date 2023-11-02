@@ -23,6 +23,24 @@ public:
         return keys_pressed.find(key) != keys_pressed.end();
     }
 
+    enum class Action {
+        RotateLeft,
+        RotateRight,
+        ThrustForward,
+        ThrustBackward,
+        ShootBullet,
+    };
+
+    std::set<Action> determine_action() const {
+        std::set<Action> actions;
+        if (this->isKeyPressed(Key::A)) actions.insert(Action::RotateLeft);
+        if (this->isKeyPressed(Key::D)) actions.insert(Action::RotateRight);
+        if (this->isKeyPressed(Key::W)) actions.insert(Action::ThrustForward);
+        if (this->isKeyPressed(Key::S)) actions.insert(Action::ThrustBackward);
+        if (this->isKeyPressed(Key::SPACE)) actions.insert(Action::ShootBullet);
+        return actions;
+    }
+
 private:
 
     //Fikk inspirasjon av ChatGPT om å lage et set
