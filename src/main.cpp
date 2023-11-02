@@ -6,7 +6,9 @@ using namespace threepp;
 
 int main() {
 
-    Canvas canvas("Asteroids", {{"aa", 4}});
+    Canvas::Parameters canvas_parameters;
+    canvas_parameters.title("Asteroids").size(1280, 720).antialiasing(4);
+    Canvas canvas(canvas_parameters);
     auto size = canvas.size();
     GLRenderer renderer(canvas.size());
     renderer.setClearColor(Color::black);

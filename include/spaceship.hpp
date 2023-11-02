@@ -148,7 +148,6 @@ private:
     bool ready_to_shoot;
     WindowSize& screen_size_;
 
-
 };
 
 #endif//ASTEROIDS_SPACESHIP_HPP
