@@ -14,7 +14,7 @@ include_directories(${CMAKE_SOURCE_DIR}/include)
 add_executable(start_asteroids src/main.cpp
         include/spaceship_keylistener.hpp
         include/spaceship.hpp
-        include/physics_handler.hpp
+        include/movement_handler.hpp
         include/sprite_generator.hpp
         include/bullet.hpp
 )

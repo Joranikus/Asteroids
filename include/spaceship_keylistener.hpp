@@ -23,6 +23,7 @@ public:
         return keys_pressed.find(key) != keys_pressed.end();
     }
 
+    //fikk inspirasjon fra chat gpt til å lage en enum class
     enum class Action {
         RotateLeft,
         RotateRight,
@@ -45,5 +46,7 @@ private:
 
     //Fikk inspirasjon av ChatGPT om å lage et set
     std::set<Key> keys_pressed;
+
+
 };
 #endif//ASTEROIDS_SPACESHIP_KEYLISTENER_HPP

@@ -16,8 +16,7 @@ public:
       material_path_(material_path),
       scale_(scale) {
 
-       //Jeg brukte chatGPT for å finne ut av "dynamic_pointer_cast" og skrive linjen under
-       auto material = std::dynamic_pointer_cast<SpriteMaterial>(this->material);
+       auto material = this->material;
        auto nana = this->material;
        material->map = loader_.load(material_path_);
 

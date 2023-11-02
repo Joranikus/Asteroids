@@ -2,7 +2,7 @@
 #ifndef ASTEROIDS_BULLET_HPP
 #define ASTEROIDS_BULLET_HPP
 
-#include "physics_handler.hpp"
+#include "movement_handler.hpp"
 #include "threepp/threepp.hpp"
 
 using namespace threepp;

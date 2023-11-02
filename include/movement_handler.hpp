@@ -1,6 +1,6 @@
 
-#ifndef ASTEROIDS_PHYSICS_HANDLER_HPP
-#define ASTEROIDS_PHYSICS_HANDLER_HPP
+#ifndef ASTEROIDS_MOVEMENT_HANDLER_HPP
+#define ASTEROIDS_MOVEMENT_HANDLER_HPP
 
 #include "threepp/threepp.hpp"
 #include <iostream>
@@ -109,4 +109,4 @@ private:
 
 };
 
-#endif//ASTEROIDS_PHYSICS_HANDLER_HPP
+#endif//ASTEROIDS_MOVEMENT_HANDLER_HPP
