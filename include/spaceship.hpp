@@ -38,6 +38,9 @@ public:
                 case SpaceshipKeylistener::Action::ShootBullet:
                     shoot_bullet(bullet_loader_, bullet_material_path_, bullet_scale_, bullet_velocity_);
                     break;
+                case SpaceshipKeylistener::Action::BulletFlagReset:
+                    ready_to_shoot = true;
+                    break;
                 default:
                     break;
             }
@@ -52,7 +55,7 @@ public:
     //creates a shared pointer of sprite_generators,
     void shoot_bullet(TextureLoader& loader, std::string material_path, float scale, float bullet_speed) {
 
-        if (time_since_last_bullet >= bullet_cooldown_) {
+        if (time_since_last_bullet >= bullet_cooldown_ && ready_to_shoot) {
 
             //creates a bullet sprite and pushes it into a shared pointer
             auto bullet_sprite = std::make_shared<SpriteGenerator>(loader, material_path, scale);
@@ -83,6 +86,7 @@ public:
             bullets.push_back(new_bullet);
 
             time_since_last_bullet = 0.0f;
+            ready_to_shoot = false;
         }
     }
 
@@ -141,6 +145,7 @@ private:
     float bullet_velocity_;
     float bullet_cooldown_;
     float time_since_last_bullet;
+    bool ready_to_shoot;
     WindowSize& screen_size_;
 
 
