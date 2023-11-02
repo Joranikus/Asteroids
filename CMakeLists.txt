@@ -12,11 +12,11 @@ find_package(imgui CONFIG REQUIRED)
 include_directories(${CMAKE_SOURCE_DIR}/include)
 
 add_executable(start_asteroids src/main.cpp
-                include/spaceship_class.hpp
-                include/spaceship_keylistener.hpp
-                include/spaceship_controller.hpp
-                include/spaceship_physics.hpp
-        include/physics_handler.hpp
-        include/physics_handler.hpp)
+        include/spaceship_keylistener.hpp
+        include/spaceship.hpp
+        include/movement_handler.hpp
+        include/sprite_generator.hpp
+        include/bullet.hpp
+)
 
 target_link_libraries(start_asteroids PRIVATE threepp::threepp imgui::imgui)

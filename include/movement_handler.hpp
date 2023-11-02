@@ -1,6 +1,6 @@
 
-#ifndef ASTEROIDS_PHYSICS_HANDLER_HPP
-#define ASTEROIDS_PHYSICS_HANDLER_HPP
+#ifndef ASTEROIDS_MOVEMENT_HANDLER_HPP
+#define ASTEROIDS_MOVEMENT_HANDLER_HPP
 
 #include "threepp/threepp.hpp"
 #include <iostream>
@@ -8,18 +8,25 @@
 
 using namespace threepp;
 
-class PhysicsEngine {
+class MovementHandler {
 
 public:
-
-    PhysicsEngine(Sprite& sprite, Vector2 direction, Vector2 velocity, float rotation_speed, float thrust_power)
+    MovementHandler(Sprite& sprite, Vector2 direction, float initial_velocity, float rotation_speed, float thrust_power, float friction_coefficient)
             : sprite_(sprite),
-              velocity_(velocity),
+              velocity_float_(initial_velocity),
               direction_(direction),
               rotation_speed_(rotation_speed),
-              thrust_power_(thrust_power) {}
+              thrust_power_(thrust_power),
+              friction_coefficient_(friction_coefficient) {
+
+        velocity_.x = direction_.x * velocity_float_;
+        velocity_.y = direction_.y * velocity_float_;
+    }
 
     virtual void update(float dt) {
+        velocity_.x -= friction_coefficient_ * velocity_.x * dt;
+        velocity_.y -= friction_coefficient_ * velocity_.y * dt;
+
         sprite_.position.x += velocity_.x * dt;
         sprite_.position.y += velocity_.y * dt;
     }
@@ -54,7 +61,6 @@ public:
         velocity_.y -= direction_.y * thrust_power_ * dt;
     }
 
-
     virtual Vector2 get_velocity() {
         return velocity_;
     }
@@ -79,6 +85,8 @@ public:
         rotation_speed_ = rotation_speed;
     }
 
+    Sprite& sprite_;
+
 private:
 
     virtual void update_direction() {
@@ -87,18 +95,17 @@ private:
             float theta = material->rotation + (2 * atanf(1)); // (atanf(1) * 4) = pi
             direction_.x = cosf(theta);
             direction_.y = sinf(theta);
-
-            std::cout << "Theta: " << theta << std::endl;
-            std::cout << "Direction: (" << direction_.x << ", " << direction_.y << ")" << std::endl;
         }
     }
 
-    Sprite& sprite_;
+
     Vector2 direction_;
     Vector2 velocity_;
+    float velocity_float_;
     float rotation_speed_;
     float thrust_power_;
+    float friction_coefficient_;
 
 };
 
-#endif//ASTEROIDS_PHYSICS_HANDLER_HPP
+#endif//ASTEROIDS_MOVEMENT_HANDLER_HPP
