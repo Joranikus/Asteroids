@@ -16,9 +16,8 @@ int main() {
     //Creates Spaceship
     SpriteGenerator spaceship(loader, "data/spaceship.png", 0.08);
     SpaceshipKeylistener spaceship_keylistener;
-    Spaceship spaceship_physics(spaceship, 4, 500, 0.75,
-                                loader, "data/bullet.png", 1, 1000, size);
-
+    Spaceship spaceship_physics(spaceship, size, 4, 500, 0.75,
+                                loader, "data/bullet.png", 1, 1000, 0.1);
 
     //Delen som skalerer kameraet til vinduet er skrevet med hjelp fra ChatGPT og godeste studass.
     //Uses the window size to create the camera

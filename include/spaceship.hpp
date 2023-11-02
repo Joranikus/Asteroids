@@ -14,10 +14,10 @@ using namespace threepp;
 class Spaceship: public PhysicsEngine {
 
 public:
-    Spaceship(Sprite& spaceship, float rotation_speed, float thrust_power, float friction_coefficient,
-              TextureLoader& bullet_loader, const std::string& bullet_material_path, float bullet_scale, float bullet_speed, WindowSize& screen_size)
-        : PhysicsEngine(spaceship, Vector2(0, 1), 0, rotation_speed, thrust_power, friction_coefficient),
-          bullet_loader_(bullet_loader), bullet_material_path_(bullet_material_path), bullet_scale_(bullet_scale), bullet_speed_(bullet_speed), screen_size_(screen_size) {}
+    Spaceship(Sprite& spaceship, WindowSize& screen_size, float spaceship_rotation_speed, float spaceship_thrust_power, float friction_coefficient,
+              TextureLoader& bullet_loader, const std::string& bullet_material_path, float bullet_scale, float bullet_velocity, float bullet_cooldown)
+        : PhysicsEngine(spaceship, Vector2(0, 1), 0, spaceship_rotation_speed, spaceship_thrust_power, friction_coefficient),
+          screen_size_(screen_size), bullet_loader_(bullet_loader), bullet_material_path_(bullet_material_path), bullet_scale_(bullet_scale), bullet_velocity_(bullet_velocity), bullet_cooldown_(bullet_cooldown)  {}
 
     //Checks each action in an actions set individually so you can press multiple buttons at the same time
     void perform_spaceship_movement(const std::set<SpaceshipKeylistener::Action>& actions, float dt) {
@@ -36,7 +36,7 @@ public:
                     thrust_backward(dt);
                     break;
                 case SpaceshipKeylistener::Action::ShootBullet:
-                    shoot_bullet(bullet_loader_, bullet_material_path_, bullet_scale_, bullet_speed_);
+                    shoot_bullet(bullet_loader_, bullet_material_path_, bullet_scale_, bullet_velocity_);
                     break;
                 default:
                     break;
@@ -46,38 +46,44 @@ public:
 
     void update(float dt) override {
         PhysicsEngine::update(dt);
+        time_since_last_bullet += dt;
     }
 
     //creates a shared pointer of sprite_generators,
     void shoot_bullet(TextureLoader& loader, std::string material_path, float scale, float bullet_speed) {
 
-        //creates a bullet sprite and pushes it into a shared pointer
-        auto bullet_sprite_generator = std::make_shared<SpriteGenerator>(loader, material_path, scale);
-        Sprite& bullet_sprite = *bullet_sprite_generator->get_generated_sprite();
+        if (time_since_last_bullet >= bullet_cooldown_) {
 
-        sprite_generators.push_back(bullet_sprite_generator);
+            //creates a bullet sprite and pushes it into a shared pointer
+            auto bullet_sprite = std::make_shared<SpriteGenerator>(loader, material_path, scale);
+            Sprite& bullet = *bullet_sprite->get_generated_sprite();
 
-        //adds a velocity and direction to the bullet
-        auto new_bullet = std::make_shared<Bullet>(bullet_sprite, get_direction(), bullet_speed);
+            sprite_generators.push_back(bullet_sprite);
 
-        //checks if materials are located and sets the bullet rotation to the spaceship rotation
-        auto spaceship_material = this->sprite_.material;
-        if (spaceship_material) {
-            auto bullet_material = bullet_sprite.material;
-            if (bullet_material) {
-                bullet_material->rotation = spaceship_material->rotation;
+            //adds a velocity and direction to the bullet
+            auto new_bullet = std::make_shared<Bullet>(bullet, get_direction(), bullet_speed);
+
+            //checks if materials are located and sets the bullet rotation to the spaceship rotation
+            auto spaceship_material = this->sprite_.material;
+            if (spaceship_material) {
+                auto bullet_material = bullet.material;
+                if (bullet_material) {
+                    bullet_material->rotation = spaceship_material->rotation;
+                }
             }
+
+            //offsets the bullet in accordance to the spaceship
+            float bullet_front_offset = this->sprite_.scale.x * 0.3;
+            Vector2 offset_position = {
+                    this->sprite_.position.x + get_direction().x * bullet_front_offset,
+                    this->sprite_.position.y + get_direction().y * bullet_front_offset
+            };
+            bullet.position.set(offset_position.x, offset_position.y, 0);
+
+            bullets.push_back(new_bullet);
+
+            time_since_last_bullet = 0.0f;
         }
-
-        //offsets the bullet in accordance to the spaceship
-        float bullet_front_offset = this->sprite_.scale.x * 0.5;
-        Vector2 offset_position = {
-                this->sprite_.position.x + get_direction().x * bullet_front_offset,
-                this->sprite_.position.y + get_direction().y * bullet_front_offset
-        };
-        bullet_sprite.position.set(offset_position.x, offset_position.y, 0);
-
-        bullets.push_back(new_bullet);
     }
 
     void on_window_resize(WindowSize& screen_size) {
@@ -85,7 +91,7 @@ public:
     }
 
     //denne funksjonen er skrevet med hjelp fra ChatGPT
-    //deletes bullet when out of bounds
+    //updates and deletes bullet when out of bounds
     void update_bullets(float dt, std::shared_ptr<Scene> scene) {
         for (auto i = bullets.begin(); i != bullets.end();) {
             auto& bullet = *i;
@@ -132,7 +138,9 @@ private:
     TextureLoader& bullet_loader_;
     std::string bullet_material_path_;
     float bullet_scale_;
-    float bullet_speed_;
+    float bullet_velocity_;
+    float bullet_cooldown_;
+    float time_since_last_bullet;
     WindowSize& screen_size_;
 
 
