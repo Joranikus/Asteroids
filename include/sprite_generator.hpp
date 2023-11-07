@@ -1,5 +1,4 @@
 
-
 #ifndef ASTEROIDS_SPRITE_GENERATOR_HPP
 #define ASTEROIDS_SPRITE_GENERATOR_HPP
 
@@ -10,7 +9,7 @@ using namespace threepp;
 class SpriteGenerator : public Sprite {
 
 public:
-   SpriteGenerator(TextureLoader& loader, const std::string material_path, float scale)
+   SpriteGenerator(TextureLoader& loader, std::string material_path, float scale)
     : Sprite(SpriteMaterial::create()),
       loader_(loader),
       material_path_(material_path),

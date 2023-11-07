@@ -11,8 +11,8 @@ class Bullet : public MovementHandler {
 
 public:
 
-    Bullet(Sprite& bulletSprite, Vector2 direction, float initial_velocity)
-        : MovementHandler(bulletSprite, direction, initial_velocity, 0, 0, 0) {}
+    Bullet(Sprite& bullet_sprite, Vector2 direction, float initial_velocity)
+        : MovementHandler(bullet_sprite, direction, initial_velocity, 0, 0, 0) {}
 
     Sprite& get_sprite() {
         return sprite_;

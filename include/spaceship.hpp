@@ -20,25 +20,25 @@ public:
           screen_size_(screen_size), bullet_loader_(bullet_loader), bullet_material_path_(bullet_material_path), bullet_scale_(bullet_scale), bullet_velocity_(bullet_velocity), bullet_cooldown_(bullet_cooldown)  {}
 
     //Checks each action in an actions set individually so you can press multiple buttons at the same time
-    void perform_spaceship_movement(const std::set<SpaceshipKeylistener::Action>& actions, float dt) {
+    void perform_spaceship_movement(const std::set<SpaceshipKeylistener::action>& actions, float dt) {
         for (const auto& action : actions) {
             switch (action) {
-                case SpaceshipKeylistener::Action::RotateLeft:
+                case SpaceshipKeylistener::action::rotate_left:
                     rotate_counter_clockwise(dt);
                     break;
-                case SpaceshipKeylistener::Action::RotateRight:
+                case SpaceshipKeylistener::action::rotate_right:
                     rotate_clockwise(dt);
                     break;
-                case SpaceshipKeylistener::Action::ThrustForward:
+                case SpaceshipKeylistener::action::thrust_forward:
                     thrust_forward(dt);
                     break;
-                case SpaceshipKeylistener::Action::ThrustBackward:
+                case SpaceshipKeylistener::action::thrust_backward:
                     thrust_backward(dt);
                     break;
-                case SpaceshipKeylistener::Action::ShootBullet:
+                case SpaceshipKeylistener::action::shoot_bullet:
                     shoot_bullet(bullet_loader_, bullet_material_path_, bullet_scale_, bullet_velocity_);
                     break;
-                case SpaceshipKeylistener::Action::BulletFlagReset:
+                case SpaceshipKeylistener::action::bullet_reset_flag:
                     ready_to_shoot = true;
                     break;
                 default:

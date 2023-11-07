@@ -21,6 +21,7 @@ public:
 
         velocity_.x = direction_.x * velocity_float_;
         velocity_.y = direction_.y * velocity_float_;
+
     }
 
     virtual void update(float dt) {

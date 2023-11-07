@@ -30,23 +30,23 @@ public:
     }
 
     //fikk inspirasjon fra chat gpt til å lage en enum class
-    enum class Action {
-        RotateLeft,
-        RotateRight,
-        ThrustForward,
-        ThrustBackward,
-        ShootBullet,
-        BulletFlagReset,
+    enum class action {
+        rotate_left,
+        rotate_right,
+        thrust_forward,
+        thrust_backward,
+        shoot_bullet,
+        bullet_reset_flag,
     };
 
-    std::set<Action> determine_action() {
-        std::set<Action> actions;
-        if (this->isKeyPressed(Key::A)) actions.insert(Action::RotateLeft);
-        if (this->isKeyPressed(Key::D)) actions.insert(Action::RotateRight);
-        if (this->isKeyPressed(Key::W)) actions.insert(Action::ThrustForward);
-        if (this->isKeyPressed(Key::S)) actions.insert(Action::ThrustBackward);
-        if (this->isKeyPressed(Key::SPACE)) actions.insert(Action::ShootBullet);
-        if (this->isKeyReleased(Key::SPACE)) actions.insert(Action::BulletFlagReset);
+    std::set<action> determine_action() {
+        std::set<action> actions;
+        if (this->isKeyPressed(Key::A)) actions.insert(action::rotate_left);
+        if (this->isKeyPressed(Key::D)) actions.insert(action::rotate_right);
+        if (this->isKeyPressed(Key::W)) actions.insert(action::thrust_forward);
+        if (this->isKeyPressed(Key::S)) actions.insert(action::thrust_backward);
+        if (this->isKeyPressed(Key::SPACE)) actions.insert(action::shoot_bullet);
+        if (this->isKeyReleased(Key::SPACE)) actions.insert(action::bullet_reset_flag);
         return actions;
     }
 
