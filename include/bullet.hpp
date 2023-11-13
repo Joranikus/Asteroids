@@ -11,10 +11,10 @@ class Bullet : public MovementHandler {
 
 public:
 
-    Bullet(Sprite& bullet_sprite, Vector2 direction, float initial_velocity)
+    Bullet(const std::shared_ptr<Sprite>& bullet_sprite, Vector2 direction, float initial_velocity)
         : MovementHandler(bullet_sprite, direction, initial_velocity, 0, 0, 0) {}
 
-    Sprite& get_sprite() {
+    std::shared_ptr<Sprite> get_sprite() {
         return object_;
     }
 

@@ -15,7 +15,6 @@ add_executable(start_asteroids src/main.cpp
         include/spaceship_keylistener.hpp
         include/spaceship.hpp
         include/movement_handler.hpp
-        include/sprite_generator.hpp
         include/bullet.hpp
         include/create_sprite.hpp
 )

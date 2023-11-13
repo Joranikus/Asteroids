@@ -1,7 +1,7 @@
 
 #include "spaceship.hpp"
-#include "sprite_generator.hpp"
 #include "threepp/threepp.hpp"
+#include "create_sprite.hpp"
 using namespace threepp;
 
 int main() {
@@ -16,7 +16,8 @@ int main() {
     TextureLoader loader;
 
     //Creates Spaceship
-    SpriteGenerator spaceship_sprite(loader, "data/spaceship.png", 0.08);
+    auto spaceship_sprite = create_sprite(loader, "data/spaceship.png", 0.08);
+
     SpaceshipKeylistener spaceship_keylistener;
     Spaceship spaceship(spaceship_sprite, size, 4, 500, 0.75,
                         loader, "data/bullet.png", 1, 1000, 0.1);
@@ -40,11 +41,10 @@ int main() {
 
         renderer.setSize(size);
 
-        spaceship_sprite.on_window_resize();
         spaceship.on_window_resize(size);
     });
 
-    auto scene = Scene::create();
+    std::shared_ptr<Scene> scene = Scene::create();
     scene->add(spaceship_sprite);
 
     Clock clock;
