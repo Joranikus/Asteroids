@@ -12,16 +12,15 @@ class MovementHandler {
 
 public:
     MovementHandler(Sprite& sprite, Vector2 direction, float initial_velocity, float rotation_speed, float thrust_power, float friction_coefficient)
-            : sprite_(sprite),
-              velocity_float_(initial_velocity),
-              direction_(direction),
-              rotation_speed_(rotation_speed),
-              thrust_power_(thrust_power),
-              friction_coefficient_(friction_coefficient) {
+        : sprite_(sprite),
+          velocity_float_(initial_velocity),
+          direction_(direction),
+          rotation_speed_(rotation_speed),
+          thrust_power_(thrust_power),
+          friction_coefficient_(friction_coefficient) {
 
         velocity_.x = direction_.x * velocity_float_;
         velocity_.y = direction_.y * velocity_float_;
-
     }
 
     virtual void update(float dt) {

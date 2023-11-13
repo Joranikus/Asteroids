@@ -40,7 +40,7 @@ Asteroids recreation as my final project for the C++ course.
 ## Project Structure
 
 - "MovementHandler" - An virtual class base class for objects that require movement.
-- "SpriteGenerator" - Generates and manges sprites.
+- "SpriteInitializer" - Generates and manges sprites.
 - "SpaceshipKeyListener" - Handles keyboard inputs for controlling the spaceship.
 - "Spaceship" - Manages spaceship logic.
 - "Bullet" - Creates bullet.

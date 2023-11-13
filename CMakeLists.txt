@@ -17,7 +17,6 @@ add_executable(start_asteroids src/main.cpp
         include/movement_handler.hpp
         include/sprite_generator.hpp
         include/bullet.hpp
-        include/asteroid.hpp
 )
 
 target_link_libraries(start_asteroids PRIVATE threepp::threepp imgui::imgui)

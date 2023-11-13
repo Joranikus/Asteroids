@@ -20,25 +20,25 @@ public:
           screen_size_(screen_size), bullet_loader_(bullet_loader), bullet_material_path_(bullet_material_path), bullet_scale_(bullet_scale), bullet_velocity_(bullet_velocity), bullet_cooldown_(bullet_cooldown)  {}
 
     //Checks each action in an actions set individually so you can press multiple buttons at the same time
-    void perform_spaceship_movement(const std::set<SpaceshipKeylistener::action>& actions, float dt) {
+    void perform_spaceship_movement(const std::set<SpaceshipKeylistener::Action>& actions, float dt) {
         for (const auto& action : actions) {
             switch (action) {
-                case SpaceshipKeylistener::action::rotate_left:
+                case SpaceshipKeylistener::Action::RotateLeft:
                     rotate_counter_clockwise(dt);
                     break;
-                case SpaceshipKeylistener::action::rotate_right:
+                case SpaceshipKeylistener::Action::RotateRight:
                     rotate_clockwise(dt);
                     break;
-                case SpaceshipKeylistener::action::thrust_forward:
+                case SpaceshipKeylistener::Action::ThrustForward:
                     thrust_forward(dt);
                     break;
-                case SpaceshipKeylistener::action::thrust_backward:
+                case SpaceshipKeylistener::Action::ThrustBackward:
                     thrust_backward(dt);
                     break;
-                case SpaceshipKeylistener::action::shoot_bullet:
+                case SpaceshipKeylistener::Action::ShootBullet:
                     shoot_bullet(bullet_loader_, bullet_material_path_, bullet_scale_, bullet_velocity_);
                     break;
-                case SpaceshipKeylistener::action::bullet_reset_flag:
+                case SpaceshipKeylistener::Action::BulletFlagReset:
                     ready_to_shoot = true;
                     break;
                 default:
@@ -101,17 +101,17 @@ public:
             auto& bullet = *i;
             bullet->update(dt);
 
-        if (bullet->get_sprite().position.x < -screen_size_.width / 2 ||
-            bullet->get_sprite().position.x > screen_size_.width / 2 ||
-            bullet->get_sprite().position.y < -screen_size_.height / 2 ||
-            bullet->get_sprite().position.y > screen_size_.height / 2) {
+            if (bullet->get_sprite().position.x < -screen_size_.width / 2 ||
+                bullet->get_sprite().position.x > screen_size_.width / 2 ||
+                bullet->get_sprite().position.y < -screen_size_.height / 2 ||
+                bullet->get_sprite().position.y > screen_size_.height / 2) {
 
-            scene->remove(bullet->get_sprite());
+                scene->remove(bullet->get_sprite());
 
-            i = bullets.erase(i);
-        } else {
-            ++i;
-        }
+                i = bullets.erase(i);
+            } else {
+                ++i;
+            }
         }
     }
 
