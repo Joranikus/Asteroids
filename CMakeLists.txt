@@ -13,10 +13,14 @@ include_directories(${CMAKE_SOURCE_DIR}/include)
 
 add_executable(start_asteroids src/main.cpp
         include/spaceship_keylistener.hpp
-        include/spaceship.hpp
-        include/movement_handler.hpp
-        include/bullet.hpp
+        include/spaceship_controller.hpp
+        include/physics_controller.hpp
+        include/bullet_controller.hpp
         include/create_sprite.hpp
+        include/asteroid_controller.hpp
+        include/asteroid_generator.hpp
+        include/random_direction.hpp
+        include/random_direction.hpp
 )
 
 target_link_libraries(start_asteroids PRIVATE threepp::threepp imgui::imgui)

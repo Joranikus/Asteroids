@@ -1,6 +1,6 @@
 
-#ifndef ASTEROIDS_MOVEMENT_HANDLER_HPP
-#define ASTEROIDS_MOVEMENT_HANDLER_HPP
+#ifndef ASTEROIDS_PHYSICS_CONTROLLER_HPP
+#define ASTEROIDS_PHYSICS_CONTROLLER_HPP
 
 #include "threepp/threepp.hpp"
 #include <iostream>
@@ -8,10 +8,10 @@
 
 using namespace threepp;
 
-class MovementHandler {
+class PhysicsController {
 
 public:
-    MovementHandler(const std::shared_ptr<Sprite>& object, Vector2 direction, float initial_velocity, float rotation_speed, float thrust_power, float friction_coefficient)
+    PhysicsController(const std::shared_ptr<Sprite>& object, Vector2 direction, float initial_velocity, float rotation_speed, float thrust_power, float friction_coefficient)
         : object_(object),
           velocity_float_(initial_velocity),
           direction_(direction),
@@ -73,6 +73,10 @@ public:
         return rotation_speed_;
     }
 
+    virtual std::shared_ptr<Sprite> get_sprite() {
+        return object_;
+    }
+
     virtual void set_velocity(const Vector2& velocity) {
         velocity_ = velocity;
     }
@@ -85,7 +89,7 @@ public:
         rotation_speed_ = rotation_speed;
     }
 
-    std::shared_ptr<Sprite> object_;
+
 
 private:
 
@@ -98,7 +102,7 @@ private:
         }
     }
 
-
+    std::shared_ptr<Sprite> object_;
     Vector2 direction_;
     Vector2 velocity_;
     float velocity_float_;
@@ -108,4 +112,4 @@ private:
 
 };
 
-#endif//ASTEROIDS_MOVEMENT_HANDLER_HPP
+#endif//ASTEROIDS_PHYSICS_CONTROLLER_HPP

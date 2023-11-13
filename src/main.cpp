@@ -1,7 +1,7 @@
 
-#include "spaceship.hpp"
-#include "threepp/threepp.hpp"
 #include "create_sprite.hpp"
+#include "spaceship_controller.hpp"
+#include "threepp/threepp.hpp"
 using namespace threepp;
 
 int main() {
@@ -15,11 +15,11 @@ int main() {
 
     TextureLoader loader;
 
-    //Creates Spaceship
+    //Creates SpaceshipController
     auto spaceship_sprite = create_sprite(loader, "data/spaceship.png", 0.08);
 
     SpaceshipKeylistener spaceship_keylistener;
-    Spaceship spaceship(spaceship_sprite, size, 4, 500, 0.75,
+    SpaceshipController spaceship(spaceship_sprite, size, 4, 500, 0.75,
                         loader, "data/bullet.png", 1, 1000, 0.1);
 
 
