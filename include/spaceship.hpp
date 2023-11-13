@@ -61,7 +61,7 @@ public:
 
     //denne funksjonen er skrevet med hjelp fra ChatGPT
     //updates and deletes bullet when out of bounds
-    void update_bullets(float dt, std::shared_ptr<Scene> scene) {
+    void update_bullets(float dt, std::shared_ptr<Scene>& scene) {
         for (auto i = bullets.begin(); i != bullets.end();) {
             auto& bullet = *i;
             bullet->update(dt);
