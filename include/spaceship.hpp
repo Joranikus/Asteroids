@@ -36,7 +36,7 @@ public:
                     thrust_backward(dt);
                     break;
                 case SpaceshipKeylistener::Action::ShootBullet:
-                    shoot_bullet(bullet_loader_, bullet_material_path_, bullet_scale_, bullet_velocity_);
+                    shoot_bullet();
                     break;
                 case SpaceshipKeylistener::Action::BulletFlagReset:
                     ready_to_shoot = true;
@@ -53,42 +53,7 @@ public:
     }
 
     //creates a shared pointer of sprite_generators,
-    void shoot_bullet(TextureLoader& loader, std::string material_path, float scale, float bullet_speed) {
 
-        if (time_since_last_bullet >= bullet_cooldown_ && ready_to_shoot) {
-
-            //creates a bullet sprite and pushes it into a shared pointer
-            auto bullet_sprite = std::make_shared<SpriteGenerator>(loader, material_path, scale);
-            Sprite& bullet = *bullet_sprite->get_generated_sprite();
-
-            sprite_generators.push_back(bullet_sprite);
-
-            //adds a velocity and direction to the bullet
-            auto new_bullet = std::make_shared<Bullet>(bullet, get_direction(), bullet_speed);
-
-            //checks if materials are located and sets the bullet rotation to the spaceship rotation
-            auto spaceship_material = this->sprite_.material;
-            if (spaceship_material) {
-                auto bullet_material = bullet.material;
-                if (bullet_material) {
-                    bullet_material->rotation = spaceship_material->rotation;
-                }
-            }
-
-            //offsets the bullet in accordance to the spaceship
-            float bullet_front_offset = this->sprite_.scale.x * 0.3;
-            Vector2 offset_position = {
-                    this->sprite_.position.x + get_direction().x * bullet_front_offset,
-                    this->sprite_.position.y + get_direction().y * bullet_front_offset
-            };
-            bullet.position.set(offset_position.x, offset_position.y, 0);
-
-            bullets.push_back(new_bullet);
-
-            time_since_last_bullet = 0.0f;
-            ready_to_shoot = false;
-        }
-    }
 
     void on_window_resize(WindowSize& screen_size) {
         screen_size_ = screen_size;
@@ -120,6 +85,43 @@ public:
     }
 
 private:
+
+    void shoot_bullet() {
+
+        if (time_since_last_bullet >= bullet_cooldown_ && ready_to_shoot) {
+
+            //creates a bullet sprite and pushes it into a shared pointer
+            auto bullet_sprite = std::make_shared<SpriteGenerator>(bullet_loader_, bullet_material_path_, bullet_scale_);
+            Sprite& bullet = *bullet_sprite->get_generated_sprite();
+
+            sprite_generators.push_back(bullet_sprite);
+
+            //adds a velocity and direction to the bullet
+            auto new_bullet = std::make_shared<Bullet>(bullet, get_direction(), bullet_velocity_);
+
+            //checks if materials are located and sets the bullet rotation to the spaceship rotation
+            auto spaceship_material = this->object_.material;
+            if (spaceship_material) {
+                auto bullet_material = bullet.material;
+                if (bullet_material) {
+                    bullet_material->rotation = spaceship_material->rotation;
+                }
+            }
+
+            //offsets the bullet in accordance to the spaceship
+            float bullet_front_offset = this->object_.scale.x * 0.3;
+            Vector2 offset_position = {
+                    this->object_.position.x + get_direction().x * bullet_front_offset,
+                    this->object_.position.y + get_direction().y * bullet_front_offset
+            };
+            bullet.position.set(offset_position.x, offset_position.y, 0);
+
+            bullets.push_back(new_bullet);
+
+            time_since_last_bullet = 0.0f;
+            ready_to_shoot = false;
+        }
+    }
 
     void rotate_counter_clockwise(float dt) override {
         MovementHandler::rotate_counter_clockwise(dt);

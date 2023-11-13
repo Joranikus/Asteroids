@@ -15,7 +15,7 @@ public:
         : MovementHandler(bullet_sprite, direction, initial_velocity, 0, 0, 0) {}
 
     Sprite& get_sprite() {
-        return sprite_;
+        return object_;
     }
 
     void update(float dt) override {

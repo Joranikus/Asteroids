@@ -11,8 +11,8 @@ using namespace threepp;
 class MovementHandler {
 
 public:
-    MovementHandler(Sprite& sprite, Vector2 direction, float initial_velocity, float rotation_speed, float thrust_power, float friction_coefficient)
-        : sprite_(sprite),
+    MovementHandler(Sprite& object, Vector2 direction, float initial_velocity, float rotation_speed, float thrust_power, float friction_coefficient)
+        : object_(object),
           velocity_float_(initial_velocity),
           direction_(direction),
           rotation_speed_(rotation_speed),
@@ -27,13 +27,13 @@ public:
         velocity_.x -= friction_coefficient_ * velocity_.x * dt;
         velocity_.y -= friction_coefficient_ * velocity_.y * dt;
 
-        sprite_.position.x += velocity_.x * dt;
-        sprite_.position.y += velocity_.y * dt;
+        object_.position.x += velocity_.x * dt;
+        object_.position.y += velocity_.y * dt;
     }
 
     //Rotates material
     virtual void rotate_counter_clockwise(float dt) {
-        auto material = std::dynamic_pointer_cast<SpriteMaterial>(sprite_.material);
+        auto material = object_.material;
         if (material) {
             update_direction();
             material->rotation += rotation_speed_ * dt;
@@ -41,7 +41,7 @@ public:
     }
 
     virtual void rotate_clockwise(float dt) {
-        auto material = std::dynamic_pointer_cast<SpriteMaterial>(sprite_.material);
+        auto material = object_.material;
         if (material) {
             update_direction();
             material->rotation -= rotation_speed_ * dt;
@@ -73,11 +73,11 @@ public:
         return rotation_speed_;
     }
 
-    virtual void set_velocity(Vector2& velocity) {
+    virtual void set_velocity(const Vector2& velocity) {
         velocity_ = velocity;
     }
 
-    virtual void set_direction(Vector2& direction) {
+    virtual void set_direction(const Vector2& direction) {
         direction_ = direction;
     }
 
@@ -85,12 +85,12 @@ public:
         rotation_speed_ = rotation_speed;
     }
 
-    Sprite& sprite_;
+    Sprite& object_;
 
 private:
 
     virtual void update_direction() {
-        auto material = std::dynamic_pointer_cast<SpriteMaterial>(sprite_.material);
+        auto material = object_.material;
         if (material) {
             float theta = material->rotation + (2 * atanf(1)); // (atanf(1) * 4) = pi
             direction_.x = cosf(theta);
