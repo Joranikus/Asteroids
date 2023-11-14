@@ -5,6 +5,7 @@
 
 #include "object_controllers/asteroid_controller.hpp"
 #include "functions/create_sprite.hpp"
+#include "functions/random_functions.hpp"
 #include "threepp/threepp.hpp"
 
 using namespace threepp;
@@ -46,16 +47,27 @@ public:
         auto asteroid_sprite = create_sprite(loader_, material_path_, scale_);
         asteroid_sprites.push_back(asteroid_sprite);
 
-        auto asteroid = std::make_shared<AsteroidController>(asteroid_sprite, screen_size_, edge_offset_, min_velocity_, max_velocity_);
+        auto asteroid = std::make_shared<AsteroidController>(asteroid_sprite, screen_size_, random_direction(),
+                                                             edge_offset_, min_velocity_, max_velocity_);
         asteroids.push_back(asteroid);
 
         scene->add(asteroid_sprite);
+    }
+
+    void generate_wave(std::shared_ptr<Scene>& scene, float dt, int wave_size, float asteroid_delay) {
+        time_since_last_asteroid += dt;
+
+        if (time_since_last_asteroid >= asteroid_delay && asteroids.size() < wave_size) {
+            generate_asteroid(scene);
+            time_since_last_asteroid = 0.0f;
+        }
     }
 
 private:
 
     std::vector<std::shared_ptr<AsteroidController>> asteroids;
     std::vector<std::shared_ptr<Sprite>> asteroid_sprites;
+    float time_since_last_asteroid = 0.0f;
 
     WindowSize& screen_size_;
     TextureLoader& loader_;

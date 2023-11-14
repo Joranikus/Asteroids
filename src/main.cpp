@@ -49,7 +49,6 @@ int main() {
     ////////////////////////
     AsteroidGenerator asteroid_generator(size, loader, "data/spaceship.png",
                                          0.08, 0, 50, 200);
-    asteroid_generator.generate_asteroid(scene);
    /////////////////////////
     Clock clock;
     canvas.animate([&] {
@@ -61,6 +60,13 @@ int main() {
         spaceship.update_bullets(dt, scene);
         spaceship.update(dt);
         /////////////////////
+
+        int lol;
+        if (lol != 1) {
+            asteroid_generator.generate_wave(scene, dt, 10, 1);
+            lol = 1;
+        }
+
         asteroid_generator.update_asteroids(dt, scene);
         /////////////////////
 
