@@ -7,18 +7,18 @@
 
 using namespace threepp;
 
-class BulletController: public PhysicsController {
+class BulletController: public ObjectController {
 
 public:
     BulletController(const std::shared_ptr<Sprite>& bullet_sprite, Vector2 direction, float initial_velocity)
-        : PhysicsController(bullet_sprite, direction, initial_velocity, 0, 0, 0) {}
+        : ObjectController(bullet_sprite, direction, initial_velocity, 0, 0, 0) {}
 
     std::shared_ptr<Sprite> get_sprite() override {
-        return PhysicsController::get_sprite();
+        return ObjectController::get_sprite();
     }
 
     void update(float dt) override {
-        PhysicsController::update(dt);
+        ObjectController::update(dt);
     }
 
 };

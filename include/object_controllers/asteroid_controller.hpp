@@ -8,13 +8,13 @@
 
 using namespace threepp;
 
-class AsteroidController: public PhysicsController {
+class AsteroidController: public ObjectController {
 
 public:
     enum class Edge { Left, Right, Top, Bottom };
 
     AsteroidController(const std::shared_ptr<Sprite>& asteroid_sprite, WindowSize& screen_size, Vector2 direction, float edge_offset, float min_velocity, float max_velocity)
-        : PhysicsController(asteroid_sprite, direction, random_float(min_velocity, max_velocity), 0, 0, 0),
+        : ObjectController(asteroid_sprite, direction, random_float(min_velocity, max_velocity), 0, 0, 0),
           screen_size_(screen_size), edge_offset_(edge_offset)
     {
         Edge edge;
@@ -48,11 +48,11 @@ public:
     }
 
     std::shared_ptr<Sprite> get_sprite() override {
-        return PhysicsController::get_sprite();
+        return ObjectController::get_sprite();
     }
 
     void update(float dt) override {
-        PhysicsController::update(dt);
+        ObjectController::update(dt);
     }
 
 private:

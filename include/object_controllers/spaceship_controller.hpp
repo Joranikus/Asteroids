@@ -11,12 +11,12 @@
 
 using namespace threepp;
 
-class SpaceshipController: public PhysicsController {
+class SpaceshipController: public ObjectController {
 
 public:
     SpaceshipController(std::shared_ptr<Sprite> spaceship, WindowSize& screen_size, float spaceship_rotation_speed, float spaceship_thrust_power, float friction_coefficient,
               TextureLoader& bullet_loader, const std::string& bullet_material_path, float bullet_scale, float bullet_velocity, float bullet_cooldown)
-        : PhysicsController(spaceship, Vector2(0, 1), 0, spaceship_rotation_speed, spaceship_thrust_power, friction_coefficient),
+        : ObjectController(spaceship, Vector2(0, 1), 0, spaceship_rotation_speed, spaceship_thrust_power, friction_coefficient),
           screen_size_(screen_size), bullet_loader_(bullet_loader), bullet_material_path_(bullet_material_path), bullet_scale_(bullet_scale), bullet_velocity_(bullet_velocity), bullet_cooldown_(bullet_cooldown)  {}
 
     //Checks each action in an actions set individually so you can press multiple buttons at the same time
@@ -48,7 +48,7 @@ public:
     }
 
     void update(float dt) override {
-        PhysicsController::update(dt);
+        ObjectController::update(dt);
         time_since_last_bullet += dt;
     }
 
@@ -120,19 +120,19 @@ private:
     }
 
     void rotate_counter_clockwise(float dt) override {
-        PhysicsController::rotate_counter_clockwise(dt);
+        ObjectController::rotate_counter_clockwise(dt);
     }
 
     void rotate_clockwise(float dt) override {
-        PhysicsController::rotate_clockwise(dt);
+        ObjectController::rotate_clockwise(dt);
     }
 
     void thrust_forward(float dt) override {
-        PhysicsController::thrust_forward(dt);
+        ObjectController::thrust_forward(dt);
     }
 
     void thrust_backward(float dt) override {
-        PhysicsController::thrust_backward(dt);
+        ObjectController::thrust_backward(dt);
     }
 
     std::vector<std::shared_ptr<BulletController>> bullets;
