@@ -2,9 +2,9 @@
 #ifndef ASTEROIDS_SPACESHIP_CONTROLLER_HPP
 #define ASTEROIDS_SPACESHIP_CONTROLLER_HPP
 
-#include "bullet_controller.hpp"
-#include "create_sprite.hpp"
-#include "physics_controller.hpp"
+#include "functions/create_sprite.hpp"
+#include "object_controllers/bullet_controller.hpp"
+#include "object_controllers/object_controller.hpp"
 #include "spaceship_keylistener.hpp"
 #include "threepp/threepp.hpp"
 #include <iostream>
@@ -58,7 +58,7 @@ public:
 
     //denne funksjonen er skrevet med hjelp fra ChatGPT
     //updates and deletes bullet when out of bounds
-    void update_bullets(float dt, std::shared_ptr<Scene> scene) {
+    void update_bullets(float dt, const std::shared_ptr<Scene>& scene) {
         for (auto i = bullets.begin(); i != bullets.end();) {
             auto& bullet = *i;
             bullet->update(dt);

@@ -1,6 +1,6 @@
 
-#include "create_sprite.hpp"
-#include "spaceship_controller.hpp"
+#include "functions/create_sprite.hpp"
+#include "object_controllers/spaceship_controller.hpp"
 #include "threepp/threepp.hpp"
 using namespace threepp;
 
