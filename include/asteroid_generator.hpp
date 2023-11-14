@@ -13,7 +13,7 @@ class AsteroidGenerator {
 
 public:
 
-    AsteroidGenerator(WindowSize& screen_size, TextureLoader& loader, std::string& material_path, float scale,
+    AsteroidGenerator(WindowSize& screen_size, TextureLoader& loader, std::string material_path, float scale,
                       float edge_offset, float min_velocity, float max_velocity)
                       : screen_size_(screen_size), loader_(loader), material_path_(material_path), scale_(scale),
                         edge_offset_(edge_offset), min_velocity_(min_velocity), max_velocity_(max_velocity) {}
@@ -42,15 +42,17 @@ public:
         }
     }
 
-private:
-
-    void generate_asteroid() {
+    void generate_asteroid(std::shared_ptr<Scene>& scene) {
         auto asteroid_sprite = create_sprite(loader_, material_path_, scale_);
         asteroid_sprites.push_back(asteroid_sprite);
 
         auto asteroid = std::make_shared<AsteroidController>(asteroid_sprite, screen_size_, edge_offset_, min_velocity_, max_velocity_);
         asteroids.push_back(asteroid);
+
+        scene->add(asteroid_sprite);
     }
+
+private:
 
     std::vector<std::shared_ptr<AsteroidController>> asteroids;
     std::vector<std::shared_ptr<Sprite>> asteroid_sprites;

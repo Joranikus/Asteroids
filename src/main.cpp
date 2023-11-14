@@ -1,6 +1,7 @@
 
 #include "functions/create_sprite.hpp"
 #include "object_controllers/spaceship_controller.hpp"
+#include "asteroid_generator.hpp"
 #include "threepp/threepp.hpp"
 using namespace threepp;
 
@@ -21,7 +22,6 @@ int main() {
     SpaceshipKeylistener spaceship_keylistener;
     SpaceshipController spaceship(spaceship_sprite, size, 4, 500, 0.75,
                         loader, "data/bullet.png", 1, 1000, 0.1);
-
 
     //Delen som skalerer kameraet til vinduet er skrevet med hjelp fra ChatGPT og godeste studass.
     //Uses the window size to create the camera
@@ -46,7 +46,11 @@ int main() {
 
     std::shared_ptr<Scene> scene = Scene::create();
     scene->add(spaceship_sprite);
-
+    ////////////////////////
+    AsteroidGenerator asteroid_generator(size, loader, "data/spaceship.png",
+                                         0.08, 0, 50, 200);
+    asteroid_generator.generate_asteroid(scene);
+   /////////////////////////
     Clock clock;
     canvas.animate([&] {
         auto dt = clock.getDelta();
@@ -56,6 +60,9 @@ int main() {
 
         spaceship.update_bullets(dt, scene);
         spaceship.update(dt);
+        /////////////////////
+        asteroid_generator.update_asteroids(dt, scene);
+        /////////////////////
 
         //loops through bullets in the bullets shared pointer, and renders all the bullets in the shared vector poiner.
         for (const auto& bullet : spaceship.get_bullets()) {
