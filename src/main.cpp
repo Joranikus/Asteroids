@@ -17,11 +17,11 @@ int main() {
     TextureLoader loader;
 
     //Creates SpaceshipController
-    auto spaceship_sprite = create_sprite(loader, "data/spaceship.png", 0.08);
+    auto spaceship_sprite = create_sprite(loader, "spaceship.png", 0.08);
 
     SpaceshipKeylistener spaceship_keylistener;
     SpaceshipController spaceship(spaceship_sprite, size, 4, 500, 0.75,
-                        loader, "data/bullet.png", 1, 1000, 0.1);
+                        loader, "bullet.png", 1, 1000, 0.1);
 
     //Delen som skalerer kameraet til vinduet er skrevet med hjelp fra ChatGPT og godeste studass.
     //Uses the window size to create the camera
@@ -47,8 +47,8 @@ int main() {
     std::shared_ptr<Scene> scene = Scene::create();
     scene->add(spaceship_sprite);
     ////////////////////////
-    AsteroidGenerator asteroid_generator(size, loader, "data/spaceship.png",
-                                         0.08, 0, 50, 200);
+    AsteroidGenerator asteroid_generator(size, loader, "asteroid1.png",
+                                         0.2, 0, 50, 200);
    /////////////////////////
     Clock clock;
     canvas.animate([&] {
