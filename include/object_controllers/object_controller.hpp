@@ -83,8 +83,6 @@ public:
                this_top < other_bottom && this_bottom > other_top;
     }
 
-    //getters
-
     virtual Vector2 get_velocity() {
         return velocity_;
     }
@@ -96,12 +94,6 @@ public:
     virtual float get_rotation_speed() {
         return rotation_speed_;
     }
-
-    virtual std::shared_ptr<Sprite> get_sprite() {
-        return object_;
-    }
-
-    //setters
 
     virtual void set_velocity(const Vector2& velocity) {
         velocity_ = velocity;
@@ -116,6 +108,9 @@ public:
     }
 
 
+    virtual std::shared_ptr<Sprite> get_sprite() {
+        return object_;
+    }
 
 private:
 

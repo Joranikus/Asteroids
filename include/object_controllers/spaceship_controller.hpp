@@ -58,6 +58,7 @@ public:
 
     //denne funksjonen er skrevet med hjelp fra ChatGPT
     //updates and deletes bullet when out of bounds
+    /*
     void update_bullets(float dt, const std::shared_ptr<Scene>& scene) {
         for (auto i = bullets.begin(); i != bullets.end();) {
             auto& bullet = *i;
@@ -75,6 +76,32 @@ public:
             } else {
                 ++i;
             }
+        }
+    }
+    */
+    //denne delen for å slette asteroider og sprites er laget med hjelp fra ChatGPT
+    void update_bullets(float dt, const std::shared_ptr<Scene>& scene) {
+        std::vector<int> to_remove;
+
+        for (size_t index = 0; index < bullets.size(); ++index) {
+            auto& bullet = bullets[index];
+            bullet->update(dt);
+
+            auto bullet_sprite = bullet->get_sprite();
+            if (bullet_sprite->position.x < -screen_size_.width / 2 ||
+                bullet_sprite->position.x > screen_size_.width / 2 ||
+                bullet_sprite->position.y < -screen_size_.height / 2 ||
+                bullet_sprite->position.y > screen_size_.height / 2) {
+
+                to_remove.push_back(index);
+            }
+        }
+
+        for (auto it = to_remove.rbegin(); it != to_remove.rend(); ++it) {
+            int index = *it;
+            scene->remove(*bullet_sprites[index]);
+            bullets.erase(bullets.begin() + index);
+            bullet_sprites.erase(bullet_sprites.begin() + index);
         }
     }
 
@@ -116,6 +143,9 @@ private:
 
             time_since_last_bullet = 0.0f;
             ready_to_shoot = false;
+
+            std::cout << "Bullet count after addition: " << bullets.size() << std::endl;
+            std::cout << "Bullet sprites count after addition: " << bullet_sprites.size() << std::endl;
         }
     }
 

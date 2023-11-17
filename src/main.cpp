@@ -1,7 +1,7 @@
 
+#include "asteroid_factory.hpp"
 #include "functions/create_sprite.hpp"
 #include "object_controllers/spaceship_controller.hpp"
-#include "asteroid_generator.hpp"
 #include "threepp/threepp.hpp"
 using namespace threepp;
 
@@ -47,8 +47,8 @@ int main() {
     std::shared_ptr<Scene> scene = Scene::create();
     scene->add(spaceship_sprite);
     ////////////////////////
-    AsteroidGenerator asteroid_generator(size, loader, "asteroid1.png",
-                                         0.2, 0, 50, 200);
+    AsteroidFactory asteroid_generator(size, loader, "asteroid1.png",
+                                         0.2, 0, 100,300);
    /////////////////////////
     Clock clock;
     canvas.animate([&] {

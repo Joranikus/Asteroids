@@ -1,7 +1,7 @@
 
 
-#ifndef ASTEROIDS_ASTEROID_GENERATOR_HPP
-#define ASTEROIDS_ASTEROID_GENERATOR_HPP
+#ifndef ASTEROIDS_ASTEROID_FACTORY_HPP
+#define ASTEROIDS_ASTEROID_FACTORY_HPP
 
 #include "object_controllers/asteroid_controller.hpp"
 #include "functions/create_sprite.hpp"
@@ -10,11 +10,10 @@
 
 using namespace threepp;
 
-class AsteroidGenerator {
+class AsteroidFactory {
 
 public:
-
-    AsteroidGenerator(WindowSize& screen_size, TextureLoader& loader, std::string material_path, float scale,
+    AsteroidFactory(WindowSize& screen_size, TextureLoader& loader, std::string material_path, float scale,
                       float edge_offset, float min_velocity, float max_velocity)
                       : screen_size_(screen_size), loader_(loader), material_path_(material_path), scale_(scale),
                         edge_offset_(edge_offset), min_velocity_(min_velocity), max_velocity_(max_velocity) {}
@@ -23,23 +22,29 @@ public:
         return asteroids;
     }
 
+    //denne delen for å slette asteroider og sprites er laget med hjelp fra ChatGPT
     void update_asteroids(float dt, const std::shared_ptr<Scene>& scene) {
-        for (auto i = asteroids.begin(); i != asteroids.end();) {
-            auto& asteroid = *i;
+        std::vector<int> to_remove;
+
+        for (size_t index = 0; index < asteroids.size(); ++index) {
+            auto& asteroid = asteroids[index];
             asteroid->update(dt);
 
             auto asteroid_sprite = asteroid->get_sprite();
-            if (asteroid->get_sprite()->position.x < -screen_size_.width / 2 - edge_offset_ ||
-                asteroid->get_sprite()->position.x > screen_size_.width / 2 + edge_offset_ ||
-                asteroid->get_sprite()->position.y < -screen_size_.height / 2 - edge_offset_ ||
-                asteroid->get_sprite()->position.y > screen_size_.height / 2 + edge_offset_) {
+            if (asteroid_sprite->position.x < -screen_size_.width / 2 - edge_offset_ ||
+                asteroid_sprite->position.x > screen_size_.width / 2 + edge_offset_ ||
+                asteroid_sprite->position.y < -screen_size_.height / 2 - edge_offset_ ||
+                asteroid_sprite->position.y > screen_size_.height / 2 + edge_offset_) {
 
-                scene->remove(*asteroid_sprite);
-
-                i = asteroids.erase(i);
-            } else {
-                ++i;
+                to_remove.push_back(index);
             }
+        }
+
+        for (auto it = to_remove.rbegin(); it != to_remove.rend(); ++it) {
+            int index = *it;
+            scene->remove(*asteroid_sprites[index]);
+            asteroids.erase(asteroids.begin() + index);
+            asteroid_sprites.erase(asteroid_sprites.begin() + index);
         }
     }
 
@@ -52,6 +57,9 @@ public:
         asteroids.push_back(asteroid);
 
         scene->add(asteroid_sprite);
+
+        std::cout << "Asteroids count after addition: " << asteroids.size() << std::endl;
+        std::cout << "Asteroid sprites count after addition: " << asteroid_sprites.size() << std::endl;
     }
 
     void generate_wave(std::shared_ptr<Scene>& scene, float dt, int wave_size, float asteroid_delay) {
@@ -79,4 +87,4 @@ private:
 
 };
 
-#endif//ASTEROIDS_ASTEROID_GENERATOR_HPP
+#endif//ASTEROIDS_ASTEROID_FACTORY_HPP

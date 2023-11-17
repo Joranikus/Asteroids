@@ -17,7 +17,7 @@ add_executable(start_asteroids src/main.cpp
         include/functions/create_sprite.hpp
         include/object_controllers/asteroid_controller.hpp
         include/functions/random_functions.hpp
-        include/asteroid_generator.hpp
+        include/asteroid_factory.hpp
 )
 
 target_include_directories(start_asteroids PRIVATE ${CMAKE_SOURCE_DIR}/include)
