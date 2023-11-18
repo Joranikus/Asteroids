@@ -18,9 +18,6 @@ public:
                       : screen_size_(screen_size), loader_(loader), material_path_(material_path), scale_(scale),
                         edge_offset_(edge_offset), min_velocity_(min_velocity), max_velocity_(max_velocity) {}
 
-    const std::vector<std::shared_ptr<AsteroidController>>& get_asteroids() {
-        return asteroids;
-    }
 
     //denne delen for å slette asteroider og sprites er laget med hjelp fra ChatGPT
     void update_asteroids(float dt, const std::shared_ptr<Scene>& scene) {
@@ -41,11 +38,20 @@ public:
         }
 
         for (auto it = to_remove.rbegin(); it != to_remove.rend(); ++it) {
-            int index = *it;
-            scene->remove(*asteroid_sprites[index]);
-            asteroids.erase(asteroids.begin() + index);
-            asteroid_sprites.erase(asteroid_sprites.begin() + index);
+            delete_asteroid(scene, *it);
         }
+    }
+
+    void delete_asteroid(const std::shared_ptr<Scene>& scene, size_t index) {
+        if (index >= asteroids.size() || index >= asteroid_sprites.size()) {
+            std::cerr << "Index out of bounds for deletion." << std::endl;
+            return;
+        }
+
+        scene->remove(*asteroid_sprites[index]);
+
+        asteroids.erase(asteroids.begin() + index);
+        asteroid_sprites.erase(asteroid_sprites.begin() + index);
     }
 
     void generate_asteroid(std::shared_ptr<Scene>& scene) {
@@ -69,6 +75,10 @@ public:
             generate_asteroid(scene);
             time_since_last_asteroid = 0.0f;
         }
+    }
+
+    const std::vector<std::shared_ptr<AsteroidController>>& get_asteroids() {
+        return asteroids;
     }
 
 private:

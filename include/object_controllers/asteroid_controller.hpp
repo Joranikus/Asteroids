@@ -47,6 +47,10 @@ public:
         }
     }
 
+    bool check_collision(const std::shared_ptr<ObjectController>& other) override {
+        return ObjectController::check_collision(other);
+    }
+
     std::shared_ptr<Sprite> get_sprite() override {
         return ObjectController::get_sprite();
     }

@@ -19,7 +19,7 @@ public:
         : ObjectController(spaceship, Vector2(0, 1), 0, spaceship_rotation_speed, spaceship_thrust_power, friction_coefficient),
           screen_size_(screen_size), bullet_loader_(bullet_loader), bullet_material_path_(bullet_material_path), bullet_scale_(bullet_scale), bullet_velocity_(bullet_velocity), bullet_cooldown_(bullet_cooldown)  {}
 
-    //Checks each action in an actions set individually so you can press multiple buttons at the same time
+    //checks each action in an actions set individually so you can press multiple buttons at the same time
     void perform_spaceship_movement(const std::set<SpaceshipKeylistener::Action>& actions, float dt) {
         for (const auto& action : actions) {
             switch (action) {
@@ -56,29 +56,6 @@ public:
         screen_size_ = screen_size;
     }
 
-    //denne funksjonen er skrevet med hjelp fra ChatGPT
-    //updates and deletes bullet when out of bounds
-    /*
-    void update_bullets(float dt, const std::shared_ptr<Scene>& scene) {
-        for (auto i = bullets.begin(); i != bullets.end();) {
-            auto& bullet = *i;
-            bullet->update(dt);
-
-             auto bullet_sprite = bullet->get_sprite();
-            if (bullet->get_sprite()->position.x < -screen_size_.width / 2 ||
-                bullet->get_sprite()->position.x > screen_size_.width / 2 ||
-                bullet->get_sprite()->position.y < -screen_size_.height / 2 ||
-                bullet->get_sprite()->position.y > screen_size_.height / 2) {
-
-                scene->remove(*bullet_sprite);
-
-                i = bullets.erase(i);
-            } else {
-                ++i;
-            }
-        }
-    }
-    */
     //denne delen for å slette asteroider og sprites er laget med hjelp fra ChatGPT
     void update_bullets(float dt, const std::shared_ptr<Scene>& scene) {
         std::vector<int> to_remove;
@@ -98,11 +75,20 @@ public:
         }
 
         for (auto it = to_remove.rbegin(); it != to_remove.rend(); ++it) {
-            int index = *it;
-            scene->remove(*bullet_sprites[index]);
-            bullets.erase(bullets.begin() + index);
-            bullet_sprites.erase(bullet_sprites.begin() + index);
+            delete_bullet(scene, *it);
         }
+    }
+
+    void delete_bullet(const std::shared_ptr<Scene>& scene, size_t index) {
+        if (index >= bullets.size() || index >= bullet_sprites.size()) {
+            std::cerr << "Index out of bounds for deletion." << std::endl;
+            return;
+        }
+
+        scene->remove(*bullet_sprites[index]);
+
+        bullets.erase(bullets.begin() + index);
+        bullet_sprites.erase(bullet_sprites.begin() + index);
     }
 
     const std::vector<std::shared_ptr<BulletController>>& get_bullets() {
