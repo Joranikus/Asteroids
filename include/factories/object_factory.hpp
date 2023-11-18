@@ -1,6 +1,6 @@
 
-#ifndef ASTEROIDS_FACTORY_HPP
-#define ASTEROIDS_FACTORY_HPP
+#ifndef ASTEROIDS_OBJECT_FACTORY_HPP
+#define ASTEROIDS_OBJECT_FACTORY_HPP
 
 #include "object_controllers/asteroid_controller.hpp"
 #include "functions/create_sprite.hpp"
@@ -8,11 +8,10 @@
 #include "threepp/threepp.hpp"
 using namespace threepp;
 
-class Factory {
+class ObjectFactory {
 
 public:
-
-    Factory(Canvas& canvas, std::shared_ptr<Scene>& scene, TextureLoader& loader, std::string material_path, float scale, float deletion_edge_offset)
+    ObjectFactory(Canvas& canvas, std::shared_ptr<Scene>& scene, TextureLoader& loader, std::string material_path, float scale, float deletion_edge_offset)
         : canvas_(canvas), scene_(scene), loader_(loader), material_path_(material_path), scale_(scale),
           edge_offset_(deletion_edge_offset) {}
 
@@ -70,14 +69,14 @@ public:
         return object;
     }
 
-    virtual const std::vector<std::shared_ptr<ObjectController>>& get_objects() {
-        return objects;
+    virtual void add_to_scene(std::shared_ptr<Sprite> object_sprite) {
+        scene_->add(object_sprite);
     }
-
-private:
 
     std::vector<std::shared_ptr<ObjectController>> objects;
     std::vector<std::shared_ptr<Sprite>> object_sprites;
+
+private:
 
     Canvas& canvas_;
     WindowSize screen_size_ = canvas_.size();
@@ -89,4 +88,4 @@ private:
 };
 
 
-#endif//ASTEROIDS_FACTORY_HPP
+#endif//ASTEROIDS_OBJECT_FACTORY_HPP

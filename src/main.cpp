@@ -14,17 +14,20 @@ int main() {
     GLRenderer renderer(canvas.size());
     renderer.setClearColor(Color::black);
 
+    std::shared_ptr<Scene> scene = Scene::create();
+
     TextureLoader loader;
 
-    //Creates SpaceshipController
+    SpaceshipKeylistener spaceship_keylistener;
+
     auto spaceship_sprite = create_sprite(loader, "spaceship.png", 0.08);
 
-    SpaceshipKeylistener spaceship_keylistener;
-    SpaceshipController spaceship(spaceship_sprite, size, 4, 500, 0.75,
-                        loader, "bullet.png", 1, 1000, 0.1);
+    BulletFactory bullet_factory(canvas, scene, loader, "bullet.png", 0.1, 1000, 0.3, 0);
 
-    AsteroidFactory asteroid_factory(size, loader, "asteroid1.png",
-                                     0.2, 0, 100,300);
+    SpaceshipController spaceship(canvas, bullet_factory, spaceship_sprite, 4, 500, 0.75);
+
+    AsteroidFactory asteroid_factory(canvas, scene, loader, "asteroid1.png",
+                                     0.2, 100, 300, 0);
 
     //Delen som skalerer kameraet til vinduet er skrevet med hjelp fra ChatGPT og godeste studass.
     //Uses the window size to create the camera
@@ -47,8 +50,6 @@ int main() {
         spaceship.on_window_resize(size);
     });
 
-    std::shared_ptr<Scene> scene = Scene::create();
-
     scene->add(spaceship_sprite);
 
     Clock clock;
@@ -64,11 +65,11 @@ int main() {
 
         int lol;
         if (lol != 1) {
-            asteroid_factory.generate_wave(scene, dt, 10, 1);
+            asteroid_factory.generate_wave(dt, 10, 1);
             lol = 1;
         }
 
-        asteroid_factory.update_asteroids(dt, scene);
+        asteroid_factory.update_objects(dt);
         /////////////////////
 
         //loops through bullets in the bullets shared pointer, and renders all the bullets in the shared vector poiner.
@@ -80,11 +81,11 @@ int main() {
             auto& bullet = spaceship.get_bullets()[bullet_index];
             bool bullet_deleted = false;
 
-            for (size_t asteroid_index = 0; asteroid_index < asteroid_factory.get_asteroids().size(); ++asteroid_index) {
-                auto& asteroid = asteroid_factory.get_asteroids()[asteroid_index];
+            for (size_t asteroid_index = 0; asteroid_index < asteroid_factory.objects.size(); ++asteroid_index) {
+                auto& asteroid = asteroid_factory.objects[asteroid_index];
 
                 if (bullet->check_collision(asteroid)) {
-                    asteroid_factory.delete_asteroid(scene, asteroid_index);
+                    asteroid_factory.delete_object(asteroid_index);
                     spaceship.delete_bullet(scene, bullet_index);
 
                     bullet_deleted = true;

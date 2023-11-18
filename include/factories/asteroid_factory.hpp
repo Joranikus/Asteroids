@@ -4,96 +4,57 @@
 #define ASTEROIDS_ASTEROID_FACTORY_HPP
 
 #include "object_controllers/asteroid_controller.hpp"
+#include "object_factory.hpp"
 #include "functions/create_sprite.hpp"
 #include "functions/random_functions.hpp"
 #include "threepp/threepp.hpp"
 
 using namespace threepp;
 
-class AsteroidFactory {
+class AsteroidFactory : public ObjectFactory {
 
 public:
-    AsteroidFactory(WindowSize& screen_size, TextureLoader& loader, std::string material_path, float scale,
-                      float edge_offset, float min_velocity, float max_velocity)
-                      : screen_size_(screen_size), loader_(loader), material_path_(material_path), scale_(scale),
-                        edge_offset_(edge_offset), min_velocity_(min_velocity), max_velocity_(max_velocity) {}
 
+    AsteroidFactory(Canvas& canvas, std::shared_ptr<Scene>& scene, TextureLoader& loader, std::string material_path, float scale,
+                    float min_velocity, float max_velocity, float edge_offset)
+    : ObjectFactory(canvas, scene, loader, material_path, scale, edge_offset),
+          canvas_(canvas), edge_offset_(edge_offset),min_velocity_(min_velocity), max_velocity_(max_velocity) {}
 
-    //denne delen for å slette asteroider og sprites er laget med hjelp fra ChatGPT
-    void update_asteroids(float dt, const std::shared_ptr<Scene>& scene) {
-        std::vector<int> to_remove;
+    void generate_asteroid() {
+        auto asteroid_sprite = create_object_sprite();
+        auto asteroid = create_object(asteroid_sprite);
+        add_to_scene(asteroid_sprite);
 
-        for (size_t index = 0; index < asteroids.size(); ++index) {
-            auto& asteroid = asteroids[index];
-            asteroid->update(dt);
-
-            auto asteroid_sprite = asteroid->get_sprite();
-            if (asteroid_sprite->position.x < -screen_size_.width / 2 - edge_offset_ ||
-                asteroid_sprite->position.x > screen_size_.width / 2 + edge_offset_ ||
-                asteroid_sprite->position.y < -screen_size_.height / 2 - edge_offset_ ||
-                asteroid_sprite->position.y > screen_size_.height / 2 + edge_offset_) {
-
-                to_remove.push_back(index);
-            }
-        }
-
-        for (auto it = to_remove.rbegin(); it != to_remove.rend(); ++it) {
-            delete_asteroid(scene, *it);
-        }
+        std::cout << "Asteroids count after addition: " << objects.size() << std::endl;
+        std::cout << "Asteroid sprite count after addition: " << object_sprites.size() << std::endl;
     }
 
-    void delete_asteroid(const std::shared_ptr<Scene>& scene, size_t index) {
-        if (index >= asteroids.size() || index >= asteroid_sprites.size()) {
-            std::cerr << "Index out of bounds for deletion." << std::endl;
-            return;
-        }
-
-        scene->remove(*asteroid_sprites[index]);
-
-        asteroids.erase(asteroids.begin() + index);
-        asteroid_sprites.erase(asteroid_sprites.begin() + index);
-    }
-
-    void generate_asteroid(std::shared_ptr<Scene>& scene) {
-        auto asteroid_sprite = create_sprite(loader_, material_path_, scale_);
-        asteroid_sprites.push_back(asteroid_sprite);
-
-        auto asteroid = std::make_shared<AsteroidController>(asteroid_sprite, screen_size_, random_direction(),
-                                                             edge_offset_, min_velocity_, max_velocity_);
-        asteroids.push_back(asteroid);
-
-        scene->add(asteroid_sprite);
-
-        std::cout << "Asteroids count after addition: " << asteroids.size() << std::endl;
-        std::cout << "Asteroid sprites count after addition: " << asteroid_sprites.size() << std::endl;
-    }
-
-    void generate_wave(std::shared_ptr<Scene>& scene, float dt, int wave_size, float asteroid_delay) {
+    void generate_wave(float dt, int wave_size, float asteroid_delay) {
         time_since_last_asteroid += dt;
 
-        if (time_since_last_asteroid >= asteroid_delay && asteroids.size() < wave_size) {
-            generate_asteroid(scene);
+        if (time_since_last_asteroid >= asteroid_delay && objects.size() < wave_size) {
+            generate_asteroid();
             time_since_last_asteroid = 0.0f;
         }
     }
 
-    const std::vector<std::shared_ptr<AsteroidController>>& get_asteroids() {
-        return asteroids;
+    std::shared_ptr<ObjectController> create_object(std::shared_ptr<Sprite> object_sprite) override {
+        auto asteroid = std::make_shared<AsteroidController>(object_sprite, screen_size_,random_direction(),
+                                                             edge_offset_, min_velocity_, max_velocity_);
+        objects.push_back(asteroid);
+        return asteroid;
     }
 
 private:
 
-    std::vector<std::shared_ptr<AsteroidController>> asteroids;
-    std::vector<std::shared_ptr<Sprite>> asteroid_sprites;
-    float time_since_last_asteroid = 0.0f;
-
-    WindowSize& screen_size_;
-    TextureLoader& loader_;
-    std::string material_path_;
-    float scale_;
+    Canvas& canvas_;
     float edge_offset_;
+    WindowSize screen_size_ = canvas_.size();
+
     float min_velocity_;
     float max_velocity_;
+
+    float time_since_last_asteroid = 0.0f;
 
 };
 
