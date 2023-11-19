@@ -1,23 +1,23 @@
 
-#ifndef ASTEROIDS_MOVEMENT_HANDLER_HPP
-#define ASTEROIDS_MOVEMENT_HANDLER_HPP
+#ifndef ASTEROIDS_BASE_CONTROLLER_HPP
+#define ASTEROIDS_BASE_CONTROLLER_HPP
 
 #include "threepp/threepp.hpp"
-#include <iostream>
 #include <cmath>
 
 using namespace threepp;
 
-class MovementHandler {
+class BaseController {
 
 public:
-    MovementHandler(Sprite& sprite, Vector2 direction, float initial_velocity, float rotation_speed, float thrust_power, float friction_coefficient)
-            : sprite_(sprite),
-              velocity_float_(initial_velocity),
-              direction_(direction),
-              rotation_speed_(rotation_speed),
-              thrust_power_(thrust_power),
-              friction_coefficient_(friction_coefficient) {
+    BaseController(const std::shared_ptr<Sprite>& sprite, Vector2 direction,
+                     float initial_velocity, float rotation_speed, float thrust_power, float friction_coefficient)
+        : sprite_(sprite),
+          velocity_float_(initial_velocity),
+          direction_(direction),
+          rotation_speed_(rotation_speed),
+          thrust_power_(thrust_power),
+          friction_coefficient_(friction_coefficient) {
 
         velocity_.x = direction_.x * velocity_float_;
         velocity_.y = direction_.y * velocity_float_;
@@ -27,13 +27,17 @@ public:
         velocity_.x -= friction_coefficient_ * velocity_.x * dt;
         velocity_.y -= friction_coefficient_ * velocity_.y * dt;
 
-        sprite_.position.x += velocity_.x * dt;
-        sprite_.position.y += velocity_.y * dt;
+        sprite_->position.x += velocity_.x * dt;
+        sprite_->position.y += velocity_.y * dt;
+    }
+
+    virtual void set_mark_for_removal() {
+        marked_for_removal = true;
     }
 
     //Rotates material
     virtual void rotate_counter_clockwise(float dt) {
-        auto material = std::dynamic_pointer_cast<SpriteMaterial>(sprite_.material);
+        auto material = sprite_->material;
         if (material) {
             update_direction();
             material->rotation += rotation_speed_ * dt;
@@ -41,14 +45,14 @@ public:
     }
 
     virtual void rotate_clockwise(float dt) {
-        auto material = std::dynamic_pointer_cast<SpriteMaterial>(sprite_.material);
+        auto material = sprite_->material;
         if (material) {
             update_direction();
             material->rotation -= rotation_speed_ * dt;
         }
     }
 
-    //Thrust is a scalar that is multiplied into the direction vector
+    // thrust is a scalar that is multiplied into the direction vector
     virtual void thrust_forward(float dt) {
         update_direction();
         velocity_.x += direction_.x * thrust_power_ * dt;
@@ -59,6 +63,10 @@ public:
         update_direction();
         velocity_.x -= direction_.x * thrust_power_ * dt;
         velocity_.y -= direction_.y * thrust_power_ * dt;
+    }
+
+    virtual Vector2 get_position() {
+        return {sprite_->position.x, sprite_->position.y};
     }
 
     virtual Vector2 get_velocity() {
@@ -73,11 +81,16 @@ public:
         return rotation_speed_;
     }
 
-    virtual void set_velocity(Vector2& velocity) {
+    virtual Vector2 set_position(Vector2 position) {
+        sprite_->position.x = position.x;
+        sprite_->position.y = position.y;
+    }
+
+    virtual void set_velocity(const Vector2& velocity) {
         velocity_ = velocity;
     }
 
-    virtual void set_direction(Vector2& direction) {
+    virtual void set_direction(const Vector2& direction) {
         direction_ = direction;
     }
 
@@ -85,19 +98,19 @@ public:
         rotation_speed_ = rotation_speed;
     }
 
-    Sprite& sprite_;
+    std::shared_ptr<Sprite> sprite_;
+    bool marked_for_removal = false;
 
 private:
 
     virtual void update_direction() {
-        auto material = std::dynamic_pointer_cast<SpriteMaterial>(sprite_.material);
+        auto material = sprite_->material;
         if (material) {
             float theta = material->rotation + (2 * atanf(1)); // (atanf(1) * 4) = pi
             direction_.x = cosf(theta);
             direction_.y = sinf(theta);
         }
     }
-
 
     Vector2 direction_;
     Vector2 velocity_;
@@ -108,4 +121,4 @@ private:
 
 };
 
-#endif//ASTEROIDS_MOVEMENT_HANDLER_HPP
+#endif//ASTEROIDS_BASE_CONTROLLER_HPP
