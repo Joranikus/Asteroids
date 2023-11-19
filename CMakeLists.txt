@@ -11,14 +11,16 @@ find_package(imgui CONFIG REQUIRED)
 
 add_executable(start_asteroids src/main.cpp
         include/spaceship_keylistener.hpp
-        include/object_controllers/spaceship_controller.hpp
-        include/object_controllers/base_controller.hpp
+        include/controllers/spaceship_controller.hpp
+        include/controllers/base_controller.hpp
         include/functions/create_sprite.hpp
-        include/object_controllers/asteroid_controller.hpp
+        include/controllers/asteroid_controller.hpp
         include/functions/random_functions.hpp
         include/factories/asteroid_factory.hpp
         include/factories/base_factory.hpp
         include/factories/bullet_factory.hpp
+        include/collision_detectors/base_collision_detector.hpp
+        include/collision_detectors/asteroid_bullet_collision_detector.hpp
 )
 
 target_include_directories(start_asteroids PRIVATE ${CMAKE_SOURCE_DIR}/include)

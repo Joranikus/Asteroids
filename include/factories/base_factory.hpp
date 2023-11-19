@@ -2,10 +2,11 @@
 #ifndef ASTEROIDS_BASE_FACTORY_HPP
 #define ASTEROIDS_BASE_FACTORY_HPP
 
-#include "object_controllers/asteroid_controller.hpp"
+#include "controllers/asteroid_controller.hpp"
 #include "functions/create_sprite.hpp"
 #include "functions/random_functions.hpp"
 #include "threepp/threepp.hpp"
+#include <iostream>
 using namespace threepp;
 
 class BaseFactory {
@@ -19,12 +20,12 @@ public:
     virtual void update_objects(float dt) {
         std::vector<int> to_remove;
 
-        for (size_t index = 0; index < objects.size(); ++index) {
-            auto& object = objects[index];
+        for (size_t i = 0; i < objects.size(); ++i) {
+            auto& object = objects[i];
             object->update(dt);
 
-            if (out_of_bounds(object)) {
-                to_remove.push_back(index);
+            if (out_of_bounds(object) || object->marked_for_removal) {
+                to_remove.push_back(i);
             }
         }
 
@@ -64,7 +65,8 @@ public:
     }
 
     virtual std::shared_ptr<BaseController> create_object(std::shared_ptr<Sprite> object_sprite) {
-        auto object = std::make_shared<BaseController>(object_sprite, Vector2(0, 0), 0, 0, 0, 0);
+        auto object = std::make_shared<BaseController>(object_sprite, Vector2(0, 0),
+                                                       0, 0, 0, 0);
         objects.push_back(object);
         return object;
     }
@@ -73,8 +75,13 @@ public:
         scene_->add(object_sprite);
     }
 
+    virtual void on_window_resize(WindowSize& new_size) {
+        screen_size_ = new_size;
+    }
+
     std::vector<std::shared_ptr<BaseController>> objects;
     std::vector<std::shared_ptr<Sprite>> object_sprites;
+
 
 private:
 

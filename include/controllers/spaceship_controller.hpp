@@ -3,12 +3,8 @@
 #define ASTEROIDS_SPACESHIP_CONTROLLER_HPP
 
 #include "factories/bullet_factory.hpp"
-#include "functions/create_sprite.hpp"
-#include "object_controllers/base_controller.hpp"
-#include "object_controllers/bullet_controller.hpp"
 #include "spaceship_keylistener.hpp"
 #include "threepp/threepp.hpp"
-#include <iostream>
 
 using namespace threepp;
 

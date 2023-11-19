@@ -5,9 +5,8 @@
 #include "base_factory.hpp"
 #include "functions/create_sprite.hpp"
 #include "functions/random_functions.hpp"
-#include "object_controllers/asteroid_controller.hpp"
-#include "object_controllers/bullet_controller.hpp"
-#include "object_controllers/spaceship_controller.hpp"
+#include "controllers/bullet_controller.hpp"
+#include "controllers/spaceship_controller.hpp"
 #include "threepp/threepp.hpp"
 
 using namespace threepp;
