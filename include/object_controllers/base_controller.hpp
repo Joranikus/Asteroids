@@ -1,6 +1,6 @@
 
-#ifndef ASTEROIDS_OBJECT_CONTROLLER_HPP
-#define ASTEROIDS_OBJECT_CONTROLLER_HPP
+#ifndef ASTEROIDS_BASE_CONTROLLER_HPP
+#define ASTEROIDS_BASE_CONTROLLER_HPP
 
 #include "threepp/threepp.hpp"
 #include <iostream>
@@ -8,12 +8,12 @@
 
 using namespace threepp;
 
-class ObjectController {
+class BaseController {
 
 public:
-    ObjectController(const std::shared_ptr<Sprite>& object, Vector2 direction,
+    BaseController(const std::shared_ptr<Sprite>& sprite, Vector2 direction,
                      float initial_velocity, float rotation_speed, float thrust_power, float friction_coefficient)
-        : object_(object),
+        : sprite_(sprite),
           velocity_float_(initial_velocity),
           direction_(direction),
           rotation_speed_(rotation_speed),
@@ -28,13 +28,13 @@ public:
         velocity_.x -= friction_coefficient_ * velocity_.x * dt;
         velocity_.y -= friction_coefficient_ * velocity_.y * dt;
 
-        object_->position.x += velocity_.x * dt;
-        object_->position.y += velocity_.y * dt;
+        sprite_->position.x += velocity_.x * dt;
+        sprite_->position.y += velocity_.y * dt;
     }
 
     //Rotates material
     virtual void rotate_counter_clockwise(float dt) {
-        auto material = object_->material;
+        auto material = sprite_->material;
         if (material) {
             update_direction();
             material->rotation += rotation_speed_ * dt;
@@ -42,14 +42,14 @@ public:
     }
 
     virtual void rotate_clockwise(float dt) {
-        auto material = object_->material;
+        auto material = sprite_->material;
         if (material) {
             update_direction();
             material->rotation -= rotation_speed_ * dt;
         }
     }
 
-    //Thrust is a scalar that is multiplied into the direction vector
+    // thrust is a scalar that is multiplied into the direction vector
     virtual void thrust_forward(float dt) {
         update_direction();
         velocity_.x += direction_.x * thrust_power_ * dt;
@@ -62,9 +62,9 @@ public:
         velocity_.y -= direction_.y * thrust_power_ * dt;
     }
 
-    virtual bool check_collision(const std::shared_ptr<ObjectController>& other) {
-        auto other_object = other->get_sprite();
-        auto this_object = this->get_sprite();
+    virtual bool check_collision(const std::shared_ptr<BaseController>& other) {
+        auto other_object = other->sprite_;
+        auto this_object = this->sprite_;
 
         // assuming the sprites position is at its center
         float this_left = this_object->position.x - (this_object->scale.x / 2);
@@ -83,6 +83,10 @@ public:
                this_top < other_bottom && this_bottom > other_top;
     }
 
+    virtual Vector2 get_position() {
+        return {sprite_->position.x, sprite_->position.y};
+    }
+
     virtual Vector2 get_velocity() {
         return velocity_;
     }
@@ -93,6 +97,11 @@ public:
 
     virtual float get_rotation_speed() {
         return rotation_speed_;
+    }
+
+    virtual Vector2 set_position(Vector2 position) {
+        sprite_->position.x = position.x;
+        sprite_->position.y = position.y;
     }
 
     virtual void set_velocity(const Vector2& velocity) {
@@ -107,15 +116,12 @@ public:
         rotation_speed_ = rotation_speed;
     }
 
-
-    virtual std::shared_ptr<Sprite> get_sprite() {
-        return object_;
-    }
+    std::shared_ptr<Sprite> sprite_;
 
 private:
 
     virtual void update_direction() {
-        auto material = object_->material;
+        auto material = sprite_->material;
         if (material) {
             float theta = material->rotation + (2 * atanf(1)); // (atanf(1) * 4) = pi
             direction_.x = cosf(theta);
@@ -123,7 +129,6 @@ private:
         }
     }
 
-    std::shared_ptr<Sprite> object_;
     Vector2 direction_;
     Vector2 velocity_;
     float velocity_float_;
@@ -133,4 +138,4 @@ private:
 
 };
 
-#endif//ASTEROIDS_OBJECT_CONTROLLER_HPP
+#endif//ASTEROIDS_BASE_CONTROLLER_HPP

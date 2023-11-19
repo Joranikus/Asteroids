@@ -22,7 +22,7 @@ int main() {
 
     auto spaceship_sprite = create_sprite(loader, "spaceship.png", 0.08);
 
-    BulletFactory bullet_factory(canvas, scene, loader, "bullet.png", 0.1, 1000, 0.3, 0);
+    BulletFactory bullet_factory(canvas, scene, loader, "bullet.png", 1, 1000, 1, 0);
 
     SpaceshipController spaceship(canvas, bullet_factory, spaceship_sprite, 4, 500, 0.75);
 
@@ -46,8 +46,6 @@ int main() {
         camera->updateProjectionMatrix();
 
         renderer.setSize(size);
-
-        spaceship.on_window_resize(size);
     });
 
     scene->add(spaceship_sprite);
@@ -59,7 +57,6 @@ int main() {
         auto actions = spaceship_keylistener.determine_action();
         spaceship.perform_spaceship_movement(actions, dt);
 
-        spaceship.update_bullets(dt, scene);
         spaceship.update(dt);
         /////////////////////
 
@@ -72,13 +69,10 @@ int main() {
         asteroid_factory.update_objects(dt);
         /////////////////////
 
-        //loops through bullets in the bullets shared pointer, and renders all the bullets in the shared vector poiner.
-        for (const auto& bullet : spaceship.get_bullets()) {
-            scene->add(bullet->get_sprite());
-        }
+        bullet_factory.update_objects(dt);
 
-        for (size_t bullet_index = 0; bullet_index < spaceship.get_bullets().size(); ++bullet_index) {
-            auto& bullet = spaceship.get_bullets()[bullet_index];
+        for (size_t bullet_index = 0; bullet_index < bullet_factory.objects.size(); ++bullet_index) {
+            auto& bullet = bullet_factory.objects[bullet_index];
             bool bullet_deleted = false;
 
             for (size_t asteroid_index = 0; asteroid_index < asteroid_factory.objects.size(); ++asteroid_index) {
@@ -86,7 +80,7 @@ int main() {
 
                 if (bullet->check_collision(asteroid)) {
                     asteroid_factory.delete_object(asteroid_index);
-                    spaceship.delete_bullet(scene, bullet_index);
+                    bullet_factory.delete_object(bullet_index);
 
                     bullet_deleted = true;
                     break; // break out of the inner loop if the bullet is deleted

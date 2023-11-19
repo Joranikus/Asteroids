@@ -3,21 +3,21 @@
 #ifndef ASTEROIDS_ASTEROID_FACTORY_HPP
 #define ASTEROIDS_ASTEROID_FACTORY_HPP
 
-#include "object_controllers/asteroid_controller.hpp"
-#include "object_factory.hpp"
+#include "base_factory.hpp"
 #include "functions/create_sprite.hpp"
 #include "functions/random_functions.hpp"
+#include "object_controllers/asteroid_controller.hpp"
 #include "threepp/threepp.hpp"
 
 using namespace threepp;
 
-class AsteroidFactory : public ObjectFactory {
+class AsteroidFactory : public BaseFactory {
 
 public:
 
     AsteroidFactory(Canvas& canvas, std::shared_ptr<Scene>& scene, TextureLoader& loader, std::string material_path, float scale,
                     float min_velocity, float max_velocity, float edge_offset)
-    : ObjectFactory(canvas, scene, loader, material_path, scale, edge_offset),
+    : BaseFactory(canvas, scene, loader, material_path, scale, edge_offset),
           canvas_(canvas), edge_offset_(edge_offset),min_velocity_(min_velocity), max_velocity_(max_velocity) {}
 
     void generate_asteroid() {
@@ -38,7 +38,7 @@ public:
         }
     }
 
-    std::shared_ptr<ObjectController> create_object(std::shared_ptr<Sprite> object_sprite) override {
+    std::shared_ptr<BaseController> create_object(std::shared_ptr<Sprite> object_sprite) override {
         auto asteroid = std::make_shared<AsteroidController>(object_sprite, screen_size_,random_direction(),
                                                              edge_offset_, min_velocity_, max_velocity_);
         objects.push_back(asteroid);

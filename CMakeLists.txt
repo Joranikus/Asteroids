@@ -12,12 +12,12 @@ find_package(imgui CONFIG REQUIRED)
 add_executable(start_asteroids src/main.cpp
         include/spaceship_keylistener.hpp
         include/object_controllers/spaceship_controller.hpp
-        include/object_controllers/object_controller.hpp
+        include/object_controllers/base_controller.hpp
         include/functions/create_sprite.hpp
         include/object_controllers/asteroid_controller.hpp
         include/functions/random_functions.hpp
         include/factories/asteroid_factory.hpp
-        include/factories/object_factory.hpp
+        include/factories/base_factory.hpp
         include/factories/bullet_factory.hpp
 )
 

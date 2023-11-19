@@ -1,6 +1,6 @@
 
-#ifndef ASTEROIDS_OBJECT_FACTORY_HPP
-#define ASTEROIDS_OBJECT_FACTORY_HPP
+#ifndef ASTEROIDS_BASE_FACTORY_HPP
+#define ASTEROIDS_BASE_FACTORY_HPP
 
 #include "object_controllers/asteroid_controller.hpp"
 #include "functions/create_sprite.hpp"
@@ -8,10 +8,10 @@
 #include "threepp/threepp.hpp"
 using namespace threepp;
 
-class ObjectFactory {
+class BaseFactory {
 
 public:
-    ObjectFactory(Canvas& canvas, std::shared_ptr<Scene>& scene, TextureLoader& loader, std::string material_path, float scale, float deletion_edge_offset)
+    BaseFactory(Canvas& canvas, std::shared_ptr<Scene>& scene, TextureLoader& loader, std::string material_path, float scale, float deletion_edge_offset)
         : canvas_(canvas), scene_(scene), loader_(loader), material_path_(material_path), scale_(scale),
           edge_offset_(deletion_edge_offset) {}
 
@@ -45,8 +45,8 @@ public:
         object_sprites.erase(object_sprites.begin() + index);
     }
 
-    virtual bool out_of_bounds(std::shared_ptr<ObjectController>& object) {
-        auto object_sprite = object->get_sprite();
+    virtual bool out_of_bounds(std::shared_ptr<BaseController>& object) {
+        auto object_sprite = object->sprite_;
         if (object_sprite->position.x < -screen_size_.width / 2 - edge_offset_ ||
             object_sprite->position.x > screen_size_.width / 2 + edge_offset_ ||
             object_sprite->position.y < -screen_size_.height / 2 - edge_offset_ ||
@@ -63,8 +63,8 @@ public:
         return object_sprite;
     }
 
-    virtual std::shared_ptr<ObjectController> create_object(std::shared_ptr<Sprite> object_sprite) {
-        auto object = std::make_shared<ObjectController>(object_sprite, Vector2(0, 0), 0, 0, 0, 0);
+    virtual std::shared_ptr<BaseController> create_object(std::shared_ptr<Sprite> object_sprite) {
+        auto object = std::make_shared<BaseController>(object_sprite, Vector2(0, 0), 0, 0, 0, 0);
         objects.push_back(object);
         return object;
     }
@@ -73,7 +73,7 @@ public:
         scene_->add(object_sprite);
     }
 
-    std::vector<std::shared_ptr<ObjectController>> objects;
+    std::vector<std::shared_ptr<BaseController>> objects;
     std::vector<std::shared_ptr<Sprite>> object_sprites;
 
 private:
@@ -88,4 +88,4 @@ private:
 };
 
 
-#endif//ASTEROIDS_OBJECT_FACTORY_HPP
+#endif//ASTEROIDS_BASE_FACTORY_HPP

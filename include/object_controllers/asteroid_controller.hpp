@@ -2,19 +2,19 @@
 #ifndef ASTEROIDS_ASTEROID_CONTROLLER_HPP
 #define ASTEROIDS_ASTEROID_CONTROLLER_HPP
 
+#include "base_controller.hpp"
 #include "functions/random_functions.hpp"
-#include "object_controller.hpp"
 #include "threepp/threepp.hpp"
 
 using namespace threepp;
 
-class AsteroidController: public ObjectController {
+class AsteroidController: public BaseController {
 
 public:
     enum class Edge { Left, Right, Top, Bottom };
 
     AsteroidController(const std::shared_ptr<Sprite>& asteroid_sprite, WindowSize& screen_size, Vector2 direction, float edge_offset, float min_velocity, float max_velocity)
-        : ObjectController(asteroid_sprite, direction, random_float(min_velocity, max_velocity), 0, 0, 0),
+        : BaseController(asteroid_sprite, direction, random_float(min_velocity, max_velocity), 0, 0, 0),
           screen_size_(screen_size), edge_offset_(edge_offset)
     {
         Edge edge;
@@ -45,18 +45,6 @@ public:
                 asteroid_sprite->position.x = random_float(-screen_size_.width / 2, screen_size_.width / 2);
                 break;
         }
-    }
-
-    bool check_collision(const std::shared_ptr<ObjectController>& other) override {
-        return ObjectController::check_collision(other);
-    }
-
-    std::shared_ptr<Sprite> get_sprite() override {
-        return ObjectController::get_sprite();
-    }
-
-    void update(float dt) override {
-        ObjectController::update(dt);
     }
 
 private:
