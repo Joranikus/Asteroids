@@ -65,10 +65,16 @@ public:
     }
 
     std::shared_ptr<BaseController> create_object(std::shared_ptr<Sprite> object_sprite) override {
-        auto asteroid = std::make_shared<AsteroidController>(object_sprite, screen_size_,random_direction(),
+        auto asteroid = std::make_shared<AsteroidController>(object_sprite, screen_size_,random_direction(), 0,
                                                              edge_offset_, min_velocity_, max_velocity_);
+        asteroid->set_initial_rotation(random_rotation_speed());
+
         objects.push_back(asteroid);
         return asteroid;
+    }
+
+    float random_rotation_speed() {
+        return random_float(-10, 10);
     }
 
     //TODO: korfor må jeg gjøre dette i det hele tatt? funksjonen er jo i base klassen.

@@ -10,8 +10,8 @@ using namespace threepp;
 class BaseController {
 
 public:
-    BaseController(const std::shared_ptr<Sprite>& sprite, Vector2 direction,
-                     float initial_velocity, float rotation_speed, float thrust_power, float friction_coefficient)
+    BaseController(const std::shared_ptr<Sprite>& sprite, Vector2 direction, float initial_velocity,
+                   float rotation_speed, float thrust_power, float friction_coefficient)
         : sprite_(sprite),
           velocity_float_(initial_velocity),
           direction_(direction),
@@ -21,6 +21,11 @@ public:
 
         velocity_.x = direction_.x * velocity_float_;
         velocity_.y = direction_.y * velocity_float_;
+
+    }
+
+    virtual void set_mark_for_removal() {
+        marked_for_removal = true;
     }
 
     virtual void update(float dt) {
@@ -29,10 +34,12 @@ public:
 
         sprite_->position.x += velocity_.x * dt;
         sprite_->position.y += velocity_.y * dt;
+
+        sprite_->material->rotation += initial_rotation_ * dt;
     }
 
-    virtual void set_mark_for_removal() {
-        marked_for_removal = true;
+    virtual void set_initial_rotation(float initial_rotation) {
+        initial_rotation_ = initial_rotation;
     }
 
     //Rotates material
@@ -115,6 +122,7 @@ private:
     Vector2 direction_;
     Vector2 velocity_;
     float velocity_float_;
+    float initial_rotation_ = 0.0f;
     float rotation_speed_;
     float thrust_power_;
     float friction_coefficient_;

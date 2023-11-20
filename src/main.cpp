@@ -23,7 +23,7 @@ int main() {
 
     auto spaceship_sprite = create_sprite(loader, "spaceship.png", 0.08);
 
-    BulletFactory bullet_factory(canvas, scene, loader, "bullet.png", 1, 1000, 1, 0);
+    BulletFactory bullet_factory(canvas, scene, loader, "bullet.png", 1, 1000, 2.5, 0);
 
     SpaceshipController spaceship(canvas, bullet_factory, spaceship_sprite, 4, 500, 0.75);
     scene->add(spaceship_sprite);
@@ -67,7 +67,7 @@ int main() {
 
         spaceship.perform_spaceship_movement(spaceship_keylistener.determine_action(), dt);
 
-        asteroid_factory.generate_wave(dt, 10, 1, 0);
+        asteroid_factory.generate_wave(dt, 20, 1, 5);
 
         asteroid_bullet_collison_detector.check_collision(bullet_factory.objects, asteroid_factory.objects);
 
