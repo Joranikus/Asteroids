@@ -91,7 +91,7 @@ public:
         return rotation_speed_;
     }
 
-    virtual Vector2 set_position(Vector2 position) {
+    virtual void set_position(Vector2 position) {
         sprite_->position.x = position.x;
         sprite_->position.y = position.y;
     }

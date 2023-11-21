@@ -3,7 +3,7 @@
 #define ASTEROIDS_SPACESHIP_CONTROLLER_HPP
 
 #include "factories/bullet_factory.hpp"
-#include "spaceship_keylistener.hpp"
+#include "keylisteners/spaceship_keylistener.hpp"
 #include "threepp/threepp.hpp"
 
 using namespace threepp;
