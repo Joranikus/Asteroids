@@ -15,10 +15,24 @@ class BulletFactory : public BaseFactory {
 
 public:
 
-    BulletFactory(Canvas& canvas, std::shared_ptr<Scene>& scene, TextureLoader& loader, std::string material_path, float scale,
-                    float velocity, float front_offset, float edge_offset)
-        : BaseFactory(canvas, scene, loader, material_path, scale, edge_offset),
-          velocity_(velocity), front_offset_(front_offset) {}
+    BulletFactory(Canvas& canvas,
+                  std::shared_ptr<Scene>& scene,
+                  TextureLoader& loader,
+                  std::string material_path,
+                  float scale,
+                  float velocity,
+                  float front_offset,
+                  float edge_offset)
+
+        : BaseFactory(canvas,
+                      scene,
+                      loader,
+                      material_path,
+                      scale,
+                      edge_offset),
+
+          velocity_(velocity),
+          front_offset_(front_offset) {}
 
     void shoot_bullet(BaseController& spaceship) {
         auto bullet_sprite = create_object_sprite();

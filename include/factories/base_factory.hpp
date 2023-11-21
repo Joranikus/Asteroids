@@ -12,9 +12,19 @@ using namespace threepp;
 class BaseFactory {
 
 public:
-    BaseFactory(Canvas& canvas, std::shared_ptr<Scene>& scene, TextureLoader& loader, std::string material_path, float scale, float deletion_edge_offset)
-        : canvas_(canvas), scene_(scene), loader_(loader), material_path_(material_path), scale_(scale),
-          edge_offset_(deletion_edge_offset) {}
+    BaseFactory(Canvas& canvas,
+                std::shared_ptr<Scene>& scene,
+                TextureLoader& loader,
+                std::string material_path,
+                float scale = 1.0f,
+                float edge_offset = 0.0f)
+
+        : canvas_(canvas),
+          scene_(scene),
+          loader_(loader),
+          material_path_(material_path),
+          scale_(scale),
+          edge_offset_(edge_offset) {}
 
     //denne delen for å slette objekter og sprites er laget med hjelp fra ChatGPT
     virtual void update_objects(float dt) {
@@ -86,12 +96,14 @@ public:
 private:
 
     Canvas& canvas_;
-    WindowSize screen_size_ = canvas_.size();
     std::shared_ptr<Scene>& scene_;
     TextureLoader& loader_;
     std::string material_path_;
     float scale_;
     float edge_offset_;
+
+    WindowSize screen_size_ = canvas_.size();
+
 };
 
 

@@ -10,14 +10,21 @@ using namespace threepp;
 class BaseController {
 
 public:
-    BaseController(const std::shared_ptr<Sprite>& sprite, Vector2 direction, float initial_velocity,
-                   float rotation_speed, float thrust_power, float friction_coefficient)
+    BaseController(const std::shared_ptr<Sprite>& sprite,
+                   Vector2 direction,
+                   float rotation_speed = 0.0f,
+                   float friction_coefficient = 0.0f,
+                   float thrust_power = 0.0f,
+                   float initial_velocity = 0.0f,
+                   float initial_rotation_velocity = 0.0f)
+
         : sprite_(sprite),
-          velocity_float_(initial_velocity),
           direction_(direction),
           rotation_speed_(rotation_speed),
+          friction_coefficient_(friction_coefficient),
           thrust_power_(thrust_power),
-          friction_coefficient_(friction_coefficient) {
+          velocity_float_(initial_velocity),
+          initial_rotation_velocity_(initial_rotation_velocity) {
 
         velocity_.x = direction_.x * velocity_float_;
         velocity_.y = direction_.y * velocity_float_;
@@ -35,11 +42,7 @@ public:
         sprite_->position.x += velocity_.x * dt;
         sprite_->position.y += velocity_.y * dt;
 
-        sprite_->material->rotation += initial_rotation_ * dt;
-    }
-
-    virtual void set_initial_rotation(float initial_rotation) {
-        initial_rotation_ = initial_rotation;
+        sprite_->material->rotation += initial_rotation_velocity_ * dt;
     }
 
     //Rotates material
@@ -120,12 +123,13 @@ private:
     }
 
     Vector2 direction_;
-    Vector2 velocity_;
-    float velocity_float_;
-    float initial_rotation_ = 0.0f;
     float rotation_speed_;
-    float thrust_power_;
     float friction_coefficient_;
+    float thrust_power_;
+    float velocity_float_;
+    float initial_rotation_velocity_;
+
+    Vector2 velocity_;
 
 };
 

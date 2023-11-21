@@ -16,23 +16,47 @@ int main() {
     renderer.setClearColor(Color::black);
 
     std::shared_ptr<Scene> scene = Scene::create();
-
     TextureLoader loader;
-
     SpaceshipKeylistener spaceship_keylistener;
+
+
+    BulletFactory bullet_factory(canvas,
+                                 scene,
+                                 loader,
+                                 "bullet.png",
+                                 1,
+                                 1000,
+                                 2.5,
+                                 0);
 
     auto spaceship_sprite = create_sprite(loader, "spaceship.png", 0.08);
 
-    BulletFactory bullet_factory(canvas, scene, loader, "bullet.png", 1, 1000, 2.5, 0);
+    SpaceshipController spaceship(canvas,
+                                  bullet_factory,
+                                  spaceship_sprite,
+                                  4,
+                                  500,
+                                  0.75);
 
-    SpaceshipController spaceship(canvas, bullet_factory, spaceship_sprite, 4, 500, 0.75);
     scene->add(spaceship_sprite);
 
-    std::vector<std::string> asteroid_material_paths = {"asteroid1.png", "asteroid2.png", "asteroid3.png", "asteroid4.png",
-                                                        "asteroid5.png", "asteroid6.png", "asteroid7.png", "asteroid8.png"};
+    std::vector<std::string> asteroid_material_paths = {"asteroid1.png",
+                                                        "asteroid2.png",
+                                                        "asteroid3.png",
+                                                        "asteroid4.png",
+                                                        "asteroid5.png",
+                                                        "asteroid6.png",
+                                                        "asteroid7.png",
+                                                        "asteroid8.png"};
 
-    AsteroidFactory asteroid_factory(canvas, scene, loader, asteroid_material_paths,
-                                     0.2, 100, 300, 0);
+    AsteroidFactory asteroid_factory(canvas,
+                                     scene,
+                                     loader,
+                                     asteroid_material_paths,
+                                     0.2,
+                                     100,
+                                     300,
+                                     0);
 
     AsteroidBulletCollisionDetector asteroid_bullet_collison_detector;
 
@@ -67,7 +91,7 @@ int main() {
 
         spaceship.perform_spaceship_movement(spaceship_keylistener.determine_action(), dt);
 
-        asteroid_factory.generate_wave(dt, 20, 1, 5);
+        asteroid_factory.generate_wave(dt, 20, 1, 0);
 
         asteroid_bullet_collison_detector.check_collision(bullet_factory.objects, asteroid_factory.objects);
 
