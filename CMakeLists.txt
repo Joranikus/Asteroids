@@ -10,8 +10,7 @@ add_executable(start_asteroids src/main.cpp)
 target_include_directories(start_asteroids PRIVATE ${CMAKE_SOURCE_DIR}/include)
 
 find_package(threepp CONFIG REQUIRED)
-find_package(imgui CONFIG REQUIRED)
-target_link_libraries(start_asteroids PRIVATE threepp::threepp imgui::imgui)
+target_link_libraries(start_asteroids PRIVATE threepp::threepp)
 
 include(FetchContent)
 FetchContent_Declare(
@@ -20,8 +19,9 @@ FetchContent_Declare(
         GIT_TAG v3.4.0
 )
 FetchContent_MakeAvailable(Catch2)
-
 enable_testing()
+
+
 
 add_subdirectory(tests)
 # need to add these when i split the headers
