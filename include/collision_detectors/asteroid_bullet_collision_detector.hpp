@@ -16,8 +16,8 @@ public:
         for (auto& bullet : bullet_list) {
             for (auto& asteroid : asteroid_list) {
                 if (collision(bullet, asteroid)) {
-                    bullet->set_mark_for_removal();
-                    asteroid->set_mark_for_removal();
+                    bullet->marked_for_removal = true;
+                    asteroid->marked_for_removal = true;
                 }
             }
         }
