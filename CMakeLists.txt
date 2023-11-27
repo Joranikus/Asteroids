@@ -21,8 +21,6 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(Catch2)
 enable_testing()
 
-
-
 add_subdirectory(tests)
 # need to add these when i split the headers
 #add_subdirectory(src)

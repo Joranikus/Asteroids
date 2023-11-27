@@ -5,7 +5,6 @@
 #include "threepp/threepp.hpp"
 #include <cmath>
 
-
 using namespace threepp;
 
 class BaseController {
@@ -44,6 +43,10 @@ public:
             throw std::invalid_argument("Direction vector must be normalized");
         }
 
+        if (rotation_speed < 0) { //rotation speed cant be negative
+            throw std::invalid_argument("Rotation speed must be positive");
+        }
+
         if (friction_coefficient < 0.0f || friction_coefficient > 1.0f) { // 0 = no friction, 1 = all the friction
             throw std::invalid_argument("Friction coefficient must be between 0 and 1.");
         }
@@ -60,6 +63,7 @@ public:
         sprite_->position.x += velocity_.x * dt;
         sprite_->position.y += velocity_.y * dt;
 
+        // I decided to not let rotation be effected by friction
         sprite_->material->rotation += initial_rotation_velocity_ * dt;
     }
 

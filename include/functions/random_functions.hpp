@@ -16,11 +16,11 @@ Vector2 random_direction() {
 
     std::uniform_real_distribution<> distr(min, max);
 
-    auto random = distr(gen);
+    auto random = static_cast<float>(distr(gen));
 
     Vector2 direction;
-    direction.x = cos(random);
-    direction.y = sin(random);
+    direction.x = cosf(random);
+    direction.y = sinf(random);
 
     return direction;
 }
