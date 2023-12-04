@@ -2,9 +2,6 @@
 #ifndef ASTEROIDS_GAME_HPP
 #define ASTEROIDS_GAME_HPP
 
-#include <memory>
-#include <vector>
-#include <string>
 #include "factories/asteroid_factory.hpp"
 #include "functions/create_sprite.hpp"
 #include "controllers/spaceship_controller.hpp"
@@ -12,27 +9,29 @@
 #include "collision_detectors/asteroid_bullet_collision_detector.hpp"
 
 class Game {
+
 public:
-    Game()
-        : canvas(threepp::Canvas::Parameters().title("Asteroids").size(1280, 720).antialiasing(4)),
 
-          scene(threepp::Scene::create()),
+    Game() : canvas(threepp::Canvas::Parameters().title("Asteroids").size(1280, 720).antialiasing(4)),
 
-          renderer(canvas.size()),
+             scene(threepp::Scene::create()),
 
-          camera(threepp::OrthographicCamera::create(
+             renderer(canvas.size()),
+
+            // delen som skalerer kameraet til vinduet er skrevet med hjelp fra ChatGPT og godeste studass.
+            // Uses the window size to create the camera
+             camera(threepp::OrthographicCamera::create(
                   -canvas.size().width / 2,
                   canvas.size().width / 2,
                   canvas.size().height / 2,
                   -canvas.size().height / 2,
                   1, 100)),
 
-          asteroid_material_paths({
+             asteroid_material_paths({
                   "asteroid1.png", "asteroid2.png", "asteroid3.png",
                   "asteroid4.png", "asteroid5.png", "asteroid6.png",
                   "asteroid7.png", "asteroid8.png"
-
-          }) {
+             }) {
     }
 
     void setup() {
@@ -48,6 +47,7 @@ public:
             float dt = clock.getDelta();
             update_game(dt);
             render_game();
+            on_window_resize();
         });
     }
 
@@ -120,6 +120,7 @@ private:
     }
 
     void on_window_resize() {
+        // scales the camera according to the window width/height
         canvas.onWindowResize([&](threepp::WindowSize size) {
             camera->left = -size.width / 2;
             camera->right = size.width / 2;
