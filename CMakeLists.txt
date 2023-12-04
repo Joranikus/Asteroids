@@ -5,7 +5,8 @@ set(CMAKE_CXX_STANDARD 17)
 
 file(COPY ${CMAKE_SOURCE_DIR}/data/ DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 
-add_executable(start_asteroids src/main.cpp)
+add_executable(start_asteroids src/main.cpp
+        include/games/game.hpp)
 
 target_include_directories(start_asteroids PRIVATE ${CMAKE_SOURCE_DIR}/include)
 

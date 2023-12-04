@@ -34,49 +34,49 @@ TEST_CASE_METHOD(BaseControllerFixture, "BaseController Constructor", "[BaseCont
 
     SECTION("Constructor initializes values correctly") { // tests that the object is NOT marked for removal, and that the getter values are correct
         //object should not be marked for removal when created
-        REQUIRE_FALSE(controller->marked_for_removal);
+        CHECK_FALSE(controller->marked_for_removal);
 
         auto direction = controller->get_direction();
 
         //checks if the direction is correct
-        REQUIRE_THAT(std::sqrt(direction.x * direction.x + direction.y * direction.y), Catch::Matchers::WithinRel(1.0f, float_tolerance));
+        CHECK_THAT(std::sqrt(direction.x * direction.x + direction.y * direction.y), Catch::Matchers::WithinRel(1.0f, float_tolerance));
 
         //rotation speed should be retained
-        REQUIRE_THAT(controller->get_rotation_speed(), Catch::Matchers::WithinRel(2.0f, float_tolerance));
+        CHECK_THAT(controller->get_rotation_speed(), Catch::Matchers::WithinRel(2.0f, float_tolerance));
     }
 
     SECTION("Exception for null sprite") { // sets the sprite as a nullptr, to test if the constructor throws an exception
-        REQUIRE_THROWS_AS(BaseController(nullptr, {1.0f, 0.0f}, 2.0f, 0.1f, 3.0f, 4.0f, 5.0f),
+        CHECK_THROWS_AS(BaseController(nullptr, {1.0f, 0.0f}, 2.0f, 0.1f, 3.0f, 4.0f, 5.0f),
                           std::exception);
     }
 
     SECTION("Exception for missing sprite material") { // sets the sprite material as a nullptr, to test if the constructor throws an exception
-        REQUIRE_THROWS_AS(BaseController(sprite_without_material, {1.0f, 0.0f}, 2.0f, 0.1f, 3.0f, 4.0f, 5.0f),
+        CHECK_THROWS_AS(BaseController(sprite_without_material, {1.0f, 0.0f}, 2.0f, 0.1f, 3.0f, 4.0f, 5.0f),
                           std::exception);
     }
 
     SECTION("Exception for non-normalized directon") { // sets a non-normalized direction vector to test if the function throws an exception
-        REQUIRE_THROWS_AS(BaseController(sprite_with_material, {0.6f, 1.0f}, 2.0f, 0.1f, 3.0f, 4.0f, 5.0f),
+        CHECK_THROWS_AS(BaseController(sprite_with_material, {0.6f, 1.0f}, 2.0f, 0.1f, 3.0f, 4.0f, 5.0f),
                           std::exception);
     }
 
     SECTION("Exception for negative rotation speed") { // sets a negative rotation speed to test if the constructor throws an exception
-        REQUIRE_THROWS_AS(BaseController(sprite_with_material, {1.0f, 0.0f}, -2.0f, 0.1f, 3.0f, 4.0f, 5.0f),
+        CHECK_THROWS_AS(BaseController(sprite_with_material, {1.0f, 0.0f}, -2.0f, 0.1f, 3.0f, 4.0f, 5.0f),
                           std::exception);
     }
 
     SECTION("Exception for below zero friction") { // sets a negative friction to test if the function throws an exception
-        REQUIRE_THROWS_AS(BaseController(sprite_with_material, {1.0f, 0.0f}, 2.0f, -0.1f, 3.0f, 4.0f, 5.0f),
+        CHECK_THROWS_AS(BaseController(sprite_with_material, {1.0f, 0.0f}, 2.0f, -0.1f, 3.0f, 4.0f, 5.0f),
                           std::exception);
     }
 
     SECTION("Exception for above 1 friction") { // sets an above 100% friction to test if the function throws an exception
-        REQUIRE_THROWS_AS(BaseController(sprite_with_material, {1.0f, 0.0f}, 2.0f, 1.1f, 3.0f, 4.0f, 5.0f),
+        CHECK_THROWS_AS(BaseController(sprite_with_material, {1.0f, 0.0f}, 2.0f, 1.1f, 3.0f, 4.0f, 5.0f),
                           std::exception);
     }
 
     SECTION("Exception for negative thrust power") { // sets a negative thrust to test if the function throws an exception
-        REQUIRE_THROWS_AS(BaseController(sprite_with_material, {1.0f, 0.0f}, 2.0f, 0.1f, -3.0f, 4.0f, 5.0f),
+        CHECK_THROWS_AS(BaseController(sprite_with_material, {1.0f, 0.0f}, 2.0f, 0.1f, -3.0f, 4.0f, 5.0f),
                           std::exception);
     }
 }
@@ -93,11 +93,11 @@ TEST_CASE_METHOD(BaseControllerFixture, "BaseController Update Function", "[Base
         auto new_rotation = controller->sprite_->material->rotation;
 
         //since no position should have changed we can compare to the initial position
-        REQUIRE_THAT(new_position.x, Catch::Matchers::WithinRel(initial_position.x, float_tolerance));
-        REQUIRE_THAT(new_position.y, Catch::Matchers::WithinRel(initial_position.y, float_tolerance));
+        CHECK_THAT(new_position.x, Catch::Matchers::WithinRel(initial_position.x, float_tolerance));
+        CHECK_THAT(new_position.y, Catch::Matchers::WithinRel(initial_position.y, float_tolerance));
 
         //since no rotation should have changed we can compare to the initial rotation
-        REQUIRE_THAT(new_rotation, Catch::Matchers::WithinRel(initial_rotation, float_tolerance));
+        CHECK_THAT(new_rotation, Catch::Matchers::WithinRel(initial_rotation, float_tolerance));
     }
 
     SECTION("Normal time step") { //this tests if the objects have changed according to the function
@@ -112,16 +112,16 @@ TEST_CASE_METHOD(BaseControllerFixture, "BaseController Update Function", "[Base
         auto new_rotation = controller->sprite_->material->rotation;
 
         // checks if the new position is different from the initial position
-        REQUIRE_FALSE(Catch::Matchers::WithinRel(initial_position.x, float_tolerance).match(new_position.x));
-        REQUIRE_FALSE(Catch::Matchers::WithinRel(initial_position.y, float_tolerance).match(new_position.y));
+        CHECK_FALSE(Catch::Matchers::WithinRel(initial_position.x, float_tolerance).match(new_position.x));
+        CHECK_FALSE(Catch::Matchers::WithinRel(initial_position.y, float_tolerance).match(new_position.y));
 
         // since the object has traveled for a period without thrust, and it has 10% friction, the object
         // should have changed velocity
-        REQUIRE_FALSE(Catch::Matchers::WithinRel(initial_velocity.x, float_tolerance).match(new_velocity.x));
-        REQUIRE_FALSE(Catch::Matchers::WithinRel(initial_velocity.y, float_tolerance).match(new_velocity.y));
+        CHECK_FALSE(Catch::Matchers::WithinRel(initial_velocity.x, float_tolerance).match(new_velocity.x));
+        CHECK_FALSE(Catch::Matchers::WithinRel(initial_velocity.y, float_tolerance).match(new_velocity.y));
 
         // since the object has rotated for a period, the object should be in another rotation
-        REQUIRE_FALSE(Catch::Matchers::WithinRel(initial_rotation, float_tolerance).match(new_rotation));
+        CHECK_FALSE(Catch::Matchers::WithinRel(initial_rotation, float_tolerance).match(new_rotation));
     }
 }
 TEST_CASE_METHOD(BaseControllerFixture, "BaseController Rotation Functions", "[BaseController]") {
@@ -133,7 +133,7 @@ TEST_CASE_METHOD(BaseControllerFixture, "BaseController Rotation Functions", "[B
         auto new_rotation = controller->sprite_->material->rotation;
 
         // since the object has rotated for a period, the object should be in another rotation
-        REQUIRE_FALSE(Catch::Matchers::WithinRel(initial_rotation, float_tolerance).match(new_rotation));
+        CHECK_FALSE(Catch::Matchers::WithinRel(initial_rotation, float_tolerance).match(new_rotation));
     }
 
     SECTION("rotate_clockwise") { // if DT is 1, the object should have rotated cw for 1 seconds
@@ -144,7 +144,7 @@ TEST_CASE_METHOD(BaseControllerFixture, "BaseController Rotation Functions", "[B
         auto new_rotation = controller->sprite_->material->rotation;
 
         // since the object has rotated for a period, the object should be in another rotation
-        REQUIRE_FALSE(Catch::Matchers::WithinRel(initial_rotation, float_tolerance).match(new_rotation));
+        CHECK_FALSE(Catch::Matchers::WithinRel(initial_rotation, float_tolerance).match(new_rotation));
     }
 }
 //fikk hjelp av chatGPT til å skrive disse thrust testene
@@ -162,8 +162,8 @@ TEST_CASE_METHOD(BaseControllerFixture, "BaseController Thrust Functions", "[Bas
 
         Vector2 new_velocity = controller->get_velocity();
 
-        // checks if the y-component of velocity has become more negative (increased downward speed)
-        REQUIRE(new_velocity.y > initial_velocity.y);
+        // checks if the y-component of velocity has become more positive (increased upward speed)
+        CHECK(new_velocity.y > initial_velocity.y);
     }
 
 
@@ -181,7 +181,7 @@ TEST_CASE_METHOD(BaseControllerFixture, "BaseController Thrust Functions", "[Bas
         Vector2 new_velocity = controller->get_velocity();
 
         // checks if the y-component of velocity has become more negative (increased downward speed)
-        REQUIRE(new_velocity.y < initial_velocity.y);
+        CHECK(new_velocity.y < initial_velocity.y);
     }
 }
 
@@ -189,10 +189,10 @@ TEST_CASE_METHOD(BaseControllerFixture, "BaseController Setter Functions", "[Bas
     SECTION("set_direction() with normalized direction") {
         Vector2 new_direction = {1.0f, 0.0f};
         controller->set_direction(new_direction);
-        REQUIRE(controller->get_direction() == new_direction);
+        CHECK(controller->get_direction() == new_direction);
     }
 
     SECTION("Exception for non-normalized direction in set_direction()") {
-        REQUIRE_THROWS_AS(controller->set_direction({0.6f, 1.0f}), std::exception);
+        CHECK_THROWS_AS(controller->set_direction({0.6f, 1.0f}), std::exception);
     }
 }
