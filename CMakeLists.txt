@@ -3,25 +3,30 @@ project(Asteroids)
 
 set(CMAKE_CXX_STANDARD 17)
 
-set(SPRITE_DIR "${CMAKE_SOURCE_DIR}/data/")
-file(COPY ${SPRITE_DIR} DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
-
-find_package(threepp CONFIG REQUIRED)
-find_package(imgui CONFIG REQUIRED)
+file(COPY ${CMAKE_SOURCE_DIR}/data/ DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 
 add_executable(start_asteroids src/main.cpp
-        include/spaceship_keylistener.hpp
-        include/controllers/spaceship_controller.hpp
-        include/controllers/base_controller.hpp
-        include/functions/create_sprite.hpp
-        include/controllers/asteroid_controller.hpp
-        include/functions/random_functions.hpp
-        include/factories/asteroid_factory.hpp
-        include/factories/base_factory.hpp
-        include/factories/bullet_factory.hpp
-        include/collision_detectors/base_collision_detector.hpp
-        include/collision_detectors/asteroid_bullet_collision_detector.hpp
-)
+        include/games/game.hpp)
 
 target_include_directories(start_asteroids PRIVATE ${CMAKE_SOURCE_DIR}/include)
-target_link_libraries(start_asteroids PRIVATE threepp::threepp imgui::imgui)
+
+find_package(threepp CONFIG REQUIRED)
+target_link_libraries(start_asteroids PRIVATE threepp::threepp)
+
+include(FetchContent)
+FetchContent_Declare(
+        Catch2
+        GIT_REPOSITORY https://github.com/catchorg/Catch2.git
+        GIT_TAG v3.4.0
+)
+FetchContent_MakeAvailable(Catch2)
+enable_testing()
+
+add_subdirectory(tests)
+
+# need to add these when i split the headers
+#add_subdirectory(src)
+#add_subdirectory(include/collision_detectors)
+#add_subdirectory(include/factories)
+#add_subdirectory(include/functions)
+#add_subdirectory(include/keylisteners)

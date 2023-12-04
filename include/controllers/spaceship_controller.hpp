@@ -3,7 +3,7 @@
 #define ASTEROIDS_SPACESHIP_CONTROLLER_HPP
 
 #include "factories/bullet_factory.hpp"
-#include "spaceship_keylistener.hpp"
+#include "keylisteners/spaceship_keylistener.hpp"
 #include "threepp/threepp.hpp"
 
 using namespace threepp;
@@ -11,11 +11,20 @@ using namespace threepp;
 class SpaceshipController: public BaseController {
 
 public:
-    SpaceshipController(Canvas& canvas, BulletFactory& bullet_factory, std::shared_ptr<Sprite>& spaceship, float spaceship_rotation_speed,
-                        float spaceship_thrust_power, float friction_coefficient)
+    SpaceshipController(Canvas& canvas,
+                        BulletFactory& bullet_factory,
+                        std::shared_ptr<Sprite>& spaceship,
+                        float spaceship_rotation_speed,
+                        float spaceship_thrust_power,
+                        float friction_coefficient)
 
-        : BaseController(spaceship, Vector2(0, 1), 0, spaceship_rotation_speed,
-                           spaceship_thrust_power, friction_coefficient), bullet_factory_(bullet_factory) {};
+        : BaseController(spaceship,
+                         Vector2(0, 1),
+                         spaceship_rotation_speed,
+                         friction_coefficient,
+                         spaceship_thrust_power),
+
+          bullet_factory_(bullet_factory) {};
 
     //checks each action in an actions set individually so you can press multiple buttons at the same time
     void perform_spaceship_movement(const std::set<SpaceshipKeylistener::Action>& actions, float dt) {

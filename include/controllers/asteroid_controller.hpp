@@ -11,12 +11,27 @@ using namespace threepp;
 class AsteroidController: public BaseController {
 
 public:
-    enum class Edge { Left, Right, Top, Bottom };
 
-    AsteroidController(const std::shared_ptr<Sprite>& asteroid_sprite, WindowSize& screen_size, Vector2 direction, float edge_offset, float min_velocity, float max_velocity)
-        : BaseController(asteroid_sprite, direction, random_float(min_velocity, max_velocity), 0, 0, 0),
-          screen_size_(screen_size), edge_offset_(edge_offset)
-    {
+    AsteroidController(const std::shared_ptr<Sprite>& asteroid_sprite,
+                       WindowSize& screen_size,
+                       Vector2 direction,
+                       float initial_rotation_speed,
+                       float min_velocity,
+                       float max_velocity,
+                       float edge_offset)
+
+        : BaseController(asteroid_sprite,
+                         direction,
+                         0,
+                         0,
+                         0,
+                         random_float(min_velocity, max_velocity),
+                         initial_rotation_speed),
+
+          screen_size_(screen_size),
+          edge_offset_(edge_offset) {
+
+        enum class Edge { Left, Right, Top, Bottom };
         Edge edge;
 
         // determines the edge based on the direction
