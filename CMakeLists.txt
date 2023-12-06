@@ -4,6 +4,8 @@ set(CMAKE_CXX_STANDARD 17)
 
 file(COPY ${CMAKE_SOURCE_DIR}/data/ DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/src/)
 
+include_directories(${CMAKE_SOURCE_DIR}/include)
+
 # adding dependencies
 find_package(threepp CONFIG REQUIRED)
 
