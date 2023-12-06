@@ -39,21 +39,20 @@ public:
             }
         }
 
-        for (auto it = to_remove.rbegin(); it != to_remove.rend(); ++it) {
-            delete_object(*it);
+        for (auto i = to_remove.rbegin(); i != to_remove.rend(); ++i) {
+            delete_object(*i);
         }
     }
 
-    virtual void delete_object(size_t index) {
-        if (index >= objects.size() || index >= object_sprites.size()) {
+    virtual void delete_object(size_t i) {
+        if (i >= objects.size() || i >= object_sprites.size()) {
             std::cerr << "Index out of bounds for deletion." << std::endl;
             return;
         }
 
-        scene_->remove(*object_sprites[index]);
-
-        objects.erase(objects.begin() + index);
-        object_sprites.erase(object_sprites.begin() + index);
+        scene_->remove(*object_sprites[i]);
+        objects.erase(objects.begin() + i);
+        object_sprites.erase(object_sprites.begin() + i);
     }
 
     virtual bool out_of_bounds(std::shared_ptr<BaseController>& object) {
