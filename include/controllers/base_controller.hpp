@@ -3,7 +3,6 @@
 #define ASTEROIDS_BASE_CONTROLLER_HPP
 
 #include "threepp/threepp.hpp"
-#include <cmath>
 
 class BaseController {
 
@@ -16,21 +15,23 @@ public:
                    float initial_velocity = 0.0f,
                    float initial_rotation_velocity = 0.0f);
 
-    virtual void update(const float dt);
-    virtual void rotate_counter_clockwise(const float dt);
-    virtual void rotate_clockwise(const float dt);
-    virtual void thrust_forward(const float dt);
-    virtual void thrust_backward(const float dt);
+    virtual void update(float dt);
+    virtual void rotate_counter_clockwise(float dt);
+    virtual void rotate_clockwise(float dt);
+    virtual void thrust_forward(float dt);
+    virtual void thrust_backward(float dt);
 
     virtual threepp::Vector2 get_position() const;
     virtual threepp::Vector2 get_velocity() const;
     virtual threepp::Vector2 get_direction() const;
     virtual float get_rotation_speed() const;
+    virtual float get_friction_coefficient() const;
 
-    virtual void set_position(const threepp::Vector2 position);
-    virtual void set_velocity(const threepp::Vector2& velocity);
-    virtual void set_direction(const threepp::Vector2& direction);
-    virtual void set_rotation_speed(const float rotation_speed);
+    virtual void set_position(threepp::Vector2 position);
+    virtual void set_velocity(threepp::Vector2 velocity);
+    virtual void set_direction(threepp::Vector2 direction);
+    virtual void set_rotation_speed(float rotation_speed);
+    virtual void set_friction_coefficient(float friction_coefficient);
 
     std::shared_ptr<threepp::Sprite> sprite_;
     bool marked_for_removal = false;

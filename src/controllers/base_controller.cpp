@@ -1,4 +1,6 @@
+
 #include "base_controller.hpp"
+#include <cmath>
 
 using namespace threepp;
 
@@ -17,10 +19,6 @@ BaseController::BaseController(const std::shared_ptr<Sprite>& sprite,
       thrust_power_(thrust_power),
       velocity_float_(initial_velocity),
       initial_rotation_velocity_(initial_rotation_velocity) {
-
-    // used for initial velocity so that the object moves when created
-    velocity_.x = direction_.x * velocity_float_;
-    velocity_.y = direction_.y * velocity_float_;
 
     // these check if the class is initiated correctly with correct values
     if (!sprite) {
@@ -46,9 +44,14 @@ BaseController::BaseController(const std::shared_ptr<Sprite>& sprite,
     if (thrust_power < 0) {// an engine can't have negative horsepower
         throw std::invalid_argument("Thrust power must be positive");
     }
+
+    // used for initial velocity so that the object moves when created
+    velocity_.x = direction_.x * velocity_float_;
+    velocity_.y = direction_.y * velocity_float_;
 }
 
-void BaseController::update(const float dt) {
+// uses DT to move object relative to time
+void BaseController::update(float dt) {
     velocity_.x -= friction_coefficient_ * velocity_.x * dt;
     velocity_.y -= friction_coefficient_ * velocity_.y * dt;
 
@@ -59,24 +62,24 @@ void BaseController::update(const float dt) {
     sprite_->material->rotation += initial_rotation_velocity_ * dt;
 }
 
-void BaseController::rotate_counter_clockwise(const float dt) {
+void BaseController::rotate_counter_clockwise(float dt) {
     update_direction();
     sprite_->material->rotation += rotation_speed_ * dt;
 }
 
-void BaseController::rotate_clockwise(const float dt) {
+void BaseController::rotate_clockwise(float dt) {
     update_direction();
     sprite_->material->rotation -= rotation_speed_ * dt;
 }
 
 // thrust is a scalar that is multiplied into the direction vector
-void BaseController::thrust_forward(const float dt) {
+void BaseController::thrust_forward(float dt) {
     update_direction();
     velocity_.x += direction_.x * thrust_power_ * dt;
     velocity_.y += direction_.y * thrust_power_ * dt;
 }
 
-void BaseController::thrust_backward(const float dt) {
+void BaseController::thrust_backward(float dt) {
     update_direction();
     velocity_.x -= direction_.x * thrust_power_ * dt;
     velocity_.y -= direction_.y * thrust_power_ * dt;
@@ -99,17 +102,21 @@ float BaseController::get_rotation_speed() const {
     return rotation_speed_;
 }
 
+float BaseController::get_friction_coefficient() const {
+    return friction_coefficient_;
+}
+
 // setters
-void BaseController::set_position(const Vector2 position) {
+void BaseController::set_position(Vector2 position) {
     sprite_->position.x = position.x;
     sprite_->position.y = position.y;
 }
 
-void BaseController::set_velocity(const Vector2& velocity) {
+void BaseController::set_velocity(Vector2 velocity) {
     velocity_ = velocity;
 }
 
-void BaseController::set_direction(const Vector2& direction) {
+void BaseController::set_direction(Vector2 direction) {
     if (std::abs(direction.length() - 1.0f) > 0.001) {
         throw std::invalid_argument("Direction vector must be normalized");
     }
@@ -120,6 +127,11 @@ void BaseController::set_rotation_speed(const float rotation_speed) {
     rotation_speed_ = rotation_speed;
 }
 
+void BaseController::set_friction_coefficient(float friction_coefficient) {
+    friction_coefficient_ = friction_coefficient;
+}
+
+// using trigonometry to get direction
 void BaseController::update_direction() {
     float theta = sprite_->material->rotation + (2 * atanf(1));// (atanf(1) * 4) = pi
     direction_.x = cosf(theta);

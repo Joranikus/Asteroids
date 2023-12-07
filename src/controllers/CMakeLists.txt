@@ -11,6 +11,5 @@ set(controller_files
 
 add_library(controllers ${controller_files})
 
-# Link libraries and include directories
-target_link_libraries(controllers PUBLIC threepp::threepp functions)
+target_link_libraries(controllers PUBLIC threepp::threepp)
 target_include_directories(controllers PUBLIC ${controllers_include_dir})

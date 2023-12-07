@@ -18,7 +18,7 @@ public:
 
 private:
     threepp::WindowSize& screen_size_;
-    float edge_offset_;
+    const float edge_offset_;
 };
 
 #endif//ASTEROIDS_ASTEROID_CONTROLLER_HPP
