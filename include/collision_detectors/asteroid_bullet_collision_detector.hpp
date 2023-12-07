@@ -4,8 +4,6 @@
 
 #include "collision_detectors/base_collision_detector.hpp"
 
-using namespace threepp;
-
 class AsteroidBulletCollisionDetector: public BaseCollisionDetector {
 
 public:

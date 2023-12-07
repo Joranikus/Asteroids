@@ -9,9 +9,9 @@
 class SpaceshipController: public BaseController {
 
 public:
-    SpaceshipController(Canvas& canvas,
+    SpaceshipController(threepp::Canvas& canvas,
                         BulletFactory& bullet_factory,
-                        std::shared_ptr<Sprite>& spaceship,
+                        std::shared_ptr<threepp::Sprite>& spaceship,
                         float spaceship_rotation_speed,
                         float spaceship_thrust_power,
                         float friction_coefficient);

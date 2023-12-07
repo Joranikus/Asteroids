@@ -8,7 +8,7 @@
 class BulletController: public BaseController {
 
 public:
-    BulletController(const std::shared_ptr<threepp::Sprite>& bullet_sprite,
+    BulletController(std::shared_ptr<threepp::Sprite> const& bullet_sprite,
                      threepp::Vector2 direction,
                      float initial_velocity);
 };

@@ -1,10 +1,8 @@
 
 #include "bullet_controller.hpp"
 
-using namespace threepp;
-
-BulletController::BulletController(const std::shared_ptr<Sprite>& bullet_sprite,
-                                   Vector2 direction,
+BulletController::BulletController(std::shared_ptr<threepp::Sprite> const& bullet_sprite,
+                                   threepp::Vector2 direction,
                                    float initial_velocity)
 
     : BaseController(bullet_sprite,

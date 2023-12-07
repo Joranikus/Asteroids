@@ -5,7 +5,8 @@ target_link_libraries(Asteroids PRIVATE threepp::threepp
                                         collision_detectors
                                         controllers
                                         factories
-                                        functions)
+                                        functions
+                                        games)
 
 add_subdirectory(collision_detectors)
 add_subdirectory(controllers)
