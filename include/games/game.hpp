@@ -3,7 +3,7 @@
 #define ASTEROIDS_GAME_HPP
 
 #include "collision_detectors/asteroid_bullet_collision_detector.hpp"
-#include "collision_detectors/asteroid_collision_detector.hpp"
+#include "collision_detectors/elastic_collision_detector.hpp"
 #include "controllers/spaceship_controller.hpp"
 #include "factories/asteroid_factory.hpp"
 #include "threepp/threepp.hpp"
@@ -40,7 +40,7 @@ private:
     std::unique_ptr<SpaceshipController> spaceship;
     std::unique_ptr<AsteroidFactory> asteroid_factory;
     AsteroidBulletCollisionDetector asteroid_bullet_collision_detector;
-    AsteroidCollisionDetector asteroid_collision_detector;
+    ElasticCollisionDetector asteroid_collision_detector;
     std::vector<std::string> asteroid_material_paths;
 };
 

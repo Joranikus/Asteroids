@@ -5,7 +5,7 @@
 #include "base_collision_detector.hpp"
 #include "threepp/threepp.hpp"
 
-class AsteroidCollisionDetector : public BaseCollisionDetector {
+class ElasticCollisionDetector: public BaseCollisionDetector {
 
 public:
     void check_collision(std::vector<std::shared_ptr<BaseController>>& asteroid_list);
