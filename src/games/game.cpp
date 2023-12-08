@@ -2,6 +2,7 @@
 #include "controllers/spaceship_controller.hpp"
 #include "factories/asteroid_factory.hpp"
 #include "functions/create_sprite.hpp"
+#include "functions/random_functions.hpp"
 #include "threepp/threepp.hpp"
 
 #include "games/game.hpp"
