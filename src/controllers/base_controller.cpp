@@ -45,6 +45,11 @@ BaseController::BaseController(const std::shared_ptr<Sprite>& sprite,
         throw std::invalid_argument("Thrust power must be positive");
     }
 
+    // creates mass according to material size
+    int width = sprite->material->map->image->width;
+    int height = sprite->material->map->image->width;
+    mass = static_cast<float>(width * height * 0.01);
+
     // used for initial velocity so that the object moves when created
     velocity_.x = direction_.x * velocity_float_;
     velocity_.y = direction_.y * velocity_float_;
@@ -98,12 +103,20 @@ Vector2 BaseController::get_direction() const {
     return direction_;
 }
 
+float BaseController::get_rotation() const {
+    return sprite_->material->rotation;
+}
+
 float BaseController::get_rotation_speed() const {
     return rotation_speed_;
 }
 
 float BaseController::get_friction_coefficient() const {
     return friction_coefficient_;
+}
+
+float BaseController::get_mass() const {
+    return mass;
 }
 
 // setters
@@ -121,6 +134,10 @@ void BaseController::set_direction(Vector2 direction) {
         throw std::invalid_argument("Direction vector must be normalized");
     }
     direction_ = direction;
+}
+
+void BaseController::set_rotation(const float radian) {
+    sprite_->material->rotation = radian;
 }
 
 void BaseController::set_rotation_speed(const float rotation_speed) {

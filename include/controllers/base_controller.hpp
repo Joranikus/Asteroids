@@ -24,12 +24,15 @@ public:
     virtual threepp::Vector2 get_position() const;
     virtual threepp::Vector2 get_velocity() const;
     virtual threepp::Vector2 get_direction() const;
+    virtual float get_rotation() const;
     virtual float get_rotation_speed() const;
     virtual float get_friction_coefficient() const;
+    virtual float get_mass() const;
 
     virtual void set_position(threepp::Vector2 position);
     virtual void set_velocity(threepp::Vector2 velocity);
     virtual void set_direction(threepp::Vector2 direction);
+    virtual void set_rotation(float radian);
     virtual void set_rotation_speed(float rotation_speed);
     virtual void set_friction_coefficient(float friction_coefficient);
 
@@ -46,6 +49,7 @@ private:
     float velocity_float_;
     float initial_rotation_velocity_;
 
+    float mass;
     threepp::Vector2 velocity_;
 };
 

@@ -1,5 +1,4 @@
 
-#include "collision_detectors/asteroid_bullet_collision_detector.hpp"
 #include "controllers/spaceship_controller.hpp"
 #include "factories/asteroid_factory.hpp"
 #include "functions/create_sprite.hpp"
@@ -59,6 +58,8 @@ void Game::update_game(float dt) {
     asteroid_factory->generate_wave(dt, 20, 1, 0);
 
     asteroid_bullet_collision_detector.check_collision(bullet_factory->objects, asteroid_factory->objects);
+
+    asteroid_collision_detector.check_collision(asteroid_factory->objects);
 }
 
 void Game::initialize_canvas() {

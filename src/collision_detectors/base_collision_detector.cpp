@@ -1,5 +1,6 @@
 
 #include "base_collision_detector.hpp"
+#include <cmath>
 
 // fikk help av ChatGPT til å skrive denne
 bool BaseCollisionDetector::collision(const std::shared_ptr<BaseController>& object_1,
@@ -16,19 +17,15 @@ bool BaseCollisionDetector::collision(const std::shared_ptr<BaseController>& obj
     auto other_object = object_2->sprite_;
     auto this_object = object_1->sprite_;
 
-    // assuming the sprites position is at its center
-    float this_left = this_object->position.x - (this_object->scale.x / 2);
-    float this_right = this_object->position.x + (this_object->scale.x / 2);
-    float this_top = this_object->position.y - (this_object->scale.y / 2);
-    float this_bottom = this_object->position.y + (this_object->scale.y / 2);
+    // calculates the radius (assuming radius is half of the scale)
+    float radius1 = std::max(this_object->scale.x, this_object->scale.y) / 2;
+    float radius2 = std::max(other_object->scale.x, other_object->scale.y) / 2;
 
-    float other_left = other_object->position.x - (other_object->scale.x / 2);
-    float other_right = other_object->position.x + (other_object->scale.x / 2);
-    float other_top = other_object->position.y - (other_object->scale.y / 2);
-    float other_bottom = other_object->position.y + (other_object->scale.y / 2);
+    // calculates the distance between the centers
+    float dx = this_object->position.x - other_object->position.x;
+    float dy = this_object->position.y - other_object->position.y;
+    float distance = std::sqrt(dx * dx + dy * dy);
 
-    // check if bounding boxes intersect
-    // returns true if collision
-    return this_left < other_right && this_right > other_left &&
-           this_top < other_bottom && this_bottom > other_top;
+    // checks if the distance is less than or equal to the sum of the radius
+    return distance <= (radius1 + radius2);
 }
