@@ -67,15 +67,15 @@ AsteroidFactory::AsteroidFactory(Canvas& canvas,
     }
 
     std::shared_ptr<Sprite> AsteroidFactory::create_object_sprite() {
-        int random_material = random_int(0, material_paths_.size() - 1);
+        int random_material = random_int(0, static_cast<int>(material_paths_.size() - 1));
         std::string image = material_paths_[random_material];
 
         auto object_sprite = create_sprite(loader_, image , scale_);
-        object_sprites.push_back(object_sprite);
+        object_sprites.emplace_back(object_sprite);
         return object_sprite;
     }
 
-    std::shared_ptr<BaseController> AsteroidFactory::create_object(std::shared_ptr<Sprite> object_sprite) {
+    std::shared_ptr<BaseController> AsteroidFactory::create_object(std::shared_ptr<Sprite>& object_sprite) {
         float random_rotation_speed = random_float(-7, 7);
         auto asteroid = std::make_shared<AsteroidController>(object_sprite,
                                                              screen_size_,
@@ -84,11 +84,11 @@ AsteroidFactory::AsteroidFactory(Canvas& canvas,
                                                              min_velocity_,
                                                              max_velocity_,
                                                              edge_offset_);
-        objects.push_back(asteroid);
+        objects.emplace_back(asteroid);
         return asteroid;
     }
 
-    //TODO: korfor må jeg gjøre dette i det hele tatt? funksjonen er jo i base klassen.
+    //TODO: korfor må jeg gjøre dette i det hele tatt? funksjonen er jo i base klassen. Funker ikke uten override.
     void AsteroidFactory::on_window_resize(WindowSize& new_size) {
         BaseFactory::on_window_resize(new_size);
         screen_size_ = new_size;

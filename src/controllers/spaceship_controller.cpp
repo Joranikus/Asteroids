@@ -16,7 +16,7 @@ SpaceshipController::SpaceshipController(Canvas& canvas,
                      friction_coefficient,
                      spaceship_thrust_power),
 
-      bullet_factory_(bullet_factory){};
+      bullet_factory_(bullet_factory){}
 
 //checks each action in an actions set individually, so you can press multiple buttons at the same time
 void SpaceshipController::perform_spaceship_movement(const std::set<SpaceshipKeylistener::Action>& actions, float dt) {

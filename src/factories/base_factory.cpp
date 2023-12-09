@@ -66,7 +66,7 @@ std::shared_ptr<Sprite> BaseFactory::create_object_sprite() {
     return object_sprite;
 }
 
-std::shared_ptr<BaseController> BaseFactory::create_object(std::shared_ptr<Sprite> object_sprite) {
+std::shared_ptr<BaseController> BaseFactory::create_object(std::shared_ptr<Sprite>& object_sprite) {
     auto object = std::make_shared<BaseController>(object_sprite,
                                                                 Vector2(0, 0),
                                                                 0,
@@ -78,7 +78,7 @@ std::shared_ptr<BaseController> BaseFactory::create_object(std::shared_ptr<Sprit
     return object;
 }
 
-void BaseFactory::add_to_scene(std::shared_ptr<Sprite> object_sprite) {
+void BaseFactory::add_to_scene(std::shared_ptr<Sprite>& object_sprite) {
     scene_->add(object_sprite);
 }
 

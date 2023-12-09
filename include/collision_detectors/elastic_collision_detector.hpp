@@ -3,11 +3,15 @@
 #define ASTEROIDS_ASTEROID_COLLISON_DETECTOR_HPP
 
 #include "base_collision_detector.hpp"
+#include "factories/particle_factory.hpp"
 #include "threepp/threepp.hpp"
 
 class ElasticCollisionDetector: public BaseCollisionDetector {
 
 public:
+
+    explicit ElasticCollisionDetector(ParticleFactory& particle_factory);
+
     void check_collision(std::vector<std::shared_ptr<BaseController>>& asteroid_list);
     std::pair<threepp::Vector2, threepp::Vector2> calculate_collision(std::shared_ptr<BaseController>& this_object,
                                                                       std::shared_ptr<BaseController>& other_object);
@@ -19,6 +23,11 @@ public:
                                                                            const threepp::Vector2& v0_other, float p,
                                                                            float mass_this, float mass_other,
                                                                            const threepp::Vector2& collision_normal);
+
+
+private:
+    ParticleFactory& particle_factory_;
+
 };
 
 #endif//ASTEROIDS_ASTEROID_COLLISON_DETECTOR_HPP

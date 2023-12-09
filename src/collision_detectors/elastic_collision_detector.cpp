@@ -3,6 +3,9 @@
 
 using namespace threepp;
 
+ElasticCollisionDetector::ElasticCollisionDetector(ParticleFactory& particle_factory)
+    : particle_factory_(particle_factory) {}
+
 // formel for elastisk kollisjon hentet fra https://www.101computing.net/elastic-collision-in-a-pool-game/.
 void ElasticCollisionDetector::check_collision(std::vector<std::shared_ptr<BaseController>>& asteroid_list) {
     for (size_t i = 0; i < asteroid_list.size(); ++i) {
@@ -15,12 +18,18 @@ void ElasticCollisionDetector::check_collision(std::vector<std::shared_ptr<BaseC
 
                 this_object->set_velocity(new_velocities.first);
                 other_object->set_velocity(new_velocities.second);
+
+                particle_factory_.generate_particle_burst(this_object->get_position(),
+                                                          this_object->get_direction(),
+                                                          10,
+                                                          10);
+
             }
         }
     }
 }
 
-// inspirert fra koden til 101computing og med hjelp fra ChatGPT
+// inspirert fra koden til 101computing
 std::pair<Vector2, Vector2> ElasticCollisionDetector::calculate_collision(std::shared_ptr<BaseController>& this_object,
                                                                            std::shared_ptr<BaseController>& other_object) {
     Vector2 v0_this = this_object->get_velocity();

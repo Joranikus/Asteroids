@@ -19,15 +19,16 @@ public:
     virtual bool out_of_bounds(std::shared_ptr<BaseController>& object);
 
     virtual std::shared_ptr<threepp::Sprite> create_object_sprite();
-    virtual std::shared_ptr<BaseController> create_object(std::shared_ptr<threepp::Sprite> object_sprite);
+    virtual std::shared_ptr<BaseController> create_object(std::shared_ptr<threepp::Sprite>& object_sprite);
 
-    virtual void add_to_scene(std::shared_ptr<threepp::Sprite> object_sprite);
+    virtual void add_to_scene(std::shared_ptr<threepp::Sprite>& object_sprite);
     virtual void on_window_resize(threepp::WindowSize& new_size);
 
     std::vector<std::shared_ptr<BaseController>> objects;
     std::vector<std::shared_ptr<threepp::Sprite>> object_sprites;
 
 private:
+
     threepp::Canvas& canvas_;
     std::shared_ptr<threepp::Scene>& scene_;
     threepp::TextureLoader& loader_;
