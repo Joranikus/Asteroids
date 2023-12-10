@@ -4,11 +4,11 @@
 using namespace threepp;
 
 // formel for elastisk kollisjon hentet fra https://www.101computing.net/elastic-collision-in-a-pool-game/.
-void ElasticCollisionDetector::check_collision(std::vector<std::shared_ptr<BaseController>>& asteroid_list) {
-    for (size_t i = 0; i < asteroid_list.size(); ++i) {
-        for (size_t j = i + 1; j < asteroid_list.size(); ++j) {
-            auto& this_object = asteroid_list[i];
-            auto& other_object = asteroid_list[j];
+void ElasticCollisionDetector::check_collision_list(std::vector<std::shared_ptr<BaseController>>& object_list) {
+    for (size_t i = 0; i < object_list.size(); ++i) {
+        for (size_t j = i + 1; j < object_list.size(); ++j) {
+            auto& this_object = object_list[i];
+            auto& other_object = object_list[j];
 
             if (collision(this_object, other_object)) {
                 auto new_velocities = calculate_collision(this_object, other_object);

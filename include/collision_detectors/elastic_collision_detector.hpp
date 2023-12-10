@@ -8,7 +8,7 @@
 class ElasticCollisionDetector: public BaseCollisionDetector {
 
 public:
-    void check_collision(std::vector<std::shared_ptr<BaseController>>& asteroid_list);
+    void check_collision_list(std::vector<std::shared_ptr<BaseController>>& object_list);
     std::pair<threepp::Vector2, threepp::Vector2> calculate_collision(std::shared_ptr<BaseController>& this_object,
                                                                       std::shared_ptr<BaseController>& other_object);
 

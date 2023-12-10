@@ -13,7 +13,7 @@ public:
     int get_score() const;
 
 private:
-    int score;
+    int score = 0;
 };
 
 #endif//ASTEROIDS_ASTEROID_BULLET_COLLISON_DETECTOR_HPP

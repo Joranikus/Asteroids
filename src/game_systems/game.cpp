@@ -44,8 +44,8 @@ void Game::run() {
 
     canvas.animate([&] {
         float dt = clock.getDelta();
-        update_game(dt);
         render_game();
+        update_game(dt);
     });
 }
 
@@ -69,7 +69,9 @@ void Game::update_game(float dt) {
     asteroid_bullet_collision_detector.check_collision(bullet_factory->objects, asteroid_factory->objects);
     spaceship->set_score(asteroid_bullet_collision_detector.get_score());
 
-    asteroid_collision_detector.check_collision(asteroid_factory->objects);
+    asteroid_collision_detector.check_collision_list(asteroid_factory->objects);
+
+   asteroid_spaceship_collision_detector.asteroid_spaceship_collision_check(asteroid_factory->objects, spaceship);
 }
 
 void Game::initialize_canvas() {
@@ -96,7 +98,7 @@ void Game::initialize_spaceship() {
             2.5,
             0);
 
-    auto spaceship_sprite = create_sprite(loader, "spaceship.png", 0.08);
+    auto spaceship_sprite = create_sprite(loader, "spaceship.png", 0.24);
     spaceship = std::make_unique<SpaceshipController>(
             canvas,
             *bullet_factory,
