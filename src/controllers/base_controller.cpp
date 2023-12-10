@@ -46,8 +46,8 @@ BaseController::BaseController(const std::shared_ptr<Sprite>& sprite,
     }
 
     // creates mass according to material size
-    int width = sprite->material->map->image->width;
-    int height = sprite->material->map->image->width;
+    int width = static_cast<int>(sprite->material->map->image->width);
+    int height = static_cast<int>(sprite->material->map->image->width);
     mass = static_cast<float>(width * height * 0.01);
 
     // used for initial velocity so that the object moves when created

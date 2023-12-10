@@ -118,6 +118,7 @@ void Game::on_window_resize() {
         camera->bottom = -size.height / 2;
         camera->updateProjectionMatrix();
 
+        spaceship->on_window_resize(size);
         asteroid_factory->on_window_resize(size);
         bullet_factory->on_window_resize(size);
 
