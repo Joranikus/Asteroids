@@ -3,150 +3,60 @@
 #define ASTEROIDS_BASE_CONTROLLER_HPP
 
 #include "threepp/threepp.hpp"
-#include <cmath>
-
-using namespace threepp;
 
 class BaseController {
 
 public:
-    BaseController(const std::shared_ptr<Sprite>& sprite,
-                   Vector2 direction,
+    BaseController(const std::shared_ptr<threepp::Sprite>& sprite,
+                   threepp::Vector2 direction,
                    float rotation_speed = 0.0f,
                    float friction_coefficient = 0.0f,
                    float thrust_power = 0.0f,
                    float initial_velocity = 0.0f,
-                   float initial_rotation_velocity = 0.0f)
+                   float initial_rotation_velocity = 0.0f);
 
-        : sprite_(sprite),
-          direction_(direction),
-          rotation_speed_(rotation_speed),
-          friction_coefficient_(friction_coefficient),
-          thrust_power_(thrust_power),
-          velocity_float_(initial_velocity),
-          initial_rotation_velocity_(initial_rotation_velocity) {
+    virtual void update(float dt);
+    virtual void rotate_counter_clockwise(float dt);
+    virtual void rotate_clockwise(float dt);
+    virtual void thrust_forward(float dt);
+    virtual void thrust_backward(float dt);
 
-        // used for initial velocity so that the object moves when created
-        velocity_.x = direction_.x * velocity_float_;
-        velocity_.y = direction_.y * velocity_float_;
+    virtual threepp::Vector2 get_position() const;
+    virtual threepp::Vector2 get_velocity() const;
+    virtual threepp::Vector2 get_direction() const;
+    virtual float get_rotation() const;
+    virtual float get_rotation_speed() const;
+    virtual float get_friction_coefficient() const;
+    virtual float get_mass() const;
+    virtual int get_health() const;
+    virtual int get_score() const;
 
-        // these check if the class is initiated correctly with correct values
-        if (!sprite) {
-            throw std::runtime_error("Sprite not found");
-        }
+    virtual void set_position(threepp::Vector2 position);
+    virtual void set_velocity(threepp::Vector2 velocity);
+    virtual void set_direction(threepp::Vector2 direction);
+    virtual void set_rotation(float radian);
+    virtual void set_rotation_speed(float rotation_speed);
+    virtual void set_friction_coefficient(float friction_coefficient);
+    virtual void set_health(int new_health);
+    virtual void set_score(int new_score);
 
-        if (!sprite->material) {
-            throw std::runtime_error("Sprite material not found");
-        }
-
-        if (std::abs(direction.length() - 1.0f) > 0.001) { // because direction vector always has a length of 1
-            throw std::invalid_argument("Direction vector must be normalized");
-        }
-
-        if (rotation_speed < 0) { //rotation speed cant be negative
-            throw std::invalid_argument("Rotation speed must be positive");
-        }
-
-        if (friction_coefficient < 0.0f || friction_coefficient > 1.0f) { // 0 = no friction, 1 = all the friction
-            throw std::invalid_argument("Friction coefficient must be between 0 and 1.");
-        }
-
-        if (thrust_power < 0) { // an engine can't have negative horsepower
-            throw std::invalid_argument("Thrust power must be positive");
-        }
-    }
-
-    virtual void update(const float dt) {
-        velocity_.x -= friction_coefficient_ * velocity_.x * dt;
-        velocity_.y -= friction_coefficient_ * velocity_.y * dt;
-
-        sprite_->position.x += velocity_.x * dt;
-        sprite_->position.y += velocity_.y * dt;
-
-        // I decided to not let rotation be effected by friction
-        sprite_->material->rotation += initial_rotation_velocity_ * dt;
-    }
-
-    virtual void rotate_counter_clockwise(const float dt) {
-        update_direction();
-        sprite_->material->rotation += rotation_speed_ * dt;
-    }
-
-    virtual void rotate_clockwise(const float dt) {
-        update_direction();
-        sprite_->material->rotation -= rotation_speed_ * dt;
-    }
-
-    // thrust is a scalar that is multiplied into the direction vector
-    virtual void thrust_forward(const float dt) {
-        update_direction();
-        velocity_.x += direction_.x * thrust_power_ * dt;
-        velocity_.y += direction_.y * thrust_power_ * dt;
-    }
-
-    virtual void thrust_backward(const float dt) {
-        update_direction();
-        velocity_.x -= direction_.x * thrust_power_ * dt;
-        velocity_.y -= direction_.y * thrust_power_ * dt;
-    }
-
-    // getters
-    virtual Vector2 get_position() const {
-        return {sprite_->position.x, sprite_->position.y};
-    }
-
-    virtual Vector2 get_velocity() const {
-        return velocity_;
-    }
-
-    virtual Vector2 get_direction() const {
-        return direction_;
-    }
-
-    virtual float get_rotation_speed() const {
-        return rotation_speed_;
-    }
-
-    // setters
-    virtual void set_position(const Vector2 position) {
-        sprite_->position.x = position.x;
-        sprite_->position.y = position.y;
-    }
-
-    virtual void set_velocity(const Vector2& velocity) {
-        velocity_ = velocity;
-    }
-
-    virtual void set_direction(const Vector2& direction) {
-        if (std::abs(direction.length() - 1.0f) > 0.001) {
-            throw std::invalid_argument("Direction vector must be normalized");
-        }
-
-        direction_ = direction;
-    }
-
-    virtual void set_rotation_speed(const float rotation_speed) {
-        rotation_speed_ = rotation_speed;
-    }
-
-    std::shared_ptr<Sprite> sprite_;
+    std::shared_ptr<threepp::Sprite> sprite_;
     bool marked_for_removal = false;
 
 private:
-    void update_direction() {
-        float theta = sprite_->material->rotation + (2 * atanf(1));// (atanf(1) * 4) = pi
-        direction_.x = cosf(theta);
-        direction_.y = sinf(theta);
-    }
+    void update_direction();
 
-    Vector2 direction_;
+    threepp::Vector2 direction_;
     float rotation_speed_;
     float friction_coefficient_;
     float thrust_power_;
     float velocity_float_;
     float initial_rotation_velocity_;
 
-    Vector2 velocity_;
+    float mass;
+    int health = 100;
+    int score = 0;
+    threepp::Vector2 velocity_;
 };
 
 #endif//ASTEROIDS_BASE_CONTROLLER_HPP

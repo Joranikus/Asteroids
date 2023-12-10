@@ -3,11 +3,13 @@
 #include "controllers/base_controller.hpp"
 #include "threepp/threepp.hpp"
 
+using namespace threepp;
+
 //fixture created with help from ChatGPT
 class BaseControllerFixture {
 public:
     BaseControllerFixture() {
-        sprite_with_material = Sprite::create(SpriteMaterial::create());
+        sprite_with_material = threepp::Sprite::create(SpriteMaterial::create());
         sprite_without_material = Sprite::create(nullptr);
 
         float north_east_radian = math::TWO_PI / 4;

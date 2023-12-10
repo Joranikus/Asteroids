@@ -1,30 +1,19 @@
 
-#include "threepp/threepp.hpp"
-#include "collision_detectors/base_collision_detector.hpp"
-#include "factories/base_factory.hpp"
-
-using namespace threepp;
-
 #ifndef ASTEROIDS_ASTEROID_BULLET_COLLISON_DETECTOR_HPP
 #define ASTEROIDS_ASTEROID_BULLET_COLLISON_DETECTOR_HPP
 
-class AsteroidBulletCollisionDetector : public BaseCollisionDetector {
+#include "collision_detectors/base_collision_detector.hpp"
+
+class AsteroidBulletCollisionDetector: public BaseCollisionDetector {
 
 public:
+    void check_collision(std::vector<std::shared_ptr<BaseController>>& bullet_list,
+                         std::vector<std::shared_ptr<BaseController>>& asteroid_list);
 
-    void check_collision(std::vector<std::shared_ptr<BaseController>> bullet_list, std::vector<std::shared_ptr<BaseController>> asteroid_list) {
-        for (auto& bullet : bullet_list) {
-            for (auto& asteroid : asteroid_list) {
-                if (collision(bullet, asteroid)) {
-                    bullet->marked_for_removal = true;
-                    asteroid->marked_for_removal = true;
-                }
-            }
-        }
-    }
+    int get_score() const;
 
 private:
-
+    int score = 0;
 };
 
 #endif//ASTEROIDS_ASTEROID_BULLET_COLLISON_DETECTOR_HPP

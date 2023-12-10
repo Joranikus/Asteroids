@@ -3,68 +3,22 @@
 #define ASTEROIDS_ASTEROID_CONTROLLER_HPP
 
 #include "base_controller.hpp"
-#include "functions/random_functions.hpp"
 #include "threepp/threepp.hpp"
-
-using namespace threepp;
 
 class AsteroidController: public BaseController {
 
 public:
-
-    AsteroidController(const std::shared_ptr<Sprite>& asteroid_sprite,
-                       WindowSize& screen_size,
-                       Vector2 direction,
+    AsteroidController(const std::shared_ptr<threepp::Sprite>& asteroid_sprite,
+                       threepp::WindowSize& screen_size,
+                       threepp::Vector2 direction,
                        float initial_rotation_speed,
                        float min_velocity,
                        float max_velocity,
-                       float edge_offset)
-
-        : BaseController(asteroid_sprite,
-                         direction,
-                         0,
-                         0,
-                         0,
-                         random_float(min_velocity, max_velocity),
-                         initial_rotation_speed),
-
-          screen_size_(screen_size),
-          edge_offset_(edge_offset) {
-
-        enum class Edge { Left, Right, Top, Bottom };
-        Edge edge;
-
-        // determines the edge based on the direction
-        if (fabs(direction.x) > fabs(direction.y)) {
-            edge = (direction.x > 0) ? Edge::Left : Edge::Right;
-        } else {
-            edge = (direction.y > 0) ? Edge::Bottom : Edge::Top;
-        }
-
-        // positions the asteroid based on the chosen edge
-        switch (edge) {
-            case Edge::Left:
-                asteroid_sprite->position.x = -screen_size_.width / 2 - edge_offset_;
-                asteroid_sprite->position.y = random_float(-screen_size_.height / 2, screen_size_.height / 2);
-                break;
-            case Edge::Right:
-                asteroid_sprite->position.x = screen_size_.width / 2 + edge_offset_;
-                asteroid_sprite->position.y = random_float(-screen_size_.height / 2, screen_size_.height / 2);
-                break;
-            case Edge::Top:
-                asteroid_sprite->position.y = screen_size_.height / 2 + edge_offset_;
-                asteroid_sprite->position.x = random_float(-screen_size_.width / 2, screen_size_.width / 2);
-                break;
-            case Edge::Bottom:
-                asteroid_sprite->position.y = -screen_size_.height / 2 - edge_offset_;
-                asteroid_sprite->position.x = random_float(-screen_size_.width / 2, screen_size_.width / 2);
-                break;
-        }
-    }
+                       float edge_offset);
 
 private:
-    WindowSize& screen_size_;
-    float edge_offset_;
+    threepp::WindowSize& screen_size_;
+    const float edge_offset_;
 };
 
 #endif//ASTEROIDS_ASTEROID_CONTROLLER_HPP

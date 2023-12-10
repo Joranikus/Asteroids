@@ -1,46 +1,11 @@
 
-#include "threepp/threepp.hpp"
-#include <random>
-
-using namespace threepp;
-
 #ifndef ASTEROIDS_RANDOM_FUNCTIONS_HPP
 #define ASTEROIDS_RANDOM_FUNCTIONS_HPP
 
-Vector2 random_direction() {
-    std::random_device rd;
-    std::mt19937 gen(rd());
+#include "threepp/threepp.hpp"
 
-    float min = 0;
-    float max = math::TWO_PI;
-
-    std::uniform_real_distribution<> distr(min, max);
-
-    auto random = static_cast<float>(distr(gen));
-
-    Vector2 direction;
-    direction.x = cosf(random);
-    direction.y = sinf(random);
-
-    return direction;
-}
-
-float random_float(float min, float max) {
-    std::random_device rd;
-    std::mt19937 gen(rd());
-
-    std::uniform_real_distribution<> distr(min, max);
-
-    return distr(gen);
-}
-
-int random_int(int min, int max) {
-    std::random_device rd;
-    std::mt19937 gen(rd());
-
-    std::uniform_int_distribution distr(min, max);
-
-    return distr(gen);
-}
+threepp::Vector2 random_direction();
+float random_float(float min, float max);
+int random_int(int min, int max);
 
 #endif//ASTEROIDS_RANDOM_FUNCTIONS_HPP
