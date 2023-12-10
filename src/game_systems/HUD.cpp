@@ -4,7 +4,7 @@
 using namespace threepp;
 
 HUD::HUD(TextRenderer& text_renderer,
-                       BaseController& object,
+         BaseController& object,
          HUDProperties& properties)
 
     : object_(object),

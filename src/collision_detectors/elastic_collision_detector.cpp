@@ -4,6 +4,7 @@
 using namespace threepp;
 
 // formel for elastisk kollisjon hentet fra https://www.101computing.net/elastic-collision-in-a-pool-game/.
+// checks collision between all the asteroids
 void ElasticCollisionDetector::check_collision_list(std::vector<std::shared_ptr<BaseController>>& object_list) {
     for (size_t i = 0; i < object_list.size(); ++i) {
         for (size_t j = i + 1; j < object_list.size(); ++j) {
@@ -21,8 +22,14 @@ void ElasticCollisionDetector::check_collision_list(std::vector<std::shared_ptr<
 }
 
 // inspirert fra koden til 101computing og med hjelp fra ChatGPT
+// uses kinetic physics formula to calculate the new direction and velocity of the two objects
 std::pair<Vector2, Vector2> ElasticCollisionDetector::calculate_collision(std::shared_ptr<BaseController>& this_object,
                                                                            std::shared_ptr<BaseController>& other_object) {
+
+    if (!this_object || !other_object) {
+        throw std::runtime_error("Object doesn't exist");
+    }
+
     Vector2 v0_this = this_object->get_velocity();
     Vector2 v0_other = other_object->get_velocity();
 

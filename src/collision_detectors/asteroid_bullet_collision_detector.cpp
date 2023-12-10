@@ -3,6 +3,7 @@
 
 void AsteroidBulletCollisionDetector::check_collision(std::vector<std::shared_ptr<BaseController>>& bullet_list,
                                                       std::vector<std::shared_ptr<BaseController>>& asteroid_list) {
+
     for (auto& bullet : bullet_list) {
         for (auto& asteroid : asteroid_list) {
             if (collision(bullet, asteroid)) {

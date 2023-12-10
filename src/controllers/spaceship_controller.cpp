@@ -75,6 +75,7 @@ bool SpaceshipController::out_of_bounds() const {
     }
 }
 
+// keeps the spaceship inside the bounds
 void SpaceshipController::return_to_screen() {
     if (out_of_bounds()) {
         auto position = get_position();
