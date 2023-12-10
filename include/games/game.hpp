@@ -27,7 +27,7 @@ private:
     void initialize_spaceship();
     void initialize_asteroids();
 
-    void on_window_resize();
+    void on_window_resize(threepp::WindowSize size);
 
     threepp::Canvas canvas;
     threepp::GLRenderer renderer;

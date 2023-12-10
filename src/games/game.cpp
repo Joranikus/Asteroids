@@ -7,6 +7,8 @@
 
 #include "games/game.hpp"
 
+using namespace threepp;
+
 Game::Game(): canvas(threepp::Canvas::Parameters().title("Asteroids").size(1280, 720).antialiasing(4)),
 
               scene(threepp::Scene::create()),
@@ -23,8 +25,8 @@ Game::Game(): canvas(threepp::Canvas::Parameters().title("Asteroids").size(1280,
                       1, 100)),
 
               asteroid_material_paths({"asteroid1.png", "asteroid2.png", "asteroid3.png",
-                                          "asteroid4.png", "asteroid5.png", "asteroid6.png",
-                                          "asteroid7.png", "asteroid8.png"}) {}
+                                       "asteroid4.png", "asteroid5.png", "asteroid6.png",
+                                       "asteroid7.png", "asteroid8.png"}) {}
 
 void Game::setup() {
     initialize_canvas();
@@ -35,11 +37,14 @@ void Game::setup() {
 }
 
 void Game::run() {
+    canvas.onWindowResize([&](WindowSize size) {
+        on_window_resize(size);
+    });
+
     canvas.animate([&] {
         float dt = clock.getDelta();
         update_game(dt);
         render_game();
-        on_window_resize();
     });
 }
 
@@ -109,19 +114,17 @@ void Game::initialize_asteroids() {
             0);
 }
 
-void Game::on_window_resize() {
+void Game::on_window_resize(WindowSize size) {
     // scales the camera according to the window width/height
-    canvas.onWindowResize([&](threepp::WindowSize size) {
-        camera->left = -size.width / 2;
-        camera->right = size.width / 2;
-        camera->top = size.height / 2;
-        camera->bottom = -size.height / 2;
-        camera->updateProjectionMatrix();
+    camera->left = -size.width / 2;
+    camera->right = size.width / 2;
+    camera->top = size.height / 2;
+    camera->bottom = -size.height / 2;
+    camera->updateProjectionMatrix();
 
-        spaceship->on_window_resize(size);
-        asteroid_factory->on_window_resize(size);
-        bullet_factory->on_window_resize(size);
+    spaceship->on_window_resize(size);
+    asteroid_factory->on_window_resize(size);
+    bullet_factory->on_window_resize(size);
 
-        renderer.setSize(size);
-    });
+    renderer.setSize(size);
 }
