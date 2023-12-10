@@ -2,10 +2,8 @@
 #include "controllers/spaceship_controller.hpp"
 #include "factories/asteroid_factory.hpp"
 #include "functions/create_sprite.hpp"
-#include "functions/random_functions.hpp"
 #include "threepp/threepp.hpp"
-
-#include "games/game.hpp"
+#include "game_systems/game.hpp"
 
 using namespace threepp;
 
@@ -32,8 +30,11 @@ void Game::setup() {
     initialize_canvas();
     initialize_renderers();
     initialize_camera();
+    initialize_game_points();
     initialize_spaceship();
     initialize_asteroids();
+
+    spaceship_points->setup();
 }
 
 void Game::run() {
@@ -48,10 +49,12 @@ void Game::run() {
     });
 }
 
-void Game::pause() {}
-
 void Game::render_game() {
+    spaceship_points->set_text();
     renderer.render(*scene, *camera);
+
+    renderer.resetState();
+    text_renderer.render();
 }
 
 void Game::update_game(float dt) {
@@ -64,6 +67,7 @@ void Game::update_game(float dt) {
     asteroid_factory->generate_wave(dt, 20, 1, 0);
 
     asteroid_bullet_collision_detector.check_collision(bullet_factory->objects, asteroid_factory->objects);
+    spaceship->set_score(asteroid_bullet_collision_detector.get_score());
 
     asteroid_collision_detector.check_collision(asteroid_factory->objects);
 }
@@ -91,6 +95,7 @@ void Game::initialize_spaceship() {
             1000,
             2.5,
             0);
+
     auto spaceship_sprite = create_sprite(loader, "spaceship.png", 0.08);
     spaceship = std::make_unique<SpaceshipController>(
             canvas,
@@ -100,6 +105,11 @@ void Game::initialize_spaceship() {
             500,
             0.75);
     scene->add(spaceship_sprite);
+
+    spaceship_points = std::make_unique<HUD>(
+            text_renderer,
+            *spaceship,
+            *spaceship_point_props);
 }
 
 void Game::initialize_asteroids() {
@@ -112,6 +122,16 @@ void Game::initialize_asteroids() {
             100,
             300,
             0);
+}
+
+void Game::initialize_game_points() {
+    spaceship_point_props = std::make_unique<HUDProperties>();
+    spaceship_point_props->health_text_scale = 2;
+    spaceship_point_props->health_x = 10;
+    spaceship_point_props->health_y = 10;
+    spaceship_point_props->score_text_scale = 2;
+    spaceship_point_props->score_x = 10;
+    spaceship_point_props->score_y = 40;
 }
 
 void Game::on_window_resize(WindowSize size) {

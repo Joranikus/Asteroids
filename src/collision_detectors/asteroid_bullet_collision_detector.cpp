@@ -8,7 +8,12 @@ void AsteroidBulletCollisionDetector::check_collision(std::vector<std::shared_pt
             if (collision(bullet, asteroid)) {
                 bullet->marked_for_removal = true;
                 asteroid->marked_for_removal = true;
+                score += 10;
             }
         }
     }
+}
+
+int AsteroidBulletCollisionDetector::get_score() const {
+    return score;
 }

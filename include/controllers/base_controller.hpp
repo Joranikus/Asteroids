@@ -28,6 +28,8 @@ public:
     virtual float get_rotation_speed() const;
     virtual float get_friction_coefficient() const;
     virtual float get_mass() const;
+    virtual int get_health() const;
+    virtual int get_score() const;
 
     virtual void set_position(threepp::Vector2 position);
     virtual void set_velocity(threepp::Vector2 velocity);
@@ -35,6 +37,8 @@ public:
     virtual void set_rotation(float radian);
     virtual void set_rotation_speed(float rotation_speed);
     virtual void set_friction_coefficient(float friction_coefficient);
+    virtual void set_health(int new_health);
+    virtual void set_score(int new_score);
 
     std::shared_ptr<threepp::Sprite> sprite_;
     bool marked_for_removal = false;
@@ -50,6 +54,8 @@ private:
     float initial_rotation_velocity_;
 
     float mass;
+    int health = 100;
+    int score = 0;
     threepp::Vector2 velocity_;
 };
 

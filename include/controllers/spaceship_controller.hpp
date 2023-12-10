@@ -28,6 +28,7 @@ private:
     float bullet_cooldown_{};
     float time_since_last_bullet = 0.0f;
     bool ready_to_shoot{};
+
     BulletFactory& bullet_factory_;
     threepp::Canvas& canvas_;
     threepp::WindowSize screen_size_ = canvas_.size();

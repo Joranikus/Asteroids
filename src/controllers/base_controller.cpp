@@ -119,6 +119,14 @@ float BaseController::get_mass() const {
     return mass;
 }
 
+int BaseController::get_health() const {
+    return health;
+}
+
+int BaseController::get_score() const {
+    return score;
+}
+
 // setters
 void BaseController::set_position(Vector2 position) {
     sprite_->position.x = position.x;
@@ -146,6 +154,14 @@ void BaseController::set_rotation_speed(const float rotation_speed) {
 
 void BaseController::set_friction_coefficient(float friction_coefficient) {
     friction_coefficient_ = friction_coefficient;
+}
+
+void BaseController::set_health(int new_health) {
+    health = new_health;
+}
+
+void BaseController::set_score(int new_score) {
+    score = new_score;
 }
 
 // using trigonometry to get direction
