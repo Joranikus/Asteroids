@@ -36,18 +36,18 @@ BaseController::BaseController(const std::shared_ptr<Sprite>& sprite,
     if (rotation_speed < 0) {//rotation speed cant be negative
         throw std::invalid_argument("Rotation speed must be positive");
     }
-
+    /*
     if (friction_coefficient < 0.0f || friction_coefficient > 1.0f) {// 0 = no friction, 1 = all the friction
         throw std::invalid_argument("Friction coefficient must be between 0 and 1.");
     }
-
+    */
     if (thrust_power < 0) {// an engine can't have negative horsepower
         throw std::invalid_argument("Thrust power must be positive");
     }
 
     // creates mass according to material size
-    int width = sprite->material->map->image->width;
-    int height = sprite->material->map->image->width;
+    int width = static_cast<int>(sprite->material->map->image->width);
+    int height = static_cast<int>(sprite->material->map->image->width);
     mass = static_cast<float>(width * height * 0.01);
 
     // used for initial velocity so that the object moves when created

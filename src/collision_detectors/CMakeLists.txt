@@ -11,4 +11,5 @@ set(collision_detectors_files
 add_library(collision_detectors ${collision_detectors_files})
 
 target_link_libraries(collision_detectors PUBLIC threepp::threepp)
+target_link_libraries(collision_detectors PUBLIC factories)
 target_include_directories(collision_detectors PUBLIC ${collision_detectors_include_dir})

@@ -35,13 +35,16 @@ private:
     threepp::TextureLoader loader;
     std::shared_ptr<threepp::OrthographicCamera> camera;
     threepp::Clock clock;
+
     SpaceshipKeylistener spaceship_keylistener;
     std::unique_ptr<BulletFactory> bullet_factory;
     std::unique_ptr<SpaceshipController> spaceship;
+
     std::unique_ptr<AsteroidFactory> asteroid_factory;
     AsteroidBulletCollisionDetector asteroid_bullet_collision_detector;
-    ElasticCollisionDetector asteroid_collision_detector;
+    std::unique_ptr<ElasticCollisionDetector> asteroid_collision_detector;
     std::vector<std::string> asteroid_material_paths;
+    std::unique_ptr<ParticleFactory> asteroid_particle_factory;
 };
 
 #endif// ASTEROIDS_GAME_HPP

@@ -53,6 +53,7 @@ void Game::update_game(float dt) {
     spaceship->update(dt);
     bullet_factory->update_objects(dt);
     asteroid_factory->update_objects(dt);
+    asteroid_particle_factory->update_objects(dt);
 
     spaceship->perform_spaceship_movement(spaceship_keylistener.determine_action(), dt);
 
@@ -60,7 +61,7 @@ void Game::update_game(float dt) {
 
     asteroid_bullet_collision_detector.check_collision(bullet_factory->objects, asteroid_factory->objects);
 
-    asteroid_collision_detector.check_collision(asteroid_factory->objects);
+    asteroid_collision_detector->check_collision(asteroid_factory->objects);
 }
 
 void Game::initialize_canvas() {
@@ -107,6 +108,20 @@ void Game::initialize_asteroids() {
             100,
             300,
             0);
+
+    asteroid_particle_factory = std::make_unique<ParticleFactory>(
+            canvas,
+            scene,
+            loader,
+            "asteroid_particle.png",
+            10.0f,
+            0.1f,
+            90.0f,
+            0.1f,
+            5.0f);
+
+    asteroid_collision_detector = std::make_unique<ElasticCollisionDetector>(*asteroid_particle_factory);
+
 }
 
 void Game::on_window_resize() {

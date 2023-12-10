@@ -22,7 +22,7 @@ public:
     void generate_wave(float dt, int wave_size, float asteroid_delay, float wave_delay);
 
     std::shared_ptr<threepp::Sprite> create_object_sprite() override;
-    std::shared_ptr<BaseController> create_object(std::shared_ptr<threepp::Sprite> object_sprite) override;
+    std::shared_ptr<BaseController> create_object(std::shared_ptr<threepp::Sprite>& object_sprite) override;
 
     //TODO: korfor må jeg gjøre dette i det hele tatt? funksjonen er jo i base klassen.
     void on_window_resize(threepp::WindowSize& new_size) override;
