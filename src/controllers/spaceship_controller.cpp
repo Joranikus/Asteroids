@@ -58,7 +58,7 @@ void SpaceshipController::on_window_resize(WindowSize& new_screen_size) {
 }
 
 void SpaceshipController::shoot_bullet() {
-    if (time_since_last_bullet >= bullet_cooldown_ && ready_to_shoot) {
+    if (time_since_last_bullet >= bullet_cooldown_ && ready_to_shoot && !marked_for_removal) {
         bullet_factory_.shoot_bullet(*this);
         ready_to_shoot = false;
     }

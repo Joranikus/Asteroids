@@ -1,9 +1,9 @@
 
+#include "game_systems/game.hpp"
 #include "controllers/spaceship_controller.hpp"
 #include "factories/asteroid_factory.hpp"
 #include "functions/create_sprite.hpp"
 #include "threepp/threepp.hpp"
-#include "game_systems/game.hpp"
 
 using namespace threepp;
 
@@ -33,7 +33,6 @@ void Game::setup() {
     initialize_game_points();
     initialize_spaceship();
     initialize_asteroids();
-
     spaceship_points->setup();
 }
 
@@ -63,6 +62,9 @@ void Game::update_game(float dt) {
     asteroid_factory->update_objects(dt);
 
     spaceship->perform_spaceship_movement(spaceship_keylistener.determine_action(), dt);
+    if (spaceship->marked_for_removal) {
+        scene->remove(*spaceship->sprite_);
+    }
 
     asteroid_factory->generate_wave(dt, 20, 1, 0);
 
@@ -71,7 +73,7 @@ void Game::update_game(float dt) {
 
     asteroid_collision_detector.check_collision_list(asteroid_factory->objects);
 
-   asteroid_spaceship_collision_detector.asteroid_spaceship_collision_check(asteroid_factory->objects, spaceship);
+    asteroid_spaceship_collision_detector.asteroid_spaceship_collision_check(asteroid_factory->objects, spaceship);
 }
 
 void Game::initialize_canvas() {

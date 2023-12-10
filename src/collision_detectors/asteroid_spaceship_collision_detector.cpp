@@ -11,6 +11,10 @@ void AsteroidSpaceshipCollisionDetector::asteroid_spaceship_collision_check(std:
             spaceship->set_velocity(new_velocities.second);
 
             collision_damage(asteroid, spaceship);
+
+            if (spaceship->get_health() <= 0) {
+                spaceship->marked_for_removal = true;
+            }
         }
     }
 }
