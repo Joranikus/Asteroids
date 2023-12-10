@@ -15,7 +15,7 @@ private:
     static void collision_damage(std::shared_ptr<BaseController>& asteroid,
                                  std::shared_ptr<BaseController> spaceship);
 
-    static float calculate_damage(float asteroid_mass, float spaceship_mass);
+    static float calculate_damage(float asteroid_mass, float spaceship_mass, float relative_velocity);
 };
 
 #endif//ASTEROIDS_ASTEROID_SPACESHIP_COLLISION_DETECTOR_HPP
