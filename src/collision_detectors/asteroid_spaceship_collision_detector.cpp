@@ -3,6 +3,10 @@
 
 void AsteroidSpaceshipCollisionDetector::asteroid_spaceship_collision_check(std::vector<std::shared_ptr<BaseController>>& asteroid_list,
                                                                             std::shared_ptr<BaseController> spaceship) {
+    if (!spaceship) {
+        throw std::runtime_error("Spaceship not found");
+    }
+
     for (auto& asteroid : asteroid_list) {
         if (collision(asteroid, spaceship)) {
             auto new_velocities = calculate_collision(asteroid, spaceship);
@@ -12,6 +16,7 @@ void AsteroidSpaceshipCollisionDetector::asteroid_spaceship_collision_check(std:
 
             collision_damage(asteroid, spaceship);
 
+            // removes spaceship if health is 0
             if (spaceship->get_health() <= 0) {
                 spaceship->marked_for_removal = true;
             }
@@ -19,10 +24,15 @@ void AsteroidSpaceshipCollisionDetector::asteroid_spaceship_collision_check(std:
     }
 }
 
+// sets new health to spaceship according to the damage done
 void AsteroidSpaceshipCollisionDetector::collision_damage(std::shared_ptr<BaseController>& asteroid,
                                                          std::shared_ptr<BaseController> spaceship) {
     float asteroid_mass = asteroid->get_mass();
     float spaceship_mass = spaceship->get_mass();
+
+    if (asteroid_mass <= 0 || spaceship_mass <= 0) {
+            throw std::invalid_argument("Mass can't be zero or negative");
+        }
 
     threepp::Vector2 relative_velocity = asteroid->get_velocity() - spaceship->get_velocity();
     float velocity_magnitude = relative_velocity.length();
@@ -33,6 +43,7 @@ void AsteroidSpaceshipCollisionDetector::collision_damage(std::shared_ptr<BaseCo
     spaceship->set_health(new_health);
 }
 
+// calculates damage to spaceship based on velocity and mass of the asteroid and spaceship
 float AsteroidSpaceshipCollisionDetector::calculate_damage(float asteroid_mass, float spaceship_mass, float velocity_magnitude) {
     const float base_damage_percent = 5.0f;
     const float mass_ratio_coefficient = 0.5f;
